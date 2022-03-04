@@ -37,3 +37,8 @@ void AKillCountHUD::AddHumanKill()
 	HumanKills += 1;
 	//UE_LOG(LogTemp, Warning, TEXT("Human kills %d"), HumanKills);
 }
+
+int AKillCountHUD::GetKillsAmount()
+{
+	return HumanKills + MonsterKills;
+}

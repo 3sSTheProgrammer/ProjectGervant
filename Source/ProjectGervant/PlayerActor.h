@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Sound/SoundCue.h" //potom ubrat'
-
+#include "KillCountHUD.h"
 
 //#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"

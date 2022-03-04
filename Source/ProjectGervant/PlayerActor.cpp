@@ -23,6 +23,7 @@ void APlayerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 }
 
 void APlayerActor::PlayHitSound()

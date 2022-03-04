@@ -34,11 +34,9 @@ public:
 	*/
 	void AddKill(FString EnemyClass);
 
-	//po idee nuzhno chtoby enemy sam vizyval AddMonsterKill/AddHumanKill, 
-	//no iz-za togo, chto funkciya opisana v roditelskom klasse tak ne rabotaet(
-	//TODO razobratsa kak sdelat vyzov AddMonsterKill/AddHumanKill iz MonsterEnemy/HumanEnemy
-
 	void AddMonsterKill();
 
 	void AddHumanKill();
+
+	int GetKillsAmount();
 };
