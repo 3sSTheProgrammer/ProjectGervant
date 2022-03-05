@@ -102,7 +102,7 @@ void AEnemyActorParent::ReceiveDamage(float DPS, float time)
 			UE_LOG(LogTemp, Warning, TEXT("dobavill kill %s"), *EnemyClass);
 			Hud->AddKill(EnemyClass);
 			
-			if (Hud->GetKillsAmount() > 5)
+			/*if (Hud->GetKillsAmount() > 5)
 			{
 				UWorld* TheWorld = GetWorld();
 				FString CurrentLevel = TheWorld->GetMapName();
@@ -115,7 +115,7 @@ void AEnemyActorParent::ReceiveDamage(float DPS, float time)
 				{
 					UGameplayStatics::OpenLevel(GetWorld(), "Map0");
 				}
-			}
+			}*/
 		}
 		//{
 		//	//EnemyClass = GetEnemyClass();
