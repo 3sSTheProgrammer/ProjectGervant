@@ -2,10 +2,9 @@
 
 #pragma once
 
-#include "Sound/SoundCue.h" //potom ubrat'
-#include "KillCountHUD.h"
+#include "Sound/SoundCue.h"
+#include "ProjectGervant/KillCountHUD.h"
 
-//#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlayerActor.generated.h"
 

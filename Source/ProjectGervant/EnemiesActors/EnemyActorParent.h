@@ -3,12 +3,9 @@
 #pragma once
 
 #include "Containers/UnrealString.h"
-#include "BeamActor.h"
+#include "ProjectGervant/PlayerActors/BeamActor.h"
+#include "ProjectGervant/PlayerActors/PlayerActor.h"
 
-//#include "EnemyManagerActor.h" //potom ubrat'
-#include "PlayerActor.h"
-
-//#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "EnemyActorParent.generated.h"
 

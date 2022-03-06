@@ -2,9 +2,7 @@
 
 #pragma once
 
-#include "BeamActor.h"
-
-//#include "CoreMinimal.h"
+#include "ProjectGervant/PlayerActors/BeamActor.h"
 
 #include "GameFramework/PlayerController.h"
 #include "InputManagerController.generated.h"

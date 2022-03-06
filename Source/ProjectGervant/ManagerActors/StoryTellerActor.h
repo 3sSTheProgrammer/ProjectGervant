@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "EnemyActorParent.h"
-#include "KillCountHUD.h"
-//#include "CoreMinimal.h"
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+#include "ProjectGervant/KillCountHUD.h"
+
 #include "GameFramework/Actor.h"
 #include "StoryTellerActor.generated.h"
 

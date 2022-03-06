@@ -4,7 +4,7 @@
 
 #include "EnemyActorParent.h"
 #include "Kismet/GameplayStatics.h"
-#include "KillCountHUD.h"
+#include "ProjectGervant/KillCountHUD.h"
 
 // Sets default values
 AEnemyActorParent::AEnemyActorParent()
@@ -68,12 +68,8 @@ void AEnemyActorParent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	//TODO refactor project so that enemyactor class has children monster 
-	//and human which have own children as HumanEnemy1 etc. enemyactor should have a 
-	//property "EnemyClass"
 	if ((ABeamActor*)OtherActor == BeamActor)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Overlap started"));
 		IsAttacked = true;
 	}
 }
@@ -84,7 +80,6 @@ void AEnemyActorParent::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 {
 	if ((ABeamActor*)OtherActor == BeamActor)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Overlap ended"));
 		IsAttacked = false;
 	}
 }
@@ -92,7 +87,6 @@ void AEnemyActorParent::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 void AEnemyActorParent::ReceiveDamage(float DPS, float time)
 {
 	Health -= DPS * time;
-	//UE_LOG(LogTemp, Warning, TEXT("Health is %f"), Health);
 	if (Health <= 0)
 	{
 		AKillCountHUD* Hud = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
@@ -102,35 +96,7 @@ void AEnemyActorParent::ReceiveDamage(float DPS, float time)
 			UE_LOG(LogTemp, Warning, TEXT("dobavill kill %s"), *EnemyClass);
 			Hud->AddKill(EnemyClass);
 			
-			/*if (Hud->GetKillsAmount() > 5)
-			{
-				UWorld* TheWorld = GetWorld();
-				FString CurrentLevel = TheWorld->GetMapName();
-				UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
-				if (CurrentLevel == "UEDPIE_0_Map0")
-				{
-					UGameplayStatics::OpenLevel(GetWorld(), "Map1");
-				}
-				else
-				{
-					UGameplayStatics::OpenLevel(GetWorld(), "Map0");
-				}
-			}*/
 		}
-		//{
-		//	//EnemyClass = GetEnemyClass();
-		//	UE_LOG(LogTemp, Warning, TEXT("ya %s"), *this->EnemyClass);
-		//	if (EnemyClass == "Monster")
-		//	{
-		//		UE_LOG(LogTemp, Warning, TEXT("ubil monstra"));
-		//		Hud->AddMonsterKill();
-		//	}
-		//	else if (EnemyClass == "Human")
-		//	{
-		//		UE_LOG(LogTemp, Warning, TEXT("ubil humana"));
-		//		Hud->AddHumanKill();
-		//	}
-		//}
 		
 		Destroy();
 	}
@@ -165,8 +131,6 @@ void AEnemyActorParent::MoveToCenter(float MoveAmount)
 		+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
 	if (DistanceFromCenter < 100)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("niche ne slyshno(("));
-		//UGameplayStatics::PlaySound2D(this, HitSound);
 		PlayerActor->PlayHitSound();
 		Destroy();
 	}

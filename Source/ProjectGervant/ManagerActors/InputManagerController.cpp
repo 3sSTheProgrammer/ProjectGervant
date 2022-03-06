@@ -2,7 +2,7 @@
 
 
 #include "InputManagerController.h"
-#include "BeamActor.h"
+//#include "BeamActor.h"
 #include "Kismet/GameplayStatics.h"
 
 

@@ -2,12 +2,8 @@
 
 #pragma once
 
-#include "EnemyActor.h"
-#include "EnemyActorParent.h"
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 
-
-
-//#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "EnemyManagerActor.generated.h"
 
