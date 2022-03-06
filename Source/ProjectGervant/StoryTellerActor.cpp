@@ -7,7 +7,7 @@
 AStoryTellerActor::AStoryTellerActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -18,6 +18,19 @@ void AStoryTellerActor::BeginPlay()
 	
 	HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
 	
+	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
+
+	UWorld* TheWorld = GetWorld();
+	FString CurrentLevel = TheWorld->GetMapName();
+	switch (LevelNameMap[CurrentLevel])
+	{
+	case 1:
+		FirstLevelScript();
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("unknown level"));
+		break;
+	}
 }
 
 // Called every frame
@@ -27,7 +40,7 @@ void AStoryTellerActor::Tick(float DeltaTime)
 	//in perspective this should be a reaction on an event, not an every tick check
 	//TODO: refactor this functionality to be a reaction on an event
 
-	if (Hud != nullptr && HUD->GetKillsAmount() > 5)
+	/*if (HUD != nullptr && HUD->GetKillsAmount() > 5)
 	{
 		UWorld* TheWorld = GetWorld();
 		FString CurrentLevel = TheWorld->GetMapName();
@@ -40,7 +53,32 @@ void AStoryTellerActor::Tick(float DeltaTime)
 		{
 			UGameplayStatics::OpenLevel(GetWorld(), "Map0");
 		}
-	}
-	}
+		
+		
+	}*/
+
+}
+
+void AStoryTellerActor::FirstLevelScript()
+{
+	UE_LOG(LogTemp, Warning, TEXT("1 level"));
+	FVector SpawnLocation{ 0 };
+	SpawnLocation.Z = 1000;
+
+	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterDrowner;
+
+
+	GetWorld()->SpawnActor<AEnemyActorParent>(
+		SpawnEnemy, SpawnLocation,
+		FRotator::ZeroRotator);
+	/*FTimerHandle Timer;
+	GetWorldTimerManager().SetTimer(Timer, this,
+		&AEnemyManagerActor::SpawnEnemy, 1.5f);*/
+	
+}
+
+void AStoryTellerActor::SecondLevelScript()
+{
+	UE_LOG(LogTemp, Warning, TEXT("2 level"));
 }
 

@@ -40,7 +40,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void MoveToCenter(float MoveAmount);
+	
 
 public:
 	// Called every frame
@@ -64,5 +64,5 @@ public:
 private:
 	virtual void ReceiveDamage(float DPS, float time);
 
-	
+	virtual void MoveToCenter(float MoveAmount);
 };
