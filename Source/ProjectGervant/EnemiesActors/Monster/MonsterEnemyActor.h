@@ -22,4 +22,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	//// Called every frame
+	//virtual void Tick(float DeltaTime) override;
+
+//protected:
+//	virtual void MoveToPoint(FVector Point, float MoveAmount) override;
 };

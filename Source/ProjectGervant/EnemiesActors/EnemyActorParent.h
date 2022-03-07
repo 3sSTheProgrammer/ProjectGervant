@@ -37,11 +37,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
-
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	
 
 	UFUNCTION()
 		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
@@ -58,8 +58,12 @@ public:
 	FString GetEnemyClass();
 
 
-private:
+protected:
 	virtual void ReceiveDamage(float DPS, float time);
 
 	virtual void MoveToCenter(float MoveAmount);
+	
+	virtual void MoveToPoint(FVector Point, float MoveAmount);
+
+	virtual void MovementManager(float Time);
 };

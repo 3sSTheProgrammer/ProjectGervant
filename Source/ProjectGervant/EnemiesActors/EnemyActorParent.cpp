@@ -55,12 +55,19 @@ void AEnemyActorParent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//UE_LOG(LogTemp, Warning, TEXT("I'm parent"));
+	
+
 	if (IsAttacked)
 	{
 		this->ReceiveDamage(DamageFromBeam, DeltaTime);
 	}
-	
-	MoveToCenter(MovementSpeed * DeltaTime);
+
+	MovementManager(DeltaTime);
+	//
+	////MoveToCenter(MovementSpeed * DeltaTime);
+	//
+	//MoveToPoint(FVector::ZeroVector, MovementSpeed * DeltaTime);
 }
 
 void AEnemyActorParent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp,
@@ -93,7 +100,7 @@ void AEnemyActorParent::ReceiveDamage(float DPS, float time)
 		if (Hud != nullptr)
 		{
 			FString Class = GetEnemyClass();
-			UE_LOG(LogTemp, Warning, TEXT("dobavill kill %s"), *EnemyClass);
+			//UE_LOG(LogTemp, Warning, TEXT("dobavill kill %s"), *EnemyClass);
 			Hud->AddKill(EnemyClass);
 			
 		}
@@ -139,4 +146,32 @@ void AEnemyActorParent::MoveToCenter(float MoveAmount)
 		SetActorLocation(CurrentLocation);
 	}
 	
+}
+
+void AEnemyActorParent::MoveToPoint(FVector Point, float MoveAmount)
+{
+	FVector CurrentLocation = GetActorLocation();
+	float Angle = FGenericPlatformMath::Atan2(CurrentLocation.Y - Point.Y, CurrentLocation.Z - Point.Z);
+
+	CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
+	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
+
+	//float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
+	//	+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
+
+	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - Point.Y, 2)
+		+ FGenericPlatformMath::Pow(CurrentLocation.Z - Point.Z, 2));
+	if (DistanceFromPoint > 5)
+	{
+		SetActorLocation(CurrentLocation);
+	}
+	//else
+	//{
+	//	PlayerActor->PlayHitSound();
+	//	Destroy();
+	//}
+}
+
+void AEnemyActorParent::MovementManager(float Time)
+{
 }

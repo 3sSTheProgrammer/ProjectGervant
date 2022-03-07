@@ -65,8 +65,8 @@ void AStoryTellerActor::FirstLevelScript()
 	FVector SpawnLocation{ 0 };
 	SpawnLocation.Z = 1000;
 
-	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterDrowner;
-
+	//TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterDrowner;
+	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterEnemyFiend;
 
 	GetWorld()->SpawnActor<AEnemyActorParent>(
 		SpawnEnemy, SpawnLocation,
