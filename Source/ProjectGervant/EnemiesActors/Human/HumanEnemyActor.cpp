@@ -15,5 +15,5 @@ void AHumanEnemyActor::BeginPlay()
 
 	AEnemyActorParent::FindBeamActor("HumanBeam");
 
-	AHumanEnemyActor::DamageFromBeam = AHumanEnemyActor::BeamActor->GetDamagePerSecond();
+	//AHumanEnemyActor::DamageFromBeam = AHumanEnemyActor::BeamActor->GetDamagePerSecond();
 }

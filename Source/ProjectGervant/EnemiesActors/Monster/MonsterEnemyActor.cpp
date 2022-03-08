@@ -15,7 +15,7 @@ void AMonsterEnemyActor::BeginPlay()
 
 	AEnemyActorParent::FindBeamActor("MonsterBeam");
 	
-	AMonsterEnemyActor::DamageFromBeam = AMonsterEnemyActor::BeamActor->GetDamagePerSecond();
+	//AMonsterEnemyActor::DamageFromBeam = AMonsterEnemyActor::BeamActor->GetDamagePerSecond();
 
 	//UE_LOG(LogTemp, Warning, TEXT("ya rodilsya! %s"), *this->EnemyClass);
 }

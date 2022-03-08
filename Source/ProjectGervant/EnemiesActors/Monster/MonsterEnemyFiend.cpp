@@ -55,7 +55,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 
 	if (!PassedMiddlePoint)
 	{
-		MoveToPoint(MiddlePoint, MovementSpeed * Time);
+		MoveToPoint(MiddlePoint, Time);
 		CurrentLocation = GetActorLocation();
 		DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - MiddlePoint.Y, 2)
 			+ FGenericPlatformMath::Pow(CurrentLocation.Z - MiddlePoint.Z, 2));
@@ -69,7 +69,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 	{
 		FTimerHandle Timer;
 		FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
-			&AMonsterEnemyFiend::MoveToPoint, FVector::ZeroVector, MovementSpeed * Time);
+			&AMonsterEnemyFiend::MoveToPoint, FVector::ZeroVector, Time);
 	GetWorldTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
 
 

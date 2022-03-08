@@ -15,23 +15,42 @@ class PROJECTGERVANT_API AEnemyActorParent : public AActor
 	GENERATED_BODY()
 
 protected:
+	//An enemy health. Default value is 100
 	float Health{ 100 };
-	bool IsAttacked{ false };
-	ABeamActor* BeamActor;
-	FString EnemyClass;
-	float DamageFromBeam;
 	
+	//Shows if the enemy is currently under beam attack
+	bool IsAttacked{ false };
+	
+	// A reference to beam actor which should apply damage to enemy
+	// TODO MEDIUM PRIORITY refactor the methods so that another beam
+	// heals the enemy
+	ABeamActor* BeamActor;
+	
+	// Defines if the enemy is Human or Monster
+	// TODO LOW PRIORITY make an enum type EnemyClass
+	FString EnemyClass;
+	
+	// Enemy movement speed. Default value is 100 units per second
 	float MovementSpeed{ 100 };
 
-public:
-
-	//potom ubrat'
+	// A player actor reference saved for efficiency 
 	APlayerActor* PlayerActor;
-
-
+public:
 
 	// Sets default values for this actor's properties
 	AEnemyActorParent();
+
+	// Function that describes behaviour when overlap starts
+	UFUNCTION()
+		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
+			class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	// Function that describes behaviour when overlap ends
+	UFUNCTION()
+		void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
+			class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex);
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,30 +59,17 @@ protected:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	
-
-	UFUNCTION()
-		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
-			class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-		void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
-			class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex);
-
+	// Finds beam actor by tag that is afterwards stored in BeamActor field
 	void FindBeamActor(FName Tag);
 
-	FString GetEnemyClass();
-
-
-protected:
-	virtual void ReceiveDamage(float DPS, float time);
-
-	virtual void MoveToCenter(float MoveAmount);
+	// Applies damage to enemy
+	virtual void ReceiveDamage(float DamageAmount);
 	
-	virtual void MoveToPoint(FVector Point, float MoveAmount);
+	// A function that forces enemy to go to a point
+	// specified by a FVector
+	virtual void MoveToPoint(FVector Point, float Time);
 
+	// A function that defines enemy movement 
+	// By default the enemy moves to player position
 	virtual void MovementManager(float Time);
 };
