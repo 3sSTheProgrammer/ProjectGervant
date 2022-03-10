@@ -37,7 +37,13 @@ void AEnemyActorParent::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
 		StaticMeshComponent = StaticMeshComponents[0];
-		StaticMeshComponent->SetRenderCustomDepth(true); 
+		/*UMaterialInterface* Material = StaticMeshComponent->GetMaterial(0);
+		if (Material != nullptr)
+		{
+				UE_LOG(LogTemp, Warning, TEXT("Hello"));
+		}*/
+		
+		//StaticMeshComponent->SetRenderCustomDepth(true); 
 		//StaticMeshComponent->SetCustomDepthStencilValue(155); //STENCIL_DAMAGING_OUTLINE
 	//	// set up delegate for collisions with something else
 	//	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapBegin);
@@ -70,7 +76,7 @@ void AEnemyActorParent::Tick(float DeltaTime)
 	//	ReceiveDamage(BeamActor->GetDamagePerSecond() * DeltaTime);
 	//}
 
-	UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
+	//UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
 	
 	
 	
@@ -108,6 +114,7 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 	// Reduce health
 	Health -= DamageAmount;
 
+	StaticMeshComponent->SetMaterial(0, UDamagedMaterial);
 	// if health is below zero adds kill to HUD and destroys self
 	if (Health <= 0)
 	{
@@ -122,6 +129,7 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 
 void AEnemyActorParent::ReceiveHealing(float HealAmount)
 {
+	StaticMeshComponent->SetMaterial(0, UDefaultMaterial);
 	Health = FMath::Clamp(Health + HealAmount, 0.f, MaxHealth);
 }
 

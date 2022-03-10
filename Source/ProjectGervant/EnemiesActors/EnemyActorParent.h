@@ -45,6 +45,11 @@ protected:
 
 public:
 
+	UPROPERTY(EditAnywhere,	Category = Materials)
+		UMaterialInterface* UDefaultMaterial;
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UMaterialInterface* UDamagedMaterial;
+
 	// Sets default values for this actor's properties
 	AEnemyActorParent();
 

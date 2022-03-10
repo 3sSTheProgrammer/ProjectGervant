@@ -22,8 +22,9 @@ void APlayerActor::BeginPlay()
 
 	if (StaticMeshComponents.Num() > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
+		//UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
 		StaticMeshComponent = StaticMeshComponents[0];
+		
 		//StaticMeshComponent->SetRenderCustomDepth(true);
 		//StaticMeshComponent->SetCustomDepthStencilValue(155); //STENCIL_DAMAGING_OUTLINE
 	//	// set up delegate for collisions with something else
