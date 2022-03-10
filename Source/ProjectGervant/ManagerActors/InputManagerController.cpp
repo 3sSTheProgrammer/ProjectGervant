@@ -41,7 +41,7 @@ void AInputManagerController::RotateMonsterBeam(float input)
 
 AActor* AInputManagerController::GetBeamActor(int marker)
 {
-	UE_LOG(LogTemp, Warning, TEXT("getbeamactor started"));
+	//UE_LOG(LogTemp, Warning, TEXT("getbeamactor started"));
 	FName Tag;
 	FString ActorName;
 	if (marker == 0)
@@ -69,11 +69,11 @@ AActor* AInputManagerController::GetBeamActor(int marker)
 		for (int i = 0; i < AnotherActors.Num(); ++i)
 		{
 			ABeamActor* Actor = (ABeamActor*)AnotherActors[i];
-			UE_LOG(LogTemp, Warning, TEXT("actor real name %s"), *Actor->GetName());
-			UE_LOG(LogTemp, Warning, TEXT("actor supposed name %s"), *ActorName);
+			//UE_LOG(LogTemp, Warning, TEXT("actor real name %s"), *Actor->GetName());
+			//UE_LOG(LogTemp, Warning, TEXT("actor supposed name %s"), *ActorName);
 			if (*Actor->GetName() == ActorName)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("VIZHU DRUGOI ACTOR %s"), *Actor->GetName());
+				//UE_LOG(LogTemp, Warning, TEXT("VIZHU DRUGOI ACTOR %s"), *Actor->GetName());
 				AnotherActor = Actor;
 			}
 		}

@@ -7,7 +7,9 @@
 AMonsterEnemyFiend::AMonsterEnemyFiend()
 {
 	UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
-	Health = 200;
+	
+	MaxHealth = 200;
+	Health = MaxHealth;
 	MovementSpeed = 200;
 }
 
@@ -17,7 +19,7 @@ void AMonsterEnemyFiend::BeginPlay()
 
 	MiddlePoint.X = 0;
 	MiddlePoint.Y = FMath::RandRange(-400, 400);
-	MiddlePoint.Z = FMath::RandRange(300, 600);
+	MiddlePoint.Z = FMath::RandRange(300, 500);
 	PassedMiddlePoint = false;
 	UE_LOG(LogTemp, Warning, TEXT("MiddlePoint: %f %f"), MiddlePoint.Y, MiddlePoint.Z);
 
@@ -43,6 +45,8 @@ void AMonsterEnemyFiend::BeginPlay()
 
 void AMonsterEnemyFiend::MovementManager(float Time)
 {
+
+	return;
 	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
 	FVector CurrentLocation = GetActorLocation();
 	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
@@ -59,7 +63,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 		CurrentLocation = GetActorLocation();
 		DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - MiddlePoint.Y, 2)
 			+ FGenericPlatformMath::Pow(CurrentLocation.Z - MiddlePoint.Z, 2));
-		if (DistanceFromPoint < 10)
+		if (DistanceFromPoint <= 20)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("passed middle point"));
 			PassedMiddlePoint = true;
@@ -71,8 +75,6 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 		FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
 			&AMonsterEnemyFiend::MoveToPoint, FVector::ZeroVector, Time);
 	GetWorldTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
-
-
 	}
 
 }

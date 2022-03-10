@@ -13,7 +13,7 @@ void AHumanEnemyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AEnemyActorParent::FindBeamActor("HumanBeam");
+	//AEnemyActorParent::FindBeamActor("HumanBeam");
 
 	//AHumanEnemyActor::DamageFromBeam = AHumanEnemyActor::BeamActor->GetDamagePerSecond();
 }

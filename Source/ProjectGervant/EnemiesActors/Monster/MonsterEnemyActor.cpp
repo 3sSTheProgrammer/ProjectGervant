@@ -13,7 +13,7 @@ void AMonsterEnemyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AEnemyActorParent::FindBeamActor("MonsterBeam");
+	//AEnemyActorParent::FindBeamActor("MonsterBeam");
 	
 	//AMonsterEnemyActor::DamageFromBeam = AMonsterEnemyActor::BeamActor->GetDamagePerSecond();
 

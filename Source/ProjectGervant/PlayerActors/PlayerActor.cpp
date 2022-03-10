@@ -15,7 +15,21 @@ APlayerActor::APlayerActor()
 void APlayerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	UStaticMeshComponent* StaticMeshComponent;
+	TArray<UStaticMeshComponent*> StaticMeshComponents;
+	GetComponents(StaticMeshComponents);
+
+	if (StaticMeshComponents.Num() > 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
+		StaticMeshComponent = StaticMeshComponents[0];
+		//StaticMeshComponent->SetRenderCustomDepth(true);
+		//StaticMeshComponent->SetCustomDepthStencilValue(155); //STENCIL_DAMAGING_OUTLINE
+	//	// set up delegate for collisions with something else
+	//	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapBegin);
+	//	StaticMeshComponent->OnComponentEndOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapEnd);
+	}
 }
 
 // Called every frame
