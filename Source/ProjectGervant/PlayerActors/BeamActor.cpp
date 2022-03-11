@@ -53,9 +53,35 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 			Class = EnemyActor->GetEnemyClass();
 			UE_LOG(LogTemp, Warning, TEXT("started overlap with %s"), *Class);
 			OverlapingEnemies.Add(EnemyActor);
+
+
+			//TODO: Refactor as a function 
+			if (InteractiveEnemy != nullptr)
+			{
+				if (BeamType == InteractiveEnemy->GetEnemyClass())
+				{
+					InteractiveEnemy->SetIsAttacked(false);
+				}
+				else
+				{
+					InteractiveEnemy->SetIsHealed(false);
+				}
+				
+			}
 			InteractiveEnemy = FindClosestEnemy();
+			if (InteractiveEnemy != nullptr)
+			{
+				if (BeamType == InteractiveEnemy->GetEnemyClass())
+				{
+					InteractiveEnemy->SetIsAttacked(true);
+				}
+				else
+				{
+					InteractiveEnemy->SetIsHealed(true);
+				}
+			}
+
 		}
-		
 	}
 }
 
@@ -72,8 +98,36 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 			Class = EnemyActor->GetEnemyClass();
 			UE_LOG(LogTemp, Warning, TEXT("ended overlap with %s"), *Class);
 			OverlapingEnemies.Remove(EnemyActor);
+			
+			//TODO: Refactor as a function 
+			if (InteractiveEnemy != nullptr)
+			{
+				if (BeamType == InteractiveEnemy->GetEnemyClass())
+				{
+					InteractiveEnemy->SetIsAttacked(false);
+				}
+				else
+				{
+					InteractiveEnemy->SetIsHealed(false);
+				}
+
+			}
 			InteractiveEnemy = FindClosestEnemy();
+			if (InteractiveEnemy != nullptr)
+			{
+				if (BeamType == InteractiveEnemy->GetEnemyClass())
+				{
+					InteractiveEnemy->SetIsAttacked(true);
+				}
+				else
+				{
+					InteractiveEnemy->SetIsHealed(true);
+				}
+			}
+			
 		}
+
+		
 	}
 }
 
@@ -130,10 +184,11 @@ AEnemyActorParent* ABeamActor::FindClosestEnemy()
 
 		if (DistanceToEnemy < MinDistance)
 		{
+			MinDistance = DistanceToEnemy;
 			ClosestEnemy = Enemy;
 		}
 	}
-
+	//UE_LOG(LogTemp, Warning, TEXT("FINDCLOSESTENEMY: %f"), DistanceToEnemy);
 	/*if (ClosestEnemy != nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FINDCLOSESTENEMY:closest enemy is %s"), *ClosestEnemy->GetName());

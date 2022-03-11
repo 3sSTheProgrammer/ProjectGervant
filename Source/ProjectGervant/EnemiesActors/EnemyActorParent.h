@@ -26,9 +26,12 @@ protected:
 	// Maximum health that enemy can have
 	float MaxHealth;
 
-	//Shows if the enemy is currently under beam attack
+	//Shows if the enemy is currently interacts with damaging beam
 	bool IsAttacked{ false };
 	
+	//Shows if the enemy is currently interacts with healing beam
+	bool IsHealed{ false };
+
 	//// A reference to beam actor which should apply damage to enemy
 	//// TODO: MEDIUM PRIORITY refactor the methods so that another beam heals the enemy
 	//ABeamActor* BeamActor;
@@ -43,12 +46,19 @@ protected:
 	// A player actor reference saved for efficiency 
 	APlayerActor* PlayerActor;
 
+	UMaterialInstanceDynamic* EnemyDinamicMaterial;
 public:
 
-	UPROPERTY(EditAnywhere,	Category = Materials)
-		UMaterialInterface* UDefaultMaterial;
+	//UPROPERTY(EditAnywhere,	Category = Materials)
+	//	UMaterialInterface* UDefaultMaterial;
 	UPROPERTY(EditAnywhere, Category = Materials)
 		UMaterialInterface* UDamagedMaterial;
+	
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UTexture* UMaskTexture;
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UTexture* UDefaultTexture;
 
 	// Sets default values for this actor's properties
 	AEnemyActorParent();
@@ -57,6 +67,8 @@ public:
 	FString GetEnemyClass();
 
 	void SetIsAttacked(bool Status);
+
+	void SetIsHealed(bool Status);
 
 	// Applies damage to enemy
 	void ReceiveDamage(float DamageAmount);

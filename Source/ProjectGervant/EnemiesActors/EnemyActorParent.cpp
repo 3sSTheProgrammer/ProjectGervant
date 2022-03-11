@@ -19,8 +19,36 @@ FString AEnemyActorParent::GetEnemyClass()
 	return EnemyClass;
 }
 
+//TODO: consider uniting with SetIsHealed, mb create a enum for enemy status
 void AEnemyActorParent::SetIsAttacked(bool Status)
 {
+	if (Status)
+	{
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
+		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
+		UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to true"));
+	}
+	else
+	{
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+		UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to false"));
+	}
+	IsAttacked = Status;
+}
+
+void AEnemyActorParent::SetIsHealed(bool Status)
+{
+	if (Status)
+	{
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
+		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.f, 0.9, 0.02f, 1.f));
+		UE_LOG(LogTemp, Warning, TEXT("IsHealed set to true"));
+	}
+	else
+	{
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+		UE_LOG(LogTemp, Warning, TEXT("IsHealed set to false"));
+	}
 	IsAttacked = Status;
 }
 
@@ -61,6 +89,9 @@ void AEnemyActorParent::BeginPlay()
 		PlayerActor = (APlayerActor*)PlayerActors[0];
 	}
 
+	EnemyDinamicMaterial = UMaterialInstanceDynamic::Create(UDamagedMaterial, this);
+	EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+	StaticMeshComponent->SetMaterial(0, EnemyDinamicMaterial);
 
 }
 
@@ -78,8 +109,17 @@ void AEnemyActorParent::Tick(float DeltaTime)
 
 	//UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
 	
-	
-	
+	/*if (IsAttacked)
+	{
+		UMaterialInstance->SetTextureParameterValue(FName(TEXT("MaskColor")), UMaskTexture);
+	}*/
+
+	/*
+	if (IsHealed)
+	{
+
+	}*/
+
 	// Moves with enemy specifics
 	MovementManager(DeltaTime);
 }
@@ -114,7 +154,12 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 	// Reduce health
 	Health -= DamageAmount;
 
-	StaticMeshComponent->SetMaterial(0, UDamagedMaterial);
+	//UMaterialInstance->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
+
+	//UMaterialInstance->SetTextureParameterValue(FName(TEXT("MaskColor")), UMaskTexture);
+
+
+	//StaticMeshComponent->SetMaterial(0, UMaterialInstance); //UDamagedMaterial
 	// if health is below zero adds kill to HUD and destroys self
 	if (Health <= 0)
 	{
@@ -129,7 +174,8 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 
 void AEnemyActorParent::ReceiveHealing(float HealAmount)
 {
-	StaticMeshComponent->SetMaterial(0, UDefaultMaterial);
+	//UMaterialInstance->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.f, 0.9, 0.02f, 1.f));
+	//StaticMeshComponent->SetMaterial(0, EnemyDinamicMaterial);
 	Health = FMath::Clamp(Health + HealAmount, 0.f, MaxHealth);
 }
 
