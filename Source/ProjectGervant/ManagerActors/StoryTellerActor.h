@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "ProjectGervant/KillCountHUD.h"
 
@@ -79,6 +80,14 @@ public:
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
 		TSubclassOf<AEnemyActorParent> UMonsterEnemyWerewolfWolfForm;
+
+protected:
+	// Dynamic reference to the blueprint class
+	TSubclassOf<class UUserWidget> GameInterfaceClass;
+
+	// Internal reference to the blueprint for gameplay logic
+	UPROPERTY(BlueprintReadWrite, Category = "UI")
+		class UUW_WitcherSignsInterface* GameInterface;
 
 private:
 	AKillCountHUD* HUD;

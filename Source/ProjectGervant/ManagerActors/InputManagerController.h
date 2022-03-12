@@ -37,5 +37,6 @@ public:
 	 * @param marker - defines if human(0) or monster(1) beam should be found
 	 * @return human/monster actor pointer
 	*/
+	//TODO: change marker to be FString
 	AActor* GetBeamActor(int marker);
 };
