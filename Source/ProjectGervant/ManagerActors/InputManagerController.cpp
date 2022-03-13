@@ -5,11 +5,35 @@
 //#include "BeamActor.h"
 #include "Kismet/GameplayStatics.h"
 
+AInputManagerController::AInputManagerController()
+{
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+
+	if (GameInterfaceUIBPClass.Class != nullptr)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("widget class found"));
+		GameInterfaceClass = GameInterfaceUIBPClass.Class;
+	}
+}
+
 
 void AInputManagerController::BeginPlay()
 {
+	Super::BeginPlay();
+
 	HumanBeamActor = (ABeamActor*)GetBeamActor(0);
 	MonsterBeamActor = (ABeamActor*)GetBeamActor(1);
+
+	if (GameInterfaceClass != nullptr)
+	{
+		GameInterface = CreateWidget<UUW_WitcherSignsInterface>(GetWorld(), GameInterfaceClass);
+		if (GameInterface != nullptr)
+		{
+			GameInterface->AddToViewport();
+
+			//
+		}
+	}
 }
 
 void AInputManagerController::SetupInputComponent()
@@ -21,7 +45,17 @@ void AInputManagerController::SetupInputComponent()
 		&AInputManagerController::RotateHumanBeam);
 	InputComponent->BindAxis("MonsterBeamRotation", this,
 		&AInputManagerController::RotateMonsterBeam);
+
+	InputComponent->BindAction("UseIgni", EInputEvent::IE_Pressed,
+		this, &AInputManagerController::UseIgni);
+	InputComponent->BindAction("UseAksii", EInputEvent::IE_Pressed,
+		this, &AInputManagerController::UseAksii);
+	InputComponent->BindAction("UseKven", EInputEvent::IE_Pressed,
+		this, &AInputManagerController::UseKven);
+	InputComponent->BindAction("UseAard", EInputEvent::IE_Pressed,
+		this, &AInputManagerController::UseAard);
 }
+
 
 void AInputManagerController::RotateHumanBeam(float input)
 {
@@ -80,4 +114,24 @@ AActor* AInputManagerController::GetBeamActor(int marker)
 	}
 
 	return AnotherActor;
+}
+
+void AInputManagerController::UseIgni()
+{
+	GameInterface->UseSign("Igni");
+}
+
+void AInputManagerController::UseAksii()
+{
+	GameInterface->UseSign("Aksii");
+}
+
+void AInputManagerController::UseKven()
+{
+	GameInterface->UseSign("Kven");
+}
+
+void AInputManagerController::UseAard()
+{
+	GameInterface->UseSign("Aard");
 }

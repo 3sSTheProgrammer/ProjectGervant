@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "UW_WitcherSignsInterface.generated.h"
 
+//TODO: make a field to hold a world timer manager, populate it in NativeConstruct
 /**
  * 
  */
@@ -18,23 +19,51 @@ class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
 	
 protected:
 	
+	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
 	FTimerHandle IgniTimer;
-
 	float IgniCooldown{ 5.f };
+	bool IsIgniAvailable{ true };
+	float IgniRemainingTime{ 0.f };
 
-	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* TestLabel;
+	FTimerHandle AksiiTimer;
+	float AksiiCooldown{ 5.f };
+	bool IsAksiiAvailable{ true };
+	float AksiiRemainingTime{ 0.f };
+
+	FTimerHandle KvenTimer;
+	float KvenCooldown{ 5.f };
+	bool IsKvenAvailable{ true };
+	float KvenRemainingTime{ 0.f };
+
+	FTimerHandle AardTimer;
+	float AardCooldown{ 5.f };
+	bool IsAardAvailable{ true };
+	float AardRemainingTime{ 0.f };
 
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* IgniProgressBar;
+	UPROPERTY(meta = (BindWidget))
+		class UProgressBar* AksiiProgressBar;
+	UPROPERTY(meta = (BindWidget))
+		class UProgressBar* KvenProgressBar;
+	UPROPERTY(meta = (BindWidget))
+		class UProgressBar* AardProgressBar;
+
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
+	//FTimerManager& WorldTimerManager = GetWorld()->GetTimerManager();
 
+	void RefreshSign(FString SignName);
 
-	void TestTest();
+	
+
 public:
-	void TestProgressBar();
 
+	virtual void NativeConstruct() override;
+
+	void SetSignCooldownTimer(FString SignName);
+
+	void UseSign(FString SignName);
 	//UUW_WitcherSignsInterface();
 };

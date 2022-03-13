@@ -57,6 +57,8 @@ void AEnemyActorParent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//this->Tags.Add("Enemy");
+	
 	// find static mesh component
 	TArray<UStaticMeshComponent*> StaticMeshComponents;
 	GetComponents(StaticMeshComponents);

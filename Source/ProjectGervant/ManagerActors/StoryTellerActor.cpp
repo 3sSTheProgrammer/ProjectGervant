@@ -8,13 +8,6 @@ AStoryTellerActor::AStoryTellerActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
-
-	if (GameInterfaceUIBPClass.Class != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("widget class found"));
-		GameInterfaceClass = GameInterfaceUIBPClass.Class;
-	}
 
 }
 
@@ -22,17 +15,6 @@ AStoryTellerActor::AStoryTellerActor()
 void AStoryTellerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (GameInterfaceClass != nullptr)
-	{
-		GameInterface = CreateWidget<UUW_WitcherSignsInterface>(GetWorld(), GameInterfaceClass);
-		if (GameInterface != nullptr)
-		{
-			GameInterface->AddToViewport();
-			
-			GameInterface->TestProgressBar();
-		}
-	}
 
 	HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
 	
