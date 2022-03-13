@@ -110,11 +110,11 @@ void UUW_WitcherSignsInterface::SetSignCooldownTimer(FString SignName)
 		return;
 	}
 
-	//TODO: check if all pointers are not nullptrs
 	*IsSignAvailable = false;
-	//UE_LOG(LogTemp, Warning, TEXT("Ingi available: %d"), *IsSignAvailable);
-	//UE_LOG(LogTemp, Warning, TEXT("Ingi available: %d"), IsIgniAvailable);
-	GetWorld()->GetTimerManager().SetTimer(*SignTimer, SignDelegate, *SignCooldown, false);
+	if (SignTimer != nullptr && SignCooldown != nullptr)
+	{
+		GetWorld()->GetTimerManager().SetTimer(*SignTimer, SignDelegate, *SignCooldown, false);
+	}
 }
 
 void UUW_WitcherSignsInterface::RefreshSign(FString SignName)
@@ -158,18 +158,22 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 	if (SignName == "Igni")
 	{
 		IsSignAvailable = &IsIgniAvailable;
+		Igni();
 	}
 	else if (SignName == "Aksii")
 	{
 		IsSignAvailable = &IsAksiiAvailable;
+		Aksii();
 	}
 	else if (SignName == "Kven")
 	{
 		IsSignAvailable = &IsKvenAvailable;
+		Kven();
 	}
 	else if (SignName == "Aard")
 	{
 		IsSignAvailable = &IsAardAvailable;
+		Aard();
 	}
 	else
 	{
@@ -180,4 +184,36 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 		UE_LOG(LogTemp, Warning, TEXT("You used %s"), *SignName);
 		SetSignCooldownTimer(SignName);
 	}
+
+}
+
+void UUW_WitcherSignsInterface::Igni()
+{
+	//Spawn an Igni actor
+	//It increases scale until it occupies half of the screen
+	//OnOverlapBegin damages all enemies and kills them (?)
+}
+
+void UUW_WitcherSignsInterface::Aksii()
+{
+	//Stops all human enemies
+	//Get all enemies by tag (add tag to EnemyParentActor with this->Tags.Add())
+	//Add IsStopped bool var to EnemyParentActor
+	//Set IsStopped = true to all human enemies for 3 seconds
+	//Add some animations to them
+}
+
+void UUW_WitcherSignsInterface::Kven()
+{
+	//Spawn a KvenShieldActor
+	//Set player actor's IsKvenActive to true
+	//p.s get player actor in begin play or smthg
+}
+
+void UUW_WitcherSignsInterface::Aard()
+{
+	//Stop all enemies
+	//Make them move back with 300-500 ms for a second
+	//Unstop stopped enemies
+	//Add function to move back to EnemyParentActor
 }

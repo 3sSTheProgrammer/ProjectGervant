@@ -9,6 +9,7 @@
 #include "UW_WitcherSignsInterface.generated.h"
 
 //TODO: make a field to hold a world timer manager, populate it in NativeConstruct
+//UPD: this doesnt work(((
 /**
  * 
  */
@@ -56,7 +57,13 @@ protected:
 
 	void RefreshSign(FString SignName);
 
-	
+	void Igni();
+
+	void Aksii();
+
+	void Kven();
+
+	void Aard();
 
 public:
 
@@ -66,4 +73,6 @@ public:
 
 	void UseSign(FString SignName);
 	//UUW_WitcherSignsInterface();
+
+	
 };

@@ -13,8 +13,14 @@ class PROJECTGERVANT_API APlayerActor : public AActor
 {
 	GENERATED_BODY()
 	
+protected:
+
+	float Health;
+
+	bool IsKvenActive;
+
 public:	
-	//TODO Perenesti v actor personazha
+	//TODO: Add another sounds
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* HitSound;
@@ -31,4 +37,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void PlayHitSound();
+
+	void ReceiveDamage(float DamageAmount);
+
+	void TurnKvenOn();
+
 };
