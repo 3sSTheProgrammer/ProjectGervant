@@ -209,21 +209,39 @@ void UUW_WitcherSignsInterface::Aksii()
 	//Set IsStopped = true to all human enemies for 3 seconds
 	//Add some animations to them
 
+	//TODO: Add tag "Enemy" in EnemyActor Parent
 	TArray<AActor*> EnemyActors;
 	UGameplayStatics::GetAllActorsWithTag(
 		GetWorld(), "Enemy", EnemyActors);
 
+	TArray<AEnemyActorParent*> StoppedEnemies;
 	for (AActor* Actor : EnemyActors)
 	{
 		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
 		if (Enemy != nullptr)
 		{
-			if (Enemy->GetEnemyClass() == "Monster")
+			if (Enemy->GetEnemyClass() == "Monster") //"Human"
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
+				UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
 				Enemy->SetIsStopped(true);
+				StoppedEnemies.Add(Enemy);
 			}
 		}
+	}
+
+	FTimerHandle Timer;
+	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
+		&UUW_WitcherSignsInterface::UnstopEnemies, StoppedEnemies);
+	GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
+
+	
+}
+
+void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies)
+{
+	for (AEnemyActorParent* Enemy : StoppedEnemies)
+	{
+		Enemy->SetIsStopped(false);
 	}
 }
 
@@ -232,6 +250,17 @@ void UUW_WitcherSignsInterface::Kven()
 	//Spawn a KvenShieldActor
 	//Set player actor's IsKvenActive to true
 	//p.s get player actor in begin play or smthg
+
+	/*APlayerActor* Player = Cast<APlayerActor>(PlayerActor);
+	if (Player != nullptr) Player->TurnKvenOn();
+	else UE_LOG(LogTemp, Warning, TEXT("Player is null"));*/
+
+	TArray<AActor*> PlayerActors;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "Player", PlayerActors);
+	if (PlayerActors.Num() > 0) PlayerActor = (APlayerActor*)PlayerActors[0];
+	
+	if (PlayerActor != nullptr) PlayerActor->TurnKvenOn();
 }
 
 void UUW_WitcherSignsInterface::Aard()

@@ -11,6 +11,7 @@ AMonsterEnemyFiend::AMonsterEnemyFiend()
 	MaxHealth = 200;
 	Health = MaxHealth;
 	MovementSpeed = 200;
+	Damage = 50;
 }
 
 void AMonsterEnemyFiend::BeginPlay()
@@ -55,6 +56,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 		if (DistanceFromPoint < 100)
 		{
 			Destroy();
+			PlayerActor->ReceiveDamage(Damage);
 		}
 
 	if (!PassedMiddlePoint)

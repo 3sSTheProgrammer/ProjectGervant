@@ -25,6 +25,8 @@ public:
 		Category = "Sound")
 		USoundCue* HitSound;
 	
+	UPROPERTY(EditAnywhere, Category = "Actors")
+		TSubclassOf<AActor> KvenActor;
 	// Sets default values for this actor's properties
 	APlayerActor();
 

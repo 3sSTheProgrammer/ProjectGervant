@@ -224,7 +224,7 @@ void AEnemyActorParent::MoveToPoint(FVector Point, float Time)
 void AEnemyActorParent::MovementManager(float Time)
 {
 	
-	UE_LOG(LogTemp, Warning, TEXT("IsStopped: %d"), IsStopped);
+	//UE_LOG(LogTemp, Warning, TEXT("IsStopped: %d"), IsStopped);
 	FVector CurrentLocation = GetActorLocation();
 
 	// math stuff

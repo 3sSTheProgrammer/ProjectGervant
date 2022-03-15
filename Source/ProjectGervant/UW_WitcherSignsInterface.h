@@ -3,6 +3,7 @@
 #pragma once
 
 //#include "CoreMinimal.h"
+#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "Components/ProgressBar.h"
 #include "Kismet/GameplayStatics.h"
@@ -53,6 +54,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf<AIgniActor> IgniActor;
+
+	/*UPROPERTY(EditAnywhere, Category = "Actors")
+		TSubclassOf <APlayerActor> PlayerActor;*/
+	APlayerActor* PlayerActor;
+
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
 	//FTimerManager& WorldTimerManager = GetWorld()->GetTimerManager();
@@ -67,6 +73,7 @@ protected:
 
 	void Aard();
 
+	void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
 public:
 
 	virtual void NativeConstruct() override;

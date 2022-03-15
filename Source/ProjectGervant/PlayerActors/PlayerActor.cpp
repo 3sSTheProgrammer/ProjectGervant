@@ -52,9 +52,18 @@ void APlayerActor::PlayHitSound()
 
 void APlayerActor::ReceiveDamage(float DamageAmount)
 {
+	
 	if (IsKvenActive)
 	{
 		IsKvenActive = false;
+		//TODO: IMPORTANT create KvenActor class and include it insead of using UPROPERTY
+		AActor* Kven = Cast<AActor>(KvenActor);
+		if (Kven != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Disabling kven"));
+			Kven->Destroy();
+		}
+			
 		//TODO: Sound here
 	}
 	else
@@ -66,6 +75,10 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 
 void APlayerActor::TurnKvenOn()
 {
+	
 	IsKvenActive = true;
+	GetWorld()->SpawnActor<AActor>(
+		KvenActor, FVector::ZeroVector,
+		FRotator::ZeroRotator);
 	//TODO: Sound here
 }
