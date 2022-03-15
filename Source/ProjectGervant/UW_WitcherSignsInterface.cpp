@@ -11,8 +11,7 @@
 void UUW_WitcherSignsInterface::NativeConstruct()
 {
 	UUserWidget::NativeConstruct();
-	
-	
+
 	/*UWorld* World = GetWorld();
 	WorldTimerManager = World->GetTimerManager();
 	WorldTimerManager = GetWorld()->GetTimerManager();*/
@@ -154,26 +153,24 @@ void UUW_WitcherSignsInterface::RefreshSign(FString SignName)
 //TODO: move usage stuff to another actor mb
 void UUW_WitcherSignsInterface::UseSign(FString SignName)
 {
+	
 	bool* IsSignAvailable{ nullptr };
+	//TFunction<void()> SignFunction{ nullptr };
 	if (SignName == "Igni")
 	{
 		IsSignAvailable = &IsIgniAvailable;
-		Igni();
 	}
 	else if (SignName == "Aksii")
 	{
 		IsSignAvailable = &IsAksiiAvailable;
-		Aksii();
 	}
 	else if (SignName == "Kven")
 	{
 		IsSignAvailable = &IsKvenAvailable;
-		Kven();
 	}
 	else if (SignName == "Aard")
 	{
 		IsSignAvailable = &IsAardAvailable;
-		Aard();
 	}
 	else
 	{
@@ -181,7 +178,13 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 	}
 	if (*IsSignAvailable)
 	{
+		if (SignName == "Igni") Igni();
+		else if (SignName == "Aksii") Aksii();
+		else if (SignName == "Kven") Kven();
+		else if (SignName == "Aard") Aard();
+
 		UE_LOG(LogTemp, Warning, TEXT("You used %s"), *SignName);
+		
 		SetSignCooldownTimer(SignName);
 	}
 
@@ -192,6 +195,10 @@ void UUW_WitcherSignsInterface::Igni()
 	//Spawn an Igni actor
 	//It increases scale until it occupies half of the screen
 	//OnOverlapBegin damages all enemies and kills them (?)
+
+	GetWorld()->SpawnActor<AIgniActor>(
+		IgniActor, FVector::ZeroVector,
+		FRotator::ZeroRotator);
 }
 
 void UUW_WitcherSignsInterface::Aksii()
@@ -201,6 +208,23 @@ void UUW_WitcherSignsInterface::Aksii()
 	//Add IsStopped bool var to EnemyParentActor
 	//Set IsStopped = true to all human enemies for 3 seconds
 	//Add some animations to them
+
+	TArray<AActor*> EnemyActors;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "Enemy", EnemyActors);
+
+	for (AActor* Actor : EnemyActors)
+	{
+		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
+		if (Enemy != nullptr)
+		{
+			if (Enemy->GetEnemyClass() == "Monster")
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
+				Enemy->SetIsStopped(true);
+			}
+		}
+	}
 }
 
 void UUW_WitcherSignsInterface::Kven()

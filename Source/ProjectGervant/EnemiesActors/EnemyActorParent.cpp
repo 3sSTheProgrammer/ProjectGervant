@@ -11,7 +11,7 @@ AEnemyActorParent::AEnemyActorParent()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	//this->Tags.Add("Enemy");
 }
 
 FString AEnemyActorParent::GetEnemyClass()
@@ -26,12 +26,12 @@ void AEnemyActorParent::SetIsAttacked(bool Status)
 	{
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
 		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
-		UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to true"));
+		//UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to true"));
 	}
 	else
 	{
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
-		UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to false"));
+		//UE_LOG(LogTemp, Warning, TEXT("IsAttacked set to false"));
 	}
 	IsAttacked = Status;
 }
@@ -42,12 +42,12 @@ void AEnemyActorParent::SetIsHealed(bool Status)
 	{
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
 		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.f, 0.9, 0.02f, 1.f));
-		UE_LOG(LogTemp, Warning, TEXT("IsHealed set to true"));
+		//UE_LOG(LogTemp, Warning, TEXT("IsHealed set to true"));
 	}
 	else
 	{
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
-		UE_LOG(LogTemp, Warning, TEXT("IsHealed set to false"));
+		//UE_LOG(LogTemp, Warning, TEXT("IsHealed set to false"));
 	}
 	IsAttacked = Status;
 }
@@ -56,8 +56,6 @@ void AEnemyActorParent::SetIsHealed(bool Status)
 void AEnemyActorParent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//this->Tags.Add("Enemy");
 	
 	// find static mesh component
 	TArray<UStaticMeshComponent*> StaticMeshComponents;
@@ -65,7 +63,7 @@ void AEnemyActorParent::BeginPlay()
 
 	if (StaticMeshComponents.Num() > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
+		//UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
 		StaticMeshComponent = StaticMeshComponents[0];
 		/*UMaterialInterface* Material = StaticMeshComponent->GetMaterial(0);
 		if (Material != nullptr)
@@ -87,7 +85,6 @@ void AEnemyActorParent::BeginPlay()
 
 	if (PlayerActors.Num() > 0)
 	{
-		//this->
 		PlayerActor = (APlayerActor*)PlayerActors[0];
 	}
 
@@ -123,7 +120,10 @@ void AEnemyActorParent::Tick(float DeltaTime)
 	}*/
 
 	// Moves with enemy specifics
-	MovementManager(DeltaTime);
+	if (!IsStopped)
+	{
+		MovementManager(DeltaTime);
+	}
 }
 
 //// Function that describes behaviour when overlap starts
@@ -181,6 +181,11 @@ void AEnemyActorParent::ReceiveHealing(float HealAmount)
 	Health = FMath::Clamp(Health + HealAmount, 0.f, MaxHealth);
 }
 
+void AEnemyActorParent::SetIsStopped(bool Status)
+{
+	IsStopped = Status;
+}
+
 //// Finds beam actor by tag that is afterwards stored in BeamActor field
 //void AEnemyActorParent::FindBeamActor(FName Tag)
 //{
@@ -218,6 +223,8 @@ void AEnemyActorParent::MoveToPoint(FVector Point, float Time)
 
 void AEnemyActorParent::MovementManager(float Time)
 {
+	
+	UE_LOG(LogTemp, Warning, TEXT("IsStopped: %d"), IsStopped);
 	FVector CurrentLocation = GetActorLocation();
 
 	// math stuff
@@ -227,17 +234,19 @@ void AEnemyActorParent::MovementManager(float Time)
 	CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
 	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
 
-	float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
-		+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
+		float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
+			+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
 
-	// if enemy reached player it destroys itself, otherwise continue moving
-	// TODO: Add ReceiveDamage for the player
-	if (DistanceFromCenter < 100)
-	{
-		Destroy();
-	}
-	else
-	{
-		SetActorLocation(CurrentLocation);
-	}
+		// if enemy reached player it destroys itself, otherwise continue moving
+		if (DistanceFromCenter < 100)
+		{
+			Destroy();
+			PlayerActor->ReceiveDamage(Damage);
+		}
+		else
+		{
+			SetActorLocation(CurrentLocation);
+		}
+
+	
 }

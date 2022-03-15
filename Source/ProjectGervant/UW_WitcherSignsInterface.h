@@ -3,6 +3,7 @@
 #pragma once
 
 //#include "CoreMinimal.h"
+#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "Components/ProgressBar.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
@@ -50,7 +51,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* AardProgressBar;
 
-
+	UPROPERTY(EditAnywhere, Category = "Actors")
+		TSubclassOf<AIgniActor> IgniActor;
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
 	//FTimerManager& WorldTimerManager = GetWorld()->GetTimerManager();

@@ -46,7 +46,7 @@ void AMonsterEnemyFiend::BeginPlay()
 void AMonsterEnemyFiend::MovementManager(float Time)
 {
 
-	return;
+	//return;
 	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
 	FVector CurrentLocation = GetActorLocation();
 	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)

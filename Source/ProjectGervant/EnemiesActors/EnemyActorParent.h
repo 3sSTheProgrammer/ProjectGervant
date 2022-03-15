@@ -26,14 +26,20 @@ protected:
 	// Maximum health that enemy can have
 	float MaxHealth;
 
+	// Amount of damage which the enemy inflicts to player
+	float Damage;
+
 	//Shows if the enemy is currently interacts with damaging beam
 	bool IsAttacked{ false };
 	
 	//Shows if the enemy is currently interacts with healing beam
 	bool IsHealed{ false };
 
+	// If true, enemy doesnt move according to MovementManager
+	bool IsStopped{ false };
+
 	//// A reference to beam actor which should apply damage to enemy
-	//// TODO: MEDIUM PRIORITY refactor the methods so that another beam heals the enemy
+
 	//ABeamActor* BeamActor;
 	
 	// Defines if the enemy is Human or Monster
@@ -75,6 +81,8 @@ public:
 
 	// Applies healing to enemy
 	void ReceiveHealing(float HealAmount);
+
+	void SetIsStopped(bool Status);
 
 protected:
 
