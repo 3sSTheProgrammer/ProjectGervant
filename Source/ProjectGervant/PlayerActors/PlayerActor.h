@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
 #include "Sound/SoundCue.h"
 #include "ProjectGervant/KillCountHUD.h"
 
@@ -25,8 +26,13 @@ public:
 		Category = "Sound")
 		USoundCue* HitSound;
 	
-	UPROPERTY(EditAnywhere, Category = "Actors")
-		TSubclassOf<AActor> KvenActor;
+	//UPROPERTY(EditAnywhere, Category = "Actors")
+	//	AKvenActor* KvenActor;
+
+	UPROPERTY(EditAnywhere,
+		meta = (MetaClass = "KvenActor"),
+		Category = Actors)
+		TSubclassOf<AKvenActor> KvenActorClass;
 	// Sets default values for this actor's properties
 	APlayerActor();
 

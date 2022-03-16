@@ -56,12 +56,12 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 	if (IsKvenActive)
 	{
 		IsKvenActive = false;
-		//TODO: IMPORTANT create KvenActor class and include it insead of using UPROPERTY
-		AActor* Kven = Cast<AActor>(KvenActor);
-		if (Kven != nullptr)
+		
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), KvenActorClass, FoundActors);
+		if (FoundActors.Num() > 0)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Disabling kven"));
-			Kven->Destroy();
+			FoundActors[0]->Destroy();
 		}
 			
 		//TODO: Sound here
@@ -75,10 +75,9 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 
 void APlayerActor::TurnKvenOn()
 {
-	
-	IsKvenActive = true;
-	GetWorld()->SpawnActor<AActor>(
-		KvenActor, FVector::ZeroVector,
-		FRotator::ZeroRotator);
+	FVector KvenSpawnLocation = FVector(-10.f, 0.f, 0.f);
+	IsKvenActive = true; // 
+	GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
+		KvenSpawnLocation, FRotator::ZeroRotator);
 	//TODO: Sound here
 }

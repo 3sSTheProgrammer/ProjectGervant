@@ -214,6 +214,8 @@ void UUW_WitcherSignsInterface::Aksii()
 	UGameplayStatics::GetAllActorsWithTag(
 		GetWorld(), "Enemy", EnemyActors);
 
+	UE_LOG(LogTemp, Warning, TEXT("Found %d enemies"), EnemyActors.Num());
+
 	TArray<AEnemyActorParent*> StoppedEnemies;
 	for (AActor* Actor : EnemyActors)
 	{
@@ -269,4 +271,8 @@ void UUW_WitcherSignsInterface::Aard()
 	//Make them move back with 300-500 ms for a second
 	//Unstop stopped enemies
 	//Add function to move back to EnemyParentActor
+
+	GetWorld()->SpawnActor<AAardActor>(
+		AardActor, FVector::ZeroVector,
+		FRotator::ZeroRotator);
 }

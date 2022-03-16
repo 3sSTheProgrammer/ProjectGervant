@@ -5,6 +5,7 @@
 //#include "CoreMinimal.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
+#include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Components/ProgressBar.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
@@ -29,7 +30,7 @@ protected:
 	float IgniRemainingTime{ 0.f };
 
 	FTimerHandle AksiiTimer;
-	float AksiiCooldown{ 5.f };
+	float AksiiCooldown{ 1.f };
 	bool IsAksiiAvailable{ true };
 	float AksiiRemainingTime{ 0.f };
 
@@ -54,6 +55,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf<AIgniActor> IgniActor;
+
+	UPROPERTY(EditAnywhere, Category = "Actors")
+		TSubclassOf<AAardActor> AardActor;
 
 	/*UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf <APlayerActor> PlayerActor;*/
