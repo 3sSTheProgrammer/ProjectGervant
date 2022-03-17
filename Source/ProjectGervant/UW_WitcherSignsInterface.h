@@ -40,7 +40,7 @@ protected:
 	float KvenRemainingTime{ 0.f };
 
 	FTimerHandle AardTimer;
-	float AardCooldown{ 5.f };
+	float AardCooldown{ 1.f };
 	bool IsAardAvailable{ true };
 	float AardRemainingTime{ 0.f };
 

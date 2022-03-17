@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Kismet/GameplayStatics.h"
 #include "PlayerActor.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 APlayerActor::APlayerActor()
