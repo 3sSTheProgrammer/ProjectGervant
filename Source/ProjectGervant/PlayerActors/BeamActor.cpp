@@ -51,7 +51,7 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 		{
 			FString Class;
 			Class = EnemyActor->GetEnemyClass();
-			UE_LOG(LogTemp, Warning, TEXT("started overlap with %s"), *Class);
+			//UE_LOG(LogTemp, Warning, TEXT("started overlap with %s"), *Class);
 			OverlapingEnemies.Add(EnemyActor);
 
 
@@ -60,11 +60,13 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					InteractiveEnemy->SetIsAttacked(false);
+					//InteractiveEnemy->SetIsAttacked(false);
+					InteractiveEnemy->SetBeamInteractionStatus("Attack", false);
 				}
 				else
 				{
-					InteractiveEnemy->SetIsHealed(false);
+					//InteractiveEnemy->SetIsHealed(false);
+					InteractiveEnemy->SetBeamInteractionStatus("Heal", false);
 				}
 				
 			}
@@ -73,11 +75,13 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					InteractiveEnemy->SetIsAttacked(true);
+					//InteractiveEnemy->SetIsAttacked(true);
+					InteractiveEnemy->SetBeamInteractionStatus("Attack", true);
 				}
 				else
 				{
-					InteractiveEnemy->SetIsHealed(true);
+					//InteractiveEnemy->SetIsHealed(true);
+					InteractiveEnemy->SetBeamInteractionStatus("Heal", true);
 				}
 			}
 
@@ -96,7 +100,7 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 		{
 			FString Class;
 			Class = EnemyActor->GetEnemyClass();
-			UE_LOG(LogTemp, Warning, TEXT("ended overlap with %s"), *Class);
+			//UE_LOG(LogTemp, Warning, TEXT("ended overlap with %s"), *Class);
 			OverlapingEnemies.Remove(EnemyActor);
 			
 			//TODO: Refactor as a function 
@@ -104,11 +108,13 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					InteractiveEnemy->SetIsAttacked(false);
+					//InteractiveEnemy->SetIsAttacked(false);
+					InteractiveEnemy->SetBeamInteractionStatus("Attack", false);
 				}
 				else
 				{
-					InteractiveEnemy->SetIsHealed(false);
+					//InteractiveEnemy->SetIsHealed(false);
+					InteractiveEnemy->SetBeamInteractionStatus("Heal", false);
 				}
 
 			}
@@ -117,11 +123,13 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					InteractiveEnemy->SetIsAttacked(true);
+					//InteractiveEnemy->SetIsAttacked(true);
+					InteractiveEnemy->SetBeamInteractionStatus("Attack", true);
 				}
 				else
 				{
-					InteractiveEnemy->SetIsHealed(true);
+					//InteractiveEnemy->SetIsHealed(true);
+					InteractiveEnemy->SetBeamInteractionStatus("Heal", true);
 				}
 			}
 			

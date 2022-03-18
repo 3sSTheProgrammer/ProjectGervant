@@ -1,14 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Kismet/GameplayStatics.h"
 #include "PlayerActor.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 APlayerActor::APlayerActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
+		
+	Health = 100.f;
+	IsKvenActive = false;
 }
 
 // Called when the game starts or when spawned
@@ -43,13 +46,39 @@ void APlayerActor::Tick(float DeltaTime)
 
 void APlayerActor::PlayHitSound()
 {
-	if (this != nullptr)
+	UGameplayStatics::PlaySound2D(this, HitSound);
+	
+	//UGameplayStatics::PlaySound2D(this, HitSound);
+}
+
+void APlayerActor::ReceiveDamage(float DamageAmount)
+{
+	
+	if (IsKvenActive)
 	{
-		UGameplayStatics::PlaySound2D(this, HitSound);
+		IsKvenActive = false;
+		
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), KvenActorClass, FoundActors);
+		if (FoundActors.Num() > 0)
+		{
+			FoundActors[0]->Destroy();
+		}
+			
+		//TODO: Sound here
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("WTF?????"));
+		Health -= DamageAmount;
+		//TODO: Sound here
 	}
-	//UGameplayStatics::PlaySound2D(this, HitSound);
+}
+
+void APlayerActor::TurnKvenOn()
+{
+	FVector KvenSpawnLocation = FVector(-10.f, 0.f, 0.f);
+	IsKvenActive = true; // 
+	GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
+		KvenSpawnLocation, FRotator::ZeroRotator);
+	//TODO: Sound here
 }

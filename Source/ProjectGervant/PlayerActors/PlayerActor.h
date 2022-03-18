@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
 #include "Sound/SoundCue.h"
 #include "ProjectGervant/KillCountHUD.h"
 
@@ -13,12 +14,25 @@ class PROJECTGERVANT_API APlayerActor : public AActor
 {
 	GENERATED_BODY()
 	
+protected:
+
+	float Health;
+
+	bool IsKvenActive;
+
 public:	
-	//TODO Perenesti v actor personazha
+	//TODO: Add another sounds
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* HitSound;
 	
+	//UPROPERTY(EditAnywhere, Category = "Actors")
+	//	AKvenActor* KvenActor;
+
+	UPROPERTY(EditAnywhere,
+		meta = (MetaClass = "KvenActor"),
+		Category = Actors)
+		TSubclassOf<AKvenActor> KvenActorClass;
 	// Sets default values for this actor's properties
 	APlayerActor();
 
@@ -31,4 +45,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void PlayHitSound();
+
+	void ReceiveDamage(float DamageAmount);
+
+	void TurnKvenOn();
+
 };

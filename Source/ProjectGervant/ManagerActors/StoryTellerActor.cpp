@@ -15,7 +15,7 @@ AStoryTellerActor::AStoryTellerActor()
 void AStoryTellerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
 	
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
@@ -59,9 +59,12 @@ void AStoryTellerActor::Tick(float DeltaTime)
 
 }
 
+//TODO: guess this should be overriden in child classes
 void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
+
+
 	FVector SpawnLocation{ 0 };
 	SpawnLocation.Z = 500;
 
@@ -79,8 +82,8 @@ void AStoryTellerActor::FirstLevelScript()
 	GetWorld()->SpawnActor<AEnemyActorParent>(
 		SpawnEnemy, SpawnLocation,
 		FRotator::ZeroRotator);
-	/*FTimerHandle Timer;
-	GetWorldTimerManager().SetTimer(Timer, this,
+	//FTimerHandle Timer;
+	/*GetWorldTimerManager().SetTimer(Timer, this,
 		&AEnemyManagerActor::SpawnEnemy, 1.5f);*/
 	
 }

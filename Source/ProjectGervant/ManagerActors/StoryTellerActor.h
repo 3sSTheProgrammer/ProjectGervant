@@ -2,6 +2,7 @@
 
 #pragma once
 
+//#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "ProjectGervant/KillCountHUD.h"
 
@@ -79,6 +80,8 @@ public:
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
 		TSubclassOf<AEnemyActorParent> UMonsterEnemyWerewolfWolfForm;
+
+
 
 private:
 	AKillCountHUD* HUD;

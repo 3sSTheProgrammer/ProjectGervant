@@ -6,11 +6,12 @@
 
 AMonsterEnemyFiend::AMonsterEnemyFiend()
 {
-	UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
+	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
 	
 	MaxHealth = 200;
 	Health = MaxHealth;
-	MovementSpeed = 200;
+	MovementSpeed = 200; //200
+	Damage = 50;
 }
 
 void AMonsterEnemyFiend::BeginPlay()
@@ -21,7 +22,7 @@ void AMonsterEnemyFiend::BeginPlay()
 	MiddlePoint.Y = FMath::RandRange(-400, 400);
 	MiddlePoint.Z = FMath::RandRange(300, 500);
 	PassedMiddlePoint = false;
-	UE_LOG(LogTemp, Warning, TEXT("MiddlePoint: %f %f"), MiddlePoint.Y, MiddlePoint.Z);
+	//UE_LOG(LogTemp, Warning, TEXT("MiddlePoint: %f %f"), MiddlePoint.Y, MiddlePoint.Z);
 
 }
 
@@ -46,7 +47,7 @@ void AMonsterEnemyFiend::BeginPlay()
 void AMonsterEnemyFiend::MovementManager(float Time)
 {
 
-	return;
+	//return;
 	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
 	FVector CurrentLocation = GetActorLocation();
 	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
@@ -55,6 +56,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 		if (DistanceFromPoint < 100)
 		{
 			Destroy();
+			PlayerActor->ReceiveDamage(Damage);
 		}
 
 	if (!PassedMiddlePoint)
@@ -65,7 +67,7 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 			+ FGenericPlatformMath::Pow(CurrentLocation.Z - MiddlePoint.Z, 2));
 		if (DistanceFromPoint <= 20)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("passed middle point"));
+			//UE_LOG(LogTemp, Warning, TEXT("passed middle point"));
 			PassedMiddlePoint = true;
 		}
 	}
