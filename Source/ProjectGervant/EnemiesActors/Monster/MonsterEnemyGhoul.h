@@ -10,8 +10,10 @@
  * 
  */
 UCLASS()
-class PROJECTGERVANT_API AMyMonsterEnemyActor : public AMonsterEnemyActor
+class PROJECTGERVANT_API AMonsterEnemyGhoul : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
 	
+public:
+	AMonsterEnemyGhoul();
 };

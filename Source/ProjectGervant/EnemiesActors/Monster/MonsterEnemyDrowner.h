@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTGERVANT_API AMonsterEnemyDrowner : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
-	
+
+public:
+	AMonsterEnemyDrowner();
 };

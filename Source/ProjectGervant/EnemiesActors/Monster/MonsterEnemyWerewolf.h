@@ -5,6 +5,7 @@
 #include "MonsterEnemyActor.h"
 #include "MonsterEnemyWerewolf.generated.h"
 
+//TODO: implement form change system
 /**
  * 
  */
@@ -13,4 +14,6 @@ class PROJECTGERVANT_API AMonsterEnemyWerewolf : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
 	
+public:
+	AMonsterEnemyWerewolf();
 };

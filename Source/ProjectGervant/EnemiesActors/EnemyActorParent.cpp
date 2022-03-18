@@ -244,3 +244,12 @@ void AEnemyActorParent::MoveBack(float Time)
 	SetActorLocation(CurrentLocation);
 	
 }
+
+float AEnemyActorParent::GetDistanceToPoint(FVector Point)
+{
+	FVector CurrentLocation = GetActorLocation();
+	// calculatig distance to destination point
+	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - Point.Y, 2)
+		+ FGenericPlatformMath::Pow(CurrentLocation.Z - Point.Z, 2));
+	return DistanceFromPoint;
+}

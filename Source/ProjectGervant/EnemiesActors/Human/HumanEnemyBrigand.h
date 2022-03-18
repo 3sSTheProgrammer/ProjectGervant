@@ -3,7 +3,7 @@
 #pragma once
 
 //#include "CoreMinimal.h"
-#include "ProjectGervant/EnemiesActors/Human/HumanEnemyActor.h"
+#include "HumanEnemyActor.h"
 #include "HumanEnemyBrigand.generated.h"
 
 /**

@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Kismet/GameplayStatics.h"
 #include "StoryTellerActor.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AStoryTellerActor::AStoryTellerActor()
@@ -63,7 +64,7 @@ void AStoryTellerActor::Tick(float DeltaTime)
 void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
-
+	return;
 
 	FVector SpawnLocation{ 0 };
 	SpawnLocation.Z = 500;

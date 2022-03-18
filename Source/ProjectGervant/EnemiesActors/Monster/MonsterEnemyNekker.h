@@ -13,4 +13,12 @@ class PROJECTGERVANT_API AMonsterEnemyNekker : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
 	
+public:
+	AMonsterEnemyNekker();
+
+protected:
+
+	virtual void BeginPlay() override;
+
+	virtual void MovementManager(float Time) override;
 };

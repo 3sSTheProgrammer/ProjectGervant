@@ -112,4 +112,6 @@ protected:
 	virtual void MovementManager(float Time);
 
 	void MoveBack(float Time);
+
+	float GetDistanceToPoint(FVector Point);
 };

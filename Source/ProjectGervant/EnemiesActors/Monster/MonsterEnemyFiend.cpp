@@ -6,7 +6,7 @@
 
 AMonsterEnemyFiend::AMonsterEnemyFiend()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
+	//UE_LOG(LogTemp, Warning, TEXT("I'm %s"), *EnemyClass);
 	
 	MaxHealth = 200;
 	Health = MaxHealth;

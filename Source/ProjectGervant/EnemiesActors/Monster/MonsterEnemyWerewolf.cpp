@@ -3,3 +3,7 @@
 
 #include "MonsterEnemyWerewolf.h"
 
+AMonsterEnemyWerewolf::AMonsterEnemyWerewolf()
+{
+
+}
