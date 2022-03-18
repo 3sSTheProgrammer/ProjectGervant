@@ -191,8 +191,9 @@ void AEnemyActorParent::MoveToPoint(FVector Point, float Time)
 	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
 
 	// calculatig distance to destination point
-	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - Point.Y, 2)
-		+ FGenericPlatformMath::Pow(CurrentLocation.Z - Point.Z, 2));
+	float DistanceFromPoint = GetDistanceToPoint(Point);
+	/*float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - Point.Y, 2)
+		+ FGenericPlatformMath::Pow(CurrentLocation.Z - Point.Z, 2));*/
 	
 	// moving only if further than 10 units from destination point
 	if (DistanceFromPoint >= 5)

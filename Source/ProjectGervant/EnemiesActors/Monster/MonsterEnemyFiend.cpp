@@ -50,8 +50,9 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 	//return;
 	//UE_LOG(LogTemp, Warning, TEXT("I'm fiend"));
 	FVector CurrentLocation = GetActorLocation();
-	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
-		+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
+	float DistanceFromPoint = GetDistanceToPoint(FVector::ZeroVector);
+	/*float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
+		+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));*/
 
 		if (DistanceFromPoint < 100)
 		{
@@ -63,8 +64,9 @@ void AMonsterEnemyFiend::MovementManager(float Time)
 	{
 		MoveToPoint(MiddlePoint, Time);
 		CurrentLocation = GetActorLocation();
-		DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - MiddlePoint.Y, 2)
-			+ FGenericPlatformMath::Pow(CurrentLocation.Z - MiddlePoint.Z, 2));
+		DistanceFromPoint = GetDistanceToPoint(MiddlePoint);
+		/*DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - MiddlePoint.Y, 2)
+			+ FGenericPlatformMath::Pow(CurrentLocation.Z - MiddlePoint.Z, 2));*/
 		if (DistanceFromPoint <= 20)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("passed middle point"));

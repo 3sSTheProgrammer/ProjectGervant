@@ -13,7 +13,30 @@ UCLASS()
 class PROJECTGERVANT_API AMonsterEnemyWerewolf : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
+
+protected:
+
+	// true - wolf form, false - human form
+	bool IsInWolfForm;
+
+	// Regenerates health while in human form
+	float RegenPerSecond;
 	
+	UMaterialInstanceDynamic* HumanFormMaterial;
+	UMaterialInstanceDynamic* MonsterFormMaterial;
+
+
+public:
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UMaterialInterface* UHumanFormMaterial;
 public:
 	AMonsterEnemyWerewolf();
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void MovementManager(float Time) override;
+
+	void ChangeForm();
 };

@@ -34,10 +34,11 @@ void AMonsterEnemyWraith::MovementManager(float Time)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Teleporting"));
 		UsedHiding = true;
-		FTimerHandle Timer;
 		SetActorEnableCollision(false);
 		SetActorHiddenInGame(true);
 		MovementSpeed = 0;
+
+		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer, this, &AMonsterEnemyWraith::Teleport, 2.f);
 	}
 	else
