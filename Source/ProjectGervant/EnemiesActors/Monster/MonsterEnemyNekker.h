@@ -13,6 +13,17 @@ class PROJECTGERVANT_API AMonsterEnemyNekker : public AMonsterEnemyActor
 {
 	GENERATED_BODY()
 	
+
+protected:
+
+	FVector FirstPoint;
+	FVector SecondPoint;
+	FVector ThirdPoint;
+
+	bool PassedFirstPoint;
+	bool PassedSecondPoint;
+	bool PassedThirdPoint;
+
 public:
 	AMonsterEnemyNekker();
 

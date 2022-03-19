@@ -7,56 +7,81 @@ AMonsterEnemyWerewolf::AMonsterEnemyWerewolf()
 {
 	MaxHealth = 200;
 	Health = MaxHealth;
-	MovementSpeed = 200; //200
+	MovementSpeed = 150; //200
 	Damage = 30;
+	RegenPerSecond = 25;
+	IsTransforming = false;
 
 }
 
 void AMonsterEnemyWerewolf::BeginPlay()
 {
 	Super::BeginPlay();
-	HumanFormMaterial = UMaterialInstanceDynamic::Create(UHumanFormMaterial, this);
-	HumanFormMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
-	MonsterFormMaterial = UMaterialInstanceDynamic::Create(UDamagedMaterial, this);;
-	MonsterFormMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
-
-	FTimerHandle Timer;
-	GetWorldTimerManager().SetTimer(Timer, this, &AMonsterEnemyWerewolf::ChangeForm, 2.f);
 }
 
 void AMonsterEnemyWerewolf::MovementManager(float Time)
 {
-	/*if (Health < MaxHealth - 50)
+	if (GetDistanceToPoint(FVector::ZeroVector) < 100)
 	{
-		ChangeForm();
-	}*/
-	
+		PlayerActor->ReceiveDamage(Damage);
+		Destroy();
+	}
+
+	if (!IsTransforming)
+	{
+		if (Health < MaxHealth - 50)
+		{
+			IsTransforming = true;
+			MaxHealth -= 50;
+			SetActorEnableCollision(false);
+			EnemyDinamicMaterial->
+				SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+			FTimerHandle Timer;
+			GetWorldTimerManager().SetTimer(Timer, 
+				this, &AMonsterEnemyWerewolf::ChangeForm, 2.f);
+		}
+		else
+		{
+			MoveToPoint(FVector::ZeroVector, Time);
+		}
+	}
+	else
+	{
+		ReceiveHealing(RegenPerSecond * Time);
+	}
 }
 
 void AMonsterEnemyWerewolf::ChangeForm()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Changing form"));
-	UMaterialInstanceDynamic* Material{ nullptr };
+	
+	UTexture* Texture{ nullptr };
 	FString NewEnemyClass;
-	int index;
+	bool BufferStatus;
+
 	if (EnemyClass == "Monster")
 	{
-		Material = HumanFormMaterial;
+		UE_LOG(LogTemp, Warning, TEXT("Changing form to human"));
+		Texture = UHumanFormTexture;
 		NewEnemyClass = "Human";
-		index = 0;
+		MovementSpeed = 50;
 	}
 	else if (EnemyClass == "Human")
 	{
-		Material = MonsterFormMaterial;
+		UE_LOG(LogTemp, Warning, TEXT("Changing form to monster"));
+		Texture = UMonsterFormTexture;
 		NewEnemyClass = "Monster";
-		index = 1;
+		MovementSpeed = 150;
 	}
 
-	//StaticMeshComponent->SetMaterial(index, Material);
-	//Material->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
-	EnemyDinamicMaterial = Material;
+	// switching IsAttacked and IsHealedStatuses
+	BufferStatus = IsHealed;
+	IsHealed = IsAttacked;
+	IsAttacked = BufferStatus;
+	if (Texture != nullptr) EnemyDinamicMaterial->
+		SetTextureParameterValue(FName(TEXT("EnemyTexture")), Texture);
 	EnemyClass = NewEnemyClass;
-
-	FTimerHandle Timer;
-	GetWorldTimerManager().SetTimer(Timer, this, &AMonsterEnemyWerewolf::ChangeForm, 2.f);
+	SetBeamInteractionStatus("Heal", IsHealed);
+	SetBeamInteractionStatus("Attack", IsAttacked);
+	IsTransforming = false;
+	SetActorEnableCollision(true);
 }

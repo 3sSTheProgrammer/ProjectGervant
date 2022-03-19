@@ -19,17 +19,19 @@ protected:
 	// true - wolf form, false - human form
 	bool IsInWolfForm;
 
+	bool IsTransforming;
+
 	// Regenerates health while in human form
 	float RegenPerSecond;
-	
-	UMaterialInstanceDynamic* HumanFormMaterial;
-	UMaterialInstanceDynamic* MonsterFormMaterial;
-
 
 public:
 
 	UPROPERTY(EditAnywhere, Category = Materials)
-		UMaterialInterface* UHumanFormMaterial;
+		UTexture* UHumanFormTexture;
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UTexture* UMonsterFormTexture;
+
 public:
 	AMonsterEnemyWerewolf();
 

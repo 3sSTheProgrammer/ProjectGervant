@@ -129,8 +129,8 @@ void AEnemyActorParent::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);	
 
 	// Moves with enemy specifics
-	//UE_LOG(LogTemp, Warning, TEXT("ISSTOPPED: %d"), IsStopped);
-	//UE_LOG(LogTemp, Warning, TEXT("ISAARDED: %d"), IsAarded);
+	/*UE_LOG(LogTemp, Warning, TEXT("ISSTOPPED: %d"), IsStopped);
+	UE_LOG(LogTemp, Warning, TEXT("ISAARDED: %d"), IsAarded);*/
 	if (!IsStopped && !IsAarded)
 	{
 		MovementManager(DeltaTime);
