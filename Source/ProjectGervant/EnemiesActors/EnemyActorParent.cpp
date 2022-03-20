@@ -216,19 +216,20 @@ void AEnemyActorParent::MovementManager(float Time)
 	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
 
 	// calculatig distance to destination point
-	float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
-			+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));
+	float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
+	/*float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
+			+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));*/
 
-		// if enemy reached player it destroys itself, otherwise continue moving
-		if (DistanceFromCenter < 100)
-		{
-			Destroy();
-			PlayerActor->ReceiveDamage(Damage);
-		}
-		else
-		{
-			SetActorLocation(CurrentLocation);
-		}
+	// if enemy reached player it destroys itself, otherwise continue moving
+	if (DistanceFromCenter < 100)
+	{
+		Destroy();
+		PlayerActor->ReceiveDamage(Damage);
+	}
+	else
+	{
+		SetActorLocation(CurrentLocation);
+	}
 }
 
 void AEnemyActorParent::MoveBack(float Time)

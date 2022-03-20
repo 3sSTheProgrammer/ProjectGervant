@@ -3,3 +3,10 @@
 
 #include "HumanEnemyBrigand.h"
 
+AHumanEnemyBrigand::AHumanEnemyBrigand()
+{
+	MaxHealth = 100;
+	Health = MaxHealth;
+	MovementSpeed = 150;
+	Damage = 15;
+}

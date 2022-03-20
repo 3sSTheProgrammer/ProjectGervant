@@ -14,4 +14,6 @@ class PROJECTGERVANT_API AHumanEnemyBrigand : public AHumanEnemyActor
 {
 	GENERATED_BODY()
 	
+public:
+	AHumanEnemyBrigand();
 };

@@ -14,4 +14,11 @@ class PROJECTGERVANT_API AHumanEnemyPeasant : public AHumanEnemyActor
 {
 	GENERATED_BODY()
 	
+public:
+	AHumanEnemyPeasant();
+
+protected:
+
+	virtual void MovementManager(float Time) override;
+
 };

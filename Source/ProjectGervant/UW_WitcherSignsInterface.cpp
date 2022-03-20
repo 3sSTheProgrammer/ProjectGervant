@@ -247,6 +247,7 @@ void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> Stopped
 	}
 }
 
+//TODO: check if Kven is already used
 void UUW_WitcherSignsInterface::Kven()
 {
 	//Spawn a KvenShieldActor

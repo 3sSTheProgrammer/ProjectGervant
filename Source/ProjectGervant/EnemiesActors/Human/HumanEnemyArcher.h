@@ -2,7 +2,7 @@
 
 #pragma once
 
-//#include "CoreMinimal.h"
+#include "ProjectGervant/EnemiesActors/ArrowActor.h"
 #include "HumanEnemyActor.h"
 #include "HumanEnemyArcher.generated.h"
 
@@ -14,4 +14,23 @@ class PROJECTGERVANT_API AHumanEnemyArcher : public AHumanEnemyActor
 {
 	GENERATED_BODY()
 	
+
+public:
+
+	UPROPERTY(EditAnywhere, Category = Projectile)
+		TSubclassOf<AArrowActor> ProjectileActor;
+
+protected:
+	bool ReachedShootingPoint;
+
+public:
+	AHumanEnemyArcher();
+
+protected:
+
+	virtual void MovementManager(float Time) override;
+
+	void ShootProjectile();
+
+	void StartShootingTimer();
 };
