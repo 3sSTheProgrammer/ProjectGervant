@@ -36,14 +36,6 @@ void APlayerActor::BeginPlay()
 	}
 }
 
-// Called every frame
-void APlayerActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	
-}
-
 void APlayerActor::PlayHitSound()
 {
 	UGameplayStatics::PlaySound2D(this, HitSound);
@@ -71,14 +63,29 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 	{
 		Health -= DamageAmount;
 		//TODO: Sound here
+		if (Health <= 0)
+		{
+			InvokeGameEnd();
+		}
 	}
 }
 
 void APlayerActor::TurnKvenOn()
 {
-	FVector KvenSpawnLocation = FVector(-10.f, 0.f, 0.f);
-	IsKvenActive = true; // 
-	GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
-		KvenSpawnLocation, FRotator::ZeroRotator);
-	//TODO: Sound here
+	if (!IsKvenActive)
+	{
+		FVector KvenSpawnLocation = FVector(-10.f, 0.f, 0.f);
+		IsKvenActive = true; // 
+		GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
+			KvenSpawnLocation, FRotator::ZeroRotator);
+		//TODO: Sound here
+	}
+	
+}
+
+
+//TODO: implement functionality
+void APlayerActor::InvokeGameEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Game over"));
 }

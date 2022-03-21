@@ -14,34 +14,38 @@ AHumanEnemyArcher::AHumanEnemyArcher()
 
 void AHumanEnemyArcher::MovementManager(float Time)
 {
-	FVector CurrentLocation = GetActorLocation();
-
-	// calculating moving coordinates
-	float Angle = FGenericPlatformMath::Atan2(CurrentLocation.Y, CurrentLocation.Z);
-	float MoveAmount = Time * MovementSpeed;
-
-	CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
-	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
-
-	// calculatig distance to destination point
-	float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
-
-	// if reached shooting point shoot repeatedly, otherwise continue moving
-	if (DistanceFromCenter < 500 && !ReachedShootingPoint)
+	if (!ReachedShootingPoint)
 	{
-		ReachedShootingPoint = true;
-		StartShootingTimer();
+		FVector CurrentLocation = GetActorLocation();
+
+		// calculating moving coordinates
+		float Angle = FGenericPlatformMath::Atan2(CurrentLocation.Y, CurrentLocation.Z);
+		float MoveAmount = Time * MovementSpeed;
+
+		CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
+		CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
+
+		// calculatig distance to destination point
+		float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
+
+		// if reached shooting point shoot repeatedly, otherwise continue moving
+		if (DistanceFromCenter < 500) // && !ReachedShootingPoint
+		{
+			ReachedShootingPoint = true;
+			StartShootingTimer();
+		}
+		else
+		{
+			SetActorLocation(CurrentLocation);
+		}
 	}
-	else
-	{
-		SetActorLocation(CurrentLocation);
-	}
+	
 }
 
 void AHumanEnemyArcher::ShootProjectile()
 {
 	FVector SpawnLocation{ GetActorLocation() };
-	GetWorld()->SpawnActor<AArrowActor>(
+	GetWorld()->SpawnActor<AProjectileActor>(
 		ProjectileActor, SpawnLocation,
 		FRotator::ZeroRotator);
 

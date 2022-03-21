@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/ArrowActor.h"
+#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
 #include "HumanEnemyActor.h"
 #include "HumanEnemyArcher.generated.h"
 
@@ -18,7 +18,7 @@ class PROJECTGERVANT_API AHumanEnemyArcher : public AHumanEnemyActor
 public:
 
 	UPROPERTY(EditAnywhere, Category = Projectile)
-		TSubclassOf<AArrowActor> ProjectileActor;
+		TSubclassOf<AProjectileActor> ProjectileActor;
 
 protected:
 	bool ReachedShootingPoint;
