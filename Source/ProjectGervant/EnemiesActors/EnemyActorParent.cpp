@@ -71,23 +71,23 @@ void AEnemyActorParent::SetBeamInteractionStatus(FString Interaction, bool Statu
 
 	if (IsAttacked && IsHealed)
 	{
-		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
-		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(1.f, 0.39, 0.0f, 0.f));
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
+		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("InteractionMaskColor")), FLinearColor(1.f, 0.39, 0.0f, 0.f));
 	}
 	else if (IsAttacked)
 	{
-		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
-		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
+		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("InteractionMaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
 		
 	}
 	else if (IsHealed)
 	{
-		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UMaskTexture);
-		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("MaskColor")), FLinearColor(0.f, 0.9, 0.02f, 1.f));
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
+		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("InteractionMaskColor")), FLinearColor(0.f, 0.9, 0.02f, 1.f));
 	}
 	else
 	{
-		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UEmptyTexture);
 	}
 
 }
@@ -117,10 +117,11 @@ void AEnemyActorParent::BeginPlay()
 	}
 
 	// Create an instance of default material and set it to static mesh
-	EnemyDinamicMaterial = UMaterialInstanceDynamic::Create(UDamagedMaterial, this);
-	EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+	EnemyDinamicMaterial = UMaterialInstanceDynamic::Create(UEnemyMaterial, this);
+	EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("ColorMask")), UColorTexture);
 	StaticMeshComponent->SetMaterial(0, EnemyDinamicMaterial);
-
+	
+	UGameplayStatics::PlaySound2D(this, SpawnSound);
 }
 
 // Called every frame
@@ -155,6 +156,8 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 		{
 			Hud->AddKill(EnemyClass);
 		}
+		//TODO: if damage was low then slash sound, else roar mb
+		UGameplayStatics::PlaySound2D(this, DieSound);
 		Destroy();
 	}
 }

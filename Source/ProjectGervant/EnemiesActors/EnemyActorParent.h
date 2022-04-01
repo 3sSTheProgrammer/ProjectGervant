@@ -59,15 +59,26 @@ public:
 
 	// Actor's material
 	UPROPERTY(EditAnywhere, Category = Materials)
-		UMaterialInterface* UDamagedMaterial;
+		UMaterialInterface* UEnemyMaterial;
 	
 	// Texture of mask to highlight enemy if it is damaged/healed 
 	UPROPERTY(EditAnywhere, Category = Materials)
-		UTexture* UMaskTexture;
+		UTexture* UInteractionTexture;
 
 	// Default enemy texture
 	UPROPERTY(EditAnywhere, Category = Materials)
-		UTexture* UDefaultTexture;
+		UTexture* UColorTexture;
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		UTexture* UEmptyTexture;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* SpawnSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* DieSound;
 
 	// Sets default values for this actor's properties
 	AEnemyActorParent();

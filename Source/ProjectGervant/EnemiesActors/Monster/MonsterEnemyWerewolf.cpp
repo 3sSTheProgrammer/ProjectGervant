@@ -35,7 +35,7 @@ void AMonsterEnemyWerewolf::MovementManager(float Time)
 			MaxHealth -= 50;
 			SetActorEnableCollision(false);
 			EnemyDinamicMaterial->
-				SetTextureParameterValue(FName(TEXT("Mask")), UDefaultTexture);
+				SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
 			FTimerHandle Timer;
 			GetWorldTimerManager().SetTimer(Timer, 
 				this, &AMonsterEnemyWerewolf::ChangeForm, 2.f);
