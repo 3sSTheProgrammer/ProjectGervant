@@ -14,6 +14,14 @@ AInputManagerController::AInputManagerController()
 		//UE_LOG(LogTemp, Warning, TEXT("widget class found"));
 		GameInterfaceClass = GameInterfaceUIBPClass.Class;
 	}
+
+	//static ConstructorHelpers::FClassFinder<UUserWidget> PauseMenuUIBPClass(TEXT("/Game/ProjectGervant/Menus/PauseMenu/PauseMenuWidget"));
+
+	//if (PauseMenuUIBPClass.Class != nullptr)
+	//{
+	//	//UE_LOG(LogTemp, Warning, TEXT("pause widget class found"));
+	//	PauseMenuClass = GameInterfaceUIBPClass.Class;
+	//}
 }
 
 
@@ -30,8 +38,9 @@ void AInputManagerController::BeginPlay()
 		if (GameInterface != nullptr)
 		{
 			GameInterface->AddToViewport();
-
-			//
+			GameInterface->SetVisibility(ESlateVisibility::Hidden);
+			GameInterface->SetIsEnabled(true);
+			//GameInterface->SetOwningPlayer(this);
 		}
 	}
 }
@@ -54,6 +63,9 @@ void AInputManagerController::SetupInputComponent()
 		this, &AInputManagerController::UseKven);
 	InputComponent->BindAction("UseAard", EInputEvent::IE_Pressed,
 		this, &AInputManagerController::UseAard);
+
+	InputComponent->BindAction("Pause", EInputEvent::IE_Pressed,
+		this, &AInputManagerController::SetPause);
 }
 
 
@@ -119,6 +131,7 @@ AActor* AInputManagerController::GetBeamActor(int marker)
 void AInputManagerController::UseIgni()
 {
 	GameInterface->UseSign("Igni");
+	//PlayerActor->UseIgni();
 }
 
 void AInputManagerController::UseAksii()
@@ -134,4 +147,19 @@ void AInputManagerController::UseKven()
 void AInputManagerController::UseAard()
 {
 	GameInterface->UseSign("Aard");
+}
+
+void AInputManagerController::SetPause()
+{
+	//this->SetPause();
+	//UGameplayStatics::SetGamePaused(GetWorld(), true);
+	//TODO: do according to course method
+	if (PauseMenuWidgetClass != nullptr)
+	{
+		UUserWidget* PauseMenu = CreateWidget<UUserWidget>(GetWorld(), PauseMenuWidgetClass);
+		if (PauseMenu != nullptr)
+		{
+			PauseMenu->AddToViewport();
+		}
+	}
 }

@@ -2,6 +2,8 @@
 
 #pragma once
 
+//#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
+//#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
 #include "Sound/SoundCue.h"
 #include "ProjectGervant/KillCountHUD.h"
@@ -20,33 +22,46 @@ protected:
 
 	bool IsKvenActive;
 
-public:	
+public:
+
+	
+
 	//TODO: Add another sounds
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* HitSound;
-	
-	//UPROPERTY(EditAnywhere, Category = "Actors")
-	//	AKvenActor* KvenActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* KvenSpawnSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* KvenDestroyedSound;
 
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "KvenActor"),
 		Category = Actors)
 		TSubclassOf<AKvenActor> KvenActorClass;
-	// Sets default values for this actor's properties
-	APlayerActor();
+
+	
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void InvokeGameEnd();
-public:	
+
+public:
+	// Sets default values for this actor's properties
+	APlayerActor();
 
 	void PlayHitSound();
 
 	void ReceiveDamage(float DamageAmount);
 
 	void TurnKvenOn();
+
+	void UseIgni();
 
 };

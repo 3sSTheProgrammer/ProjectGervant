@@ -55,7 +55,8 @@ public:
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
-		TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
+		//TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
+		TSubclassOf<AActor> UMonsterEnemyDrowner;
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)

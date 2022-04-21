@@ -12,6 +12,14 @@ APlayerActor::APlayerActor()
 		
 	Health = 100.f;
 	IsKvenActive = false;
+
+	//static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+
+	//if (GameInterfaceUIBPClass.Class != nullptr)
+	//{
+	//	//UE_LOG(LogTemp, Warning, TEXT("widget class found"));
+	//	GameInterfaceClass = GameInterfaceUIBPClass.Class;
+	//}
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +42,17 @@ void APlayerActor::BeginPlay()
 	//	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapBegin);
 	//	StaticMeshComponent->OnComponentEndOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapEnd);
 	}
+
+	//if (GameInterfaceClass != nullptr)
+	//{
+	//	GameInterface = CreateWidget<UUW_WitcherSignsInterface>(GetWorld(), GameInterfaceClass);
+	//	if (GameInterface != nullptr)
+	//	{
+	//		GameInterface->AddToViewport();
+	//		GameInterface->SetVisibility(ESlateVisibility::Hidden);
+	//		//GameInterface->SetOwningPlayer(this);
+	//	}
+	//}
 }
 
 void APlayerActor::PlayHitSound()
@@ -55,6 +74,7 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 		if (FoundActors.Num() > 0)
 		{
 			FoundActors[0]->Destroy();
+			UGameplayStatics::PlaySound2D(this, KvenDestroyedSound);
 		}
 			
 		//TODO: Sound here
@@ -78,9 +98,18 @@ void APlayerActor::TurnKvenOn()
 		IsKvenActive = true; // 
 		GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
 			KvenSpawnLocation, FRotator::ZeroRotator);
+		UGameplayStatics::PlaySound2D(this, KvenSpawnSound);
 		//TODO: Sound here
 	}
 	
+}
+
+void APlayerActor::UseIgni()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Using Igni"));
+	//GetWorld()->SpawnActor<AIgniActor>(
+	//	IgniActorClass, FVector::ZeroVector,
+	//	FRotator::ZeroRotator);
 }
 
 

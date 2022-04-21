@@ -7,6 +7,7 @@
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "UW_WitcherSignsInterface.generated.h"
@@ -20,9 +21,13 @@ UCLASS()
 class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+
 protected:
 	
+	int MonsterKillCount;
+	int HumanKillCount;
+
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
 	FTimerHandle IgniTimer;
 	float IgniCooldown{ 5.f };
@@ -53,6 +58,12 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* AardProgressBar;
 
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* MonsterKillCounter;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* HumanKillCounter;
+
+
 	UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf<AIgniActor> IgniActor;
 
@@ -78,6 +89,9 @@ protected:
 	void Aard();
 
 	void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
+
+	void UpdateLabel(FString EnemyClass);
+
 public:
 
 	virtual void NativeConstruct() override;
@@ -86,6 +100,18 @@ public:
 
 	void UseSign(FString SignName);
 	//UUW_WitcherSignsInterface();
+
+	UFUNCTION(BlueprintCallable)
+		int GetMonsterKillCount();
+
+	UFUNCTION(BlueprintCallable)
+		int GetHumanKillCount();
+
+	void AddHumanKill();
+
+	void AddMonsterKill();
+
+	void AddKill(FString EnemyClass);
 
 	
 };

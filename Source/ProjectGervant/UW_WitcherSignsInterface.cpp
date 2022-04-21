@@ -12,6 +12,13 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 {
 	UUserWidget::NativeConstruct();
 
+	TArray<AActor*> PlayerActors;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "Player", PlayerActors);
+	if (PlayerActors.Num() > 0) PlayerActor = (APlayerActor*)PlayerActors[0];
+
+	MonsterKillCount = 0;
+	HumanKillCount = 0;
 	/*UWorld* World = GetWorld();
 	WorldTimerManager = World->GetTimerManager();
 	WorldTimerManager = GetWorld()->GetTimerManager();*/
@@ -70,7 +77,6 @@ void UUW_WitcherSignsInterface::NativeTick(const FGeometry& MyGeometry, float De
 
 void UUW_WitcherSignsInterface::SetSignCooldownTimer(FString SignName)
 {
-	//TODO: implement usage of SignName
 	bool* IsSignAvailable{ nullptr };
 	FTimerHandle* SignTimer{ nullptr };
 	float* SignCooldown{ nullptr };
@@ -190,11 +196,14 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 
 }
 
+
+
 void UUW_WitcherSignsInterface::Igni()
 {
 	//Spawn an Igni actor
 	//It increases scale until it occupies half of the screen
 	//OnOverlapBegin damages all enemies and kills them (?)
+	//PlayerActor->UseIgni();
 
 	GetWorld()->SpawnActor<AIgniActor>(
 		IgniActor, FVector::ZeroVector,
@@ -222,7 +231,7 @@ void UUW_WitcherSignsInterface::Aksii()
 		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
 		if (Enemy != nullptr)
 		{
-			if (Enemy->GetEnemyClass() == "Monster") //"Human"
+			if (Enemy->GetEnemyClass() == "Human") //"Human"
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
 				Enemy->SetIsStopped(true);
@@ -247,6 +256,8 @@ void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> Stopped
 	}
 }
 
+
+
 //TODO: check if Kven is already used
 void UUW_WitcherSignsInterface::Kven()
 {
@@ -257,11 +268,6 @@ void UUW_WitcherSignsInterface::Kven()
 	/*APlayerActor* Player = Cast<APlayerActor>(PlayerActor);
 	if (Player != nullptr) Player->TurnKvenOn();
 	else UE_LOG(LogTemp, Warning, TEXT("Player is null"));*/
-
-	TArray<AActor*> PlayerActors;
-	UGameplayStatics::GetAllActorsWithTag(
-		GetWorld(), "Player", PlayerActors);
-	if (PlayerActors.Num() > 0) PlayerActor = (APlayerActor*)PlayerActors[0];
 	
 	if (PlayerActor != nullptr) PlayerActor->TurnKvenOn();
 }
@@ -276,4 +282,56 @@ void UUW_WitcherSignsInterface::Aard()
 	GetWorld()->SpawnActor<AAardActor>(
 		AardActor, FVector::ZeroVector,
 		FRotator::ZeroRotator);
+}
+
+int UUW_WitcherSignsInterface::GetMonsterKillCount()
+{
+	return MonsterKillCount;
+}
+
+int UUW_WitcherSignsInterface::GetHumanKillCount()
+{
+	return HumanKillCount;
+}
+
+void UUW_WitcherSignsInterface::AddHumanKill()
+{
+	HumanKillCount += 1;
+}
+
+void UUW_WitcherSignsInterface::AddMonsterKill()
+{
+	MonsterKillCount += 1;
+}
+
+void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
+{
+	if (EnemyClass == "Monster")
+	{
+		AddMonsterKill();
+		UpdateLabel(EnemyClass);
+	}
+	else if (EnemyClass == "Human")
+	{
+		AddHumanKill();
+		UpdateLabel(EnemyClass);
+	}
+}
+
+void UUW_WitcherSignsInterface::UpdateLabel(FString EnemyClass)
+{
+	if (EnemyClass == "Monster")
+	{
+		if (MonsterKillCounter != nullptr)
+		{
+			MonsterKillCounter->SetText(FText::AsNumber(MonsterKillCount));
+		}
+	}
+	else if (EnemyClass == "Human")
+	{
+		if (HumanKillCounter != nullptr)
+		{
+			HumanKillCounter->SetText(FText::AsNumber(HumanKillCount));
+		}
+	}
 }

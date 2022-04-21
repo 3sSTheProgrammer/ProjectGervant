@@ -17,12 +17,17 @@ void AStoryTellerActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
+	//HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
 	
+	/*FirstLevelScript();
+	return;*/
+
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
 
 	UWorld* TheWorld = GetWorld();
 	FString CurrentLevel = TheWorld->GetMapName();
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
+
 	switch (LevelNameMap[CurrentLevel])
 	{
 	case 1:
@@ -64,25 +69,33 @@ void AStoryTellerActor::Tick(float DeltaTime)
 void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
-	return;
-
+	
 	FVector SpawnLocation{ 0 };
-	SpawnLocation.Z = 500;
+	SpawnLocation.Z = 400;
 
-	SpawnLocation.Y = 300;
-
+	SpawnLocation.Y = 1200;
+	
 	//TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterDrowner;
-	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterEnemyFiend;
+	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterEnemyGhoul;
+	
+	
+		UE_LOG(LogTemp, Warning, TEXT("Spawning enemy at %f %f %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
+		//return;
+		GetWorld()->SpawnActor<AEnemyActorParent>(SpawnEnemy, SpawnLocation, FRotator::ZeroRotator);
+		/*GetWorld()->SpawnActor<AEnemyActorParent>(
+			SpawnEnemy, SpawnLocation,
+			FRotator::ZeroRotator);*/
+	
+	
+
+	SpawnLocation.Y = -1200;
 
 	GetWorld()->SpawnActor<AEnemyActorParent>(
 		SpawnEnemy, SpawnLocation,
 		FRotator::ZeroRotator);
+	
 
-	SpawnLocation.Z = 300;
 
-	GetWorld()->SpawnActor<AEnemyActorParent>(
-		SpawnEnemy, SpawnLocation,
-		FRotator::ZeroRotator);
 	//FTimerHandle Timer;
 	/*GetWorldTimerManager().SetTimer(Timer, this,
 		&AEnemyManagerActor::SpawnEnemy, 1.5f);*/

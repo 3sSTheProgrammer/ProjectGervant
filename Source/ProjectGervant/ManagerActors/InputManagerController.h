@@ -2,6 +2,7 @@
 
 #pragma once
 
+//#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/PlayerActors/BeamActor.h"
 
@@ -25,13 +26,22 @@ private:
 protected:
 	virtual void BeginPlay() override;
 
+	//APlayerActor* PlayerActor;
+
 	// Dynamic reference to the blueprint class
 	TSubclassOf<class UUserWidget> GameInterfaceClass;
+
+	TSubclassOf<class UUserWidget> PauseMenuClass;
 
 	// Internal reference to the blueprint for gameplay logic
 	UPROPERTY(BlueprintReadWrite, Category = "UI")
 		class UUW_WitcherSignsInterface* GameInterface;
 
+	//UPROPERTY(BlueprintReadWrite, Category = "UI")
+	//	class UUserWidget* PauseMenu;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
+		TSubclassOf<UUserWidget> PauseMenuWidgetClass;
 public:
 	AInputManagerController();
 
@@ -56,4 +66,6 @@ public:
 	void UseKven();
 	
 	void UseAard();
+
+	void SetPause();
 };

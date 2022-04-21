@@ -26,6 +26,6 @@ void AKvenActor::Tick(float DeltaTime)
 }
 
 void AKvenActor::DestroySelf()
-{
+{	
 	Destroy();
 }

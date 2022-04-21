@@ -1,16 +1,24 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-
 #include "EnemyActorParent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectGervant/KillCountHUD.h"
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 // Sets default values
 AEnemyActorParent::AEnemyActorParent()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	//Find game interface widget
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+
+	if (GameInterfaceUIBPClass.Class != nullptr)
+	{
+		GameInterfaceClass = GameInterfaceUIBPClass.Class;
+	}
 }
 
 FString AEnemyActorParent::GetEnemyClass()
@@ -101,6 +109,8 @@ void AEnemyActorParent::BeginPlay()
 	TArray<UStaticMeshComponent*> StaticMeshComponents;
 	GetComponents(StaticMeshComponents);
 
+	UE_LOG(LogTemp, Warning, TEXT("Components: "), StaticMeshComponents.Num());
+
 	if (StaticMeshComponents.Num() > 0)
 	{
 		StaticMeshComponent = StaticMeshComponents[0];
@@ -116,11 +126,23 @@ void AEnemyActorParent::BeginPlay()
 		PlayerActor = (APlayerActor*)PlayerActors[0];
 	}
 
+	TArray<UUserWidget*> Widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
+	//UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
+	if (Widgets.Num() > 0)
+	{
+		GameInterface = Widgets[0];
+		//UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
+	}
+	//return;
 	// Create an instance of default material and set it to static mesh
 	EnemyDinamicMaterial = UMaterialInstanceDynamic::Create(UEnemyMaterial, this);
 	EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("ColorMask")), UColorTexture);
 	StaticMeshComponent->SetMaterial(0, EnemyDinamicMaterial);
 	
+	
+	
+
 	UGameplayStatics::PlaySound2D(this, SpawnSound);
 }
 
@@ -128,6 +150,7 @@ void AEnemyActorParent::BeginPlay()
 void AEnemyActorParent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
+
 
 	// Moves with enemy specifics
 	/*UE_LOG(LogTemp, Warning, TEXT("ISSTOPPED: %d"), IsStopped);
@@ -145,17 +168,40 @@ void AEnemyActorParent::Tick(float DeltaTime)
 // Applies damage to enemy
 void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 {
+	//TODO: Somehow this doesnt find anything in BeginPlay(), so it has to be moved to somewhere
+	// Finding GameInterface Widget
+	/*if (GameInterface == nullptr)
+	{
+		TArray<UUserWidget*> Widgets;
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
+		UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
+		if (Widgets.Num() > 0)
+		{
+			GameInterface = Widgets[0];
+			UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
+		}
+	}*/
+
+
 	// Reduce health
 	Health -= DamageAmount;
 
 	// if health is below zero adds kill to HUD and destroys self
 	if (Health <= 0)
 	{
-		AKillCountHUD* Hud = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
+		/*AKillCountHUD* Hud = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
 		if (Hud != nullptr)
 		{
 			Hud->AddKill(EnemyClass);
+		}*/
+		//TODO: ADD KILL TO WIDGET
+		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
+		if (Interface != nullptr)
+		{
+			Interface->AddKill(EnemyClass);
 		}
+		
+		
 		//TODO: if damage was low then slash sound, else roar mb
 		UGameplayStatics::PlaySound2D(this, DieSound);
 		Destroy();

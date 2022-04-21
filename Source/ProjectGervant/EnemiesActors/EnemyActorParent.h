@@ -3,8 +3,11 @@
 #pragma once
 
 //#include "ProjectGervant/ProjectGervant.h"
+//#include "ProjectGervant/UW_WitcherSignsInterface.h"
+
 #include "Containers/UnrealString.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
+//#include "ProjectGervant/UW_WitcherSignsInterface.h"
 
 #include "GameFramework/Actor.h"
 #include "EnemyActorParent.generated.h"
@@ -55,6 +58,10 @@ protected:
 
 	// Material of the actor which can be modified during runtime
 	UMaterialInstanceDynamic* EnemyDinamicMaterial;
+
+	TSubclassOf<class UUserWidget> GameInterfaceClass;
+
+	UUserWidget* GameInterface;
 public:
 
 	// Actor's material
