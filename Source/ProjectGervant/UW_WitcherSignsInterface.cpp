@@ -203,11 +203,7 @@ void UUW_WitcherSignsInterface::Igni()
 	//Spawn an Igni actor
 	//It increases scale until it occupies half of the screen
 	//OnOverlapBegin damages all enemies and kills them (?)
-	//PlayerActor->UseIgni();
-
-	GetWorld()->SpawnActor<AIgniActor>(
-		IgniActor, FVector::ZeroVector,
-		FRotator::ZeroRotator);
+	if (PlayerActor != nullptr) PlayerActor->UseIgni();
 }
 
 void UUW_WitcherSignsInterface::Aksii()
@@ -217,44 +213,45 @@ void UUW_WitcherSignsInterface::Aksii()
 	//Add IsStopped bool var to EnemyParentActor
 	//Set IsStopped = true to all human enemies for 3 seconds
 	//Add some animations to them
+	if (PlayerActor != nullptr) PlayerActor->UseAksii();
+	//return;
 
-	//TODO: Add tag "Enemy" in EnemyActor Parent
-	TArray<AActor*> EnemyActors;
-	UGameplayStatics::GetAllActorsWithTag(
-		GetWorld(), "Enemy", EnemyActors);
+	//TArray<AActor*> EnemyActors;
+	//UGameplayStatics::GetAllActorsWithTag(
+	//	GetWorld(), "Enemy", EnemyActors);
 
-	UE_LOG(LogTemp, Warning, TEXT("Found %d enemies"), EnemyActors.Num());
+	////UE_LOG(LogTemp, Warning, TEXT("Found %d enemies"), EnemyActors.Num());
 
-	TArray<AEnemyActorParent*> StoppedEnemies;
-	for (AActor* Actor : EnemyActors)
-	{
-		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
-		if (Enemy != nullptr)
-		{
-			if (Enemy->GetEnemyClass() == "Human") //"Human"
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
-				Enemy->SetIsStopped(true);
-				StoppedEnemies.Add(Enemy);
-			}
-		}
-	}
+	//TArray<AEnemyActorParent*> StoppedEnemies;
+	//for (AActor* Actor : EnemyActors)
+	//{
+	//	AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
+	//	if (Enemy != nullptr)
+	//	{
+	//		if (Enemy->GetEnemyClass() == "Human")
+	//		{
+	//			//UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
+	//			Enemy->SetIsStopped(true);
+	//			StoppedEnemies.Add(Enemy);
+	//		}
+	//	}
+	//}
 
-	FTimerHandle Timer;
-	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
-		&UUW_WitcherSignsInterface::UnstopEnemies, StoppedEnemies);
-	GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
+	//FTimerHandle Timer;
+	//FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
+	//	&UUW_WitcherSignsInterface::UnstopEnemies, StoppedEnemies);
+	//GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
 
 	
 }
 
-void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies)
-{
-	for (AEnemyActorParent* Enemy : StoppedEnemies)
-	{
-		Enemy->SetIsStopped(false);
-	}
-}
+//void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies)
+//{
+//	for (AEnemyActorParent* Enemy : StoppedEnemies)
+//	{
+//		Enemy->SetIsStopped(false);
+//	}
+//}
 
 
 
@@ -264,12 +261,8 @@ void UUW_WitcherSignsInterface::Kven()
 	//Spawn a KvenShieldActor
 	//Set player actor's IsKvenActive to true
 	//p.s get player actor in begin play or smthg
-
-	/*APlayerActor* Player = Cast<APlayerActor>(PlayerActor);
-	if (Player != nullptr) Player->TurnKvenOn();
-	else UE_LOG(LogTemp, Warning, TEXT("Player is null"));*/
 	
-	if (PlayerActor != nullptr) PlayerActor->TurnKvenOn();
+	if (PlayerActor != nullptr) PlayerActor->UseKven();
 }
 
 void UUW_WitcherSignsInterface::Aard()
@@ -279,9 +272,11 @@ void UUW_WitcherSignsInterface::Aard()
 	//Unstop stopped enemies
 	//Add function to move back to EnemyParentActor
 
-	GetWorld()->SpawnActor<AAardActor>(
+	if (PlayerActor != nullptr) PlayerActor->UseAard();
+	
+	/*GetWorld()->SpawnActor<AAardActor>(
 		AardActor, FVector::ZeroVector,
-		FRotator::ZeroRotator);
+		FRotator::ZeroRotator);*/
 }
 
 int UUW_WitcherSignsInterface::GetMonsterKillCount()

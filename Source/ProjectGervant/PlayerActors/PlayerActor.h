@@ -2,14 +2,14 @@
 
 #pragma once
 
-//#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
-//#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
 #include "Sound/SoundCue.h"
-#include "ProjectGervant/KillCountHUD.h"
-
+//#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "GameFramework/Actor.h"
 #include "PlayerActor.generated.h"
+
+//TODO: Hz pochemu eto rabotaet
+class AEnemyActorParent;
 
 UCLASS()
 class PROJECTGERVANT_API APlayerActor : public AActor
@@ -24,26 +24,60 @@ protected:
 
 public:
 
-	
 
 	//TODO: Add another sounds
+	// Sound when player is hit 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
-		USoundCue* HitSound;
+		USoundCue* ReceivedDamageSound;
 
+	// Sound when level is completed 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* WinSound;
+
+	// Sound when level is failed 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* LoseSound;
+
+	// Sound when player uses Kven
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* KvenSpawnSound;
 
+	// Sound when Kven is destroyed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* KvenDestroyedSound;
 
+	// Sound when player uses Igni
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* IgniSpawnSound;
+
+	// Sound when player uses Aard
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* AardSpawnSound;
+
+	// Sound when player uses Aksii
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* AksiiSound;
+
 	UPROPERTY(EditAnywhere,
-		meta = (MetaClass = "KvenActor"),
 		Category = Actors)
 		TSubclassOf<AKvenActor> KvenActorClass;
 
+	// TODO: hz pochemu ne rabotaet AIgniActor i AAardActor
+	UPROPERTY(EditAnywhere,
+		Category = Actors)
+		TSubclassOf<AActor> IgniActorClass;
+
+	UPROPERTY(EditAnywhere,
+		Category = Actors)
+		TSubclassOf<AActor> AardActorClass;
 	
 
 protected:
@@ -52,16 +86,21 @@ protected:
 
 	void InvokeGameEnd();
 
+	void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
+
 public:
 	// Sets default values for this actor's properties
 	APlayerActor();
 
-	void PlayHitSound();
-
 	void ReceiveDamage(float DamageAmount);
 
-	void TurnKvenOn();
+	void UseKven();
 
 	void UseIgni();
 
+	void UseAksii();
+
+	void UseAard();
+	
+	
 };

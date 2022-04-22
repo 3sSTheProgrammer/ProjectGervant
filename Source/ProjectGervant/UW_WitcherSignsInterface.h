@@ -12,11 +12,7 @@
 #include "Blueprint/UserWidget.h"
 #include "UW_WitcherSignsInterface.generated.h"
 
-//TODO: make a field to hold a world timer manager, populate it in NativeConstruct
-//UPD: this doesnt work(((
-/**
- * 
- */
+
 UCLASS()
 class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
 {
@@ -29,13 +25,14 @@ protected:
 	int HumanKillCount;
 
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
+	//TODO: get cooldowns from PlayerActor
 	FTimerHandle IgniTimer;
 	float IgniCooldown{ 5.f };
 	bool IsIgniAvailable{ true };
 	float IgniRemainingTime{ 0.f };
 
 	FTimerHandle AksiiTimer;
-	float AksiiCooldown{ 1.f };
+	float AksiiCooldown{ 3.f };
 	bool IsAksiiAvailable{ true };
 	float AksiiRemainingTime{ 0.f };
 

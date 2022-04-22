@@ -1,7 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
+#include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "PlayerActor.h"
 #include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -55,13 +58,6 @@ void APlayerActor::BeginPlay()
 	//}
 }
 
-void APlayerActor::PlayHitSound()
-{
-	UGameplayStatics::PlaySound2D(this, HitSound);
-	
-	//UGameplayStatics::PlaySound2D(this, HitSound);
-}
-
 void APlayerActor::ReceiveDamage(float DamageAmount)
 {
 	
@@ -76,42 +72,85 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 			FoundActors[0]->Destroy();
 			UGameplayStatics::PlaySound2D(this, KvenDestroyedSound);
 		}
-			
-		//TODO: Sound here
 	}
 	else
 	{
 		Health -= DamageAmount;
-		//TODO: Sound here
+		UGameplayStatics::PlaySound2D(this, ReceivedDamageSound);
 		if (Health <= 0)
 		{
+			UGameplayStatics::PlaySound2D(this, LoseSound);
 			InvokeGameEnd();
 		}
 	}
 }
 
-void APlayerActor::TurnKvenOn()
+void APlayerActor::UseKven()
 {
 	if (!IsKvenActive)
 	{
 		FVector KvenSpawnLocation = FVector(-10.f, 0.f, 0.f);
-		IsKvenActive = true; // 
+		IsKvenActive = true; 
 		GetWorld()->SpawnActor<AKvenActor>(KvenActorClass,
 			KvenSpawnLocation, FRotator::ZeroRotator);
 		UGameplayStatics::PlaySound2D(this, KvenSpawnSound);
-		//TODO: Sound here
 	}
 	
 }
 
 void APlayerActor::UseIgni()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Using Igni"));
-	//GetWorld()->SpawnActor<AIgniActor>(
-	//	IgniActorClass, FVector::ZeroVector,
-	//	FRotator::ZeroRotator);
+	//UE_LOG(LogTemp, Warning, TEXT("Using Igni"));
+	UGameplayStatics::PlaySound2D(this, IgniSpawnSound);
+	GetWorld()->SpawnActor<AIgniActor>(
+		IgniActorClass, FVector::ZeroVector,
+		FRotator::ZeroRotator);
 }
 
+void APlayerActor::UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies)
+{
+	for (AEnemyActorParent* Enemy : StoppedEnemies)
+	{
+		Enemy->SetIsStopped(false);
+	}
+}
+
+void APlayerActor::UseAksii()
+{
+	//TODO: Add tag "Enemy" in EnemyActor Parent
+	TArray<AActor*> EnemyActors;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "Enemy", EnemyActors);
+
+	UGameplayStatics::PlaySound2D(this, AksiiSound);
+	TArray<AEnemyActorParent*> StoppedEnemies;
+	for (AActor* Actor : EnemyActors)
+	{
+		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
+		if (Enemy != nullptr)
+		{
+			if (Enemy->GetEnemyClass() == "Monster")
+			{
+				Enemy->SetIsStopped(true);
+				StoppedEnemies.Add(Enemy);
+			}
+		}
+	}
+
+	FTimerHandle Timer;
+	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this,
+		&APlayerActor::UnstopEnemies, StoppedEnemies);
+	GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
+	
+}
+
+void APlayerActor::UseAard()
+{
+	UGameplayStatics::PlaySound2D(this, AardSpawnSound);
+	GetWorld()->SpawnActor<AAardActor>(
+		AardActorClass, FVector::ZeroVector,
+		FRotator::ZeroRotator);
+}
 
 //TODO: implement functionality
 void APlayerActor::InvokeGameEnd()

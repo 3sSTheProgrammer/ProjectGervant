@@ -109,7 +109,7 @@ void AEnemyActorParent::BeginPlay()
 	TArray<UStaticMeshComponent*> StaticMeshComponents;
 	GetComponents(StaticMeshComponents);
 
-	UE_LOG(LogTemp, Warning, TEXT("Components: "), StaticMeshComponents.Num());
+	//UE_LOG(LogTemp, Warning, TEXT("Components: "), StaticMeshComponents.Num());
 
 	if (StaticMeshComponents.Num() > 0)
 	{

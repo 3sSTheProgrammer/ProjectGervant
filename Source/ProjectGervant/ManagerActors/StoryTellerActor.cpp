@@ -79,9 +79,9 @@ void AStoryTellerActor::FirstLevelScript()
 	TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterEnemyGhoul;
 	
 	
-		UE_LOG(LogTemp, Warning, TEXT("Spawning enemy at %f %f %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
+		//UE_LOG(LogTemp, Warning, TEXT("Spawning enemy at %f %f %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
 		//return;
-		GetWorld()->SpawnActor<AEnemyActorParent>(SpawnEnemy, SpawnLocation, FRotator::ZeroRotator);
+	GetWorld()->SpawnActor<AEnemyActorParent>(SpawnEnemy, SpawnLocation, FRotator::ZeroRotator);
 		/*GetWorld()->SpawnActor<AEnemyActorParent>(
 			SpawnEnemy, SpawnLocation,
 			FRotator::ZeroRotator);*/
