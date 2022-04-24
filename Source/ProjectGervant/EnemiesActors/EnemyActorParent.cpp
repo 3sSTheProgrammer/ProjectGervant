@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "EnemyActorParent.h"
 #include "Kismet/GameplayStatics.h"
-#include "ProjectGervant/KillCountHUD.h"
+#include "Sound/SoundCue.h"
 #include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
@@ -194,16 +195,34 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 		{
 			Hud->AddKill(EnemyClass);
 		}*/
-		//TODO: ADD KILL TO WIDGET
+		
 		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
 		if (Interface != nullptr)
 		{
 			Interface->AddKill(EnemyClass);
 		}
 		
-		
+		FVector SpawnLocation{ GetActorLocation() };
 		//TODO: if damage was low then slash sound, else roar mb
-		UGameplayStatics::PlaySound2D(this, DieSound);
+		if (KilledByIgni == true)
+		{
+			//TODO: Spawn ashes actor
+			UGameplayStatics::PlaySound2D(this, KilledByIgniSound);
+			
+			GetWorld()->SpawnActor<AActor>(
+				BurnedRemainsActor, SpawnLocation,
+				FRotator::ZeroRotator);
+		}
+		else
+		{
+			//TODO: Spawn remains actor
+			UGameplayStatics::PlaySound2D(this, DieSound);
+
+			GetWorld()->SpawnActor<AActor>(
+				RemainsActor, SpawnLocation,
+				FRotator::ZeroRotator);
+		}
+		//UGameplayStatics::PlaySound2D(this, DieSound);
 		Destroy();
 	}
 }
@@ -225,6 +244,11 @@ void AEnemyActorParent::SetIsStopped(bool Status)
 void AEnemyActorParent::SetIsAarded(bool Status)
 {
 	IsAarded = Status;
+}
+
+void AEnemyActorParent::SetKilledByIgni(bool Status)
+{
+	KilledByIgni = Status;
 }
 
 // Can be used by some types of enemies to move to arbitrary point

@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "StoryTellerActor.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "ProjectGervant/TutorialWidget.h"
 
 // Sets default values
 AStoryTellerActor::AStoryTellerActor()
@@ -70,6 +72,25 @@ void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
 	
+	/*TutorialWidget = CreateWidget<UTutorialWidget>(GetWorld(), UTutorialWidget::StaticClass());
+	if (TutorialWidget == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("widget is null"));
+	}
+	TutorialWidget->AddToViewport();*/
+	//TutorialWidget->ShowHint("gfg");
+	//TArray<UUserWidget*> Widgets;
+	//if (->GetClass() != nullptr)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Class is not null"));
+	//	//UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, TutorialWidget->GetClass());
+	//}
+	
+	/*if (Widgets.Num() > 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Found %d Tutorial widgets"), Widgets.Num());
+	}*/
+
 	FVector SpawnLocation{ 0 };
 	SpawnLocation.Z = 400;
 

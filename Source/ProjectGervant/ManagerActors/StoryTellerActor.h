@@ -3,11 +3,14 @@
 #pragma once
 
 //#include "ProjectGervant/UW_WitcherSignsInterface.h"
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
-#include "ProjectGervant/KillCountHUD.h"
+//#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+//#include "ProjectGervant/KillCountHUD.h"
 
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "StoryTellerActor.generated.h"
+
+class AEnemyActorParent;
 
 UCLASS()
 class PROJECTGERVANT_API AStoryTellerActor : public AActor
@@ -15,6 +18,9 @@ class PROJECTGERVANT_API AStoryTellerActor : public AActor
 	GENERATED_BODY()
 	
 public:
+
+	//UTutorialWidget* TutorialWidget;
+
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "HumanEnemy"),
 		Category = Enemies)
@@ -85,7 +91,7 @@ public:
 
 
 private:
-	AKillCountHUD* HUD;
+	//AKillCountHUD* HUD;
 
 	TMap<FString, int> LevelNameMap;
 

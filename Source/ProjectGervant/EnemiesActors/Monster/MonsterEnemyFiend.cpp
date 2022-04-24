@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-//Refactor enemies classes to optimise used methods
-
+#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "MonsterEnemyFiend.h"
 
 AMonsterEnemyFiend::AMonsterEnemyFiend()

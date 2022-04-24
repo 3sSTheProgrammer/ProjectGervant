@@ -4,13 +4,15 @@
 
 //#include "ProjectGervant/ProjectGervant.h"
 //#include "ProjectGervant/UW_WitcherSignsInterface.h"
-
-#include "Containers/UnrealString.h"
-#include "ProjectGervant/PlayerActors/PlayerActor.h"
+//#include "Containers/UnrealString.h"
+//#include "ProjectGervant/PlayerActors/PlayerActor.h"
 //#include "ProjectGervant/UW_WitcherSignsInterface.h"
-
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "EnemyActorParent.generated.h"
+
+class APlayerActor;
+class USoundCue;
 
 UCLASS()
 class PROJECTGERVANT_API AEnemyActorParent : public AActor
@@ -45,6 +47,8 @@ protected:
 	
 	bool IsAarded{ false };
 
+	bool KilledByIgni{ false };
+
 	// Defines if the enemy is Human or Monster
 	// TODO: LOW PRIORITY make an enum type EnemyClass
 	FString EnemyClass;
@@ -63,6 +67,12 @@ protected:
 
 	UUserWidget* GameInterface;
 public:
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		TSubclassOf<AActor> RemainsActor;
+
+	UPROPERTY(EditAnywhere, Category = Materials)
+		TSubclassOf<AActor> BurnedRemainsActor;
 
 	// Actor's material
 	UPROPERTY(EditAnywhere, Category = Materials)
@@ -86,6 +96,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* DieSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* KilledByIgniSound;
 
 	// Sets default values for this actor's properties
 	AEnemyActorParent();
@@ -113,6 +127,7 @@ public:
 
 	void SetIsAarded(bool Status);
 
+	void SetKilledByIgni(bool Status);
 protected:
 
 	// Called when the game starts or when spawned

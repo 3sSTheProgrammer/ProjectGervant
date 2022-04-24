@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
+//#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
 #include "HumanEnemyActor.h"
 #include "HumanEnemyArcher.generated.h"
 
+class AProjectileActor;
 /**
  * 
  */
