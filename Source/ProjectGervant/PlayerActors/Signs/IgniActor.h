@@ -2,10 +2,14 @@
 
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
-//#include "CoreMinimal.h"
+
+//#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "IgniActor.generated.h"
+
+class AEnemyActorParent;
+class USphereComponent;
 
 UCLASS()
 class PROJECTGERVANT_API AIgniActor : public AActor
@@ -13,15 +17,24 @@ class PROJECTGERVANT_API AIgniActor : public AActor
 	GENERATED_BODY()
 protected:
 	// Static mesh component saved for efficiency
-	UStaticMeshComponent* StaticMeshComponent;
-
-	float GrowthPerSecond{ 14.f };
+	UStaticMeshComponent* StaticMesh;
+	//USphereComponent* SphereComponent;
+	//float GrowthPerSecond{ 14.f };
 
 	FVector CurrentScale;
+	//float StartCollisionSphereSize;
 public:	
 	// Sets default values for this actor's properties
 	AIgniActor();
 
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float GrowthPerSecond;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float StartCollisionSphereSize;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float MaximumCollisionSphereSize;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
