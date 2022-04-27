@@ -1,7 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "BeamActor.h"
+//#include "Components/CapsuleComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+
 
 // Sets default values
 ABeamActor::ABeamActor()
@@ -24,6 +27,13 @@ void ABeamActor::BeginPlay()
 	{
 		BeamType = "Monster";
 	}
+
+	/*CapsuleComponent = FindComponentByClass<UCapsuleComponent>();
+	if (CapsuleComponent != nullptr)
+	{
+		CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ABeamActor::OnOverlapBegin);
+		CapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &ABeamActor::OnOverlapEnd);
+	}*/
 
 	// find static mesh component
 	UStaticMeshComponent* StaticMeshComponent;

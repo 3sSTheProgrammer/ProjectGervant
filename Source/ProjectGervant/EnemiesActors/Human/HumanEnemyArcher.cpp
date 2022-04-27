@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
 #include "HumanEnemyArcher.h"
+#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
+
 
 AHumanEnemyArcher::AHumanEnemyArcher()
 {

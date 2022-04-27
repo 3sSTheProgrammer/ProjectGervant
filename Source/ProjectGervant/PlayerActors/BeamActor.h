@@ -1,14 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// TODO make the beam damage only one enemy at a time
+
 #pragma once
-
-
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BeamActor.generated.h"
 
 class AEnemyActorParent;
+//class UCapsuleComponent;
 
 UCLASS()
 class PROJECTGERVANT_API ABeamActor : public AActor
@@ -19,6 +18,8 @@ private:
 	const float RotationVelocityPerSecond{ 90.f };
 	FRotator CurrentRotationVelocity{ 0 };
 	float DamagePerSecond{ 100 };
+
+	//UCapsuleComponent* CapsuleComponent;
 
 	FString BeamType;
 	

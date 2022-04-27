@@ -7,7 +7,11 @@ public class ProjectGervant : ModuleRules
 	public ProjectGervant(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+		
+		//PrivatePCHHeaderFile = "MaulProtoPrecompiled.h";
+		MinFilesUsingPrecompiledHeaderOverride = 1;
+		bUseUnity = false;
+
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

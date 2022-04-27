@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
-#include "ProjectGervant/UW_WitcherSignsInterface.h"
 
 //UUW_WitcherSignsInterface::UUW_WitcherSignsInterface()
 //{

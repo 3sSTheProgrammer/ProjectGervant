@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+
+#include "IgniActor.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
-#include "IgniActor.h"
 
 // Sets default values
 AIgniActor::AIgniActor()
