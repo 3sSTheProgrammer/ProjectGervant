@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Components/SphereComponent.h"
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "AardActor.h"
 
 // Sets default values
@@ -16,19 +17,22 @@ void AAardActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentScale = GetActorScale3D();
+	//CurrentScale = GetActorScale3D();
 
-	TArray<UStaticMeshComponent*> StaticMeshComponents;
+	/*TArray<UStaticMeshComponent*> StaticMeshComponents;
 	GetComponents(StaticMeshComponents);
 
 	if (StaticMeshComponents.Num() > 0)
 	{
 		StaticMeshComponent = StaticMeshComponents[0];
 		StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AAardActor::OnOverlapBegin);
-	}
+	}*/
 
-	//TODO: play some sound here
-	
+	SphereComponent = FindComponentByClass<USphereComponent>();
+	if (SphereComponent != nullptr)
+	{
+		SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AAardActor::OnOverlapBegin);
+	}
 }
 
 void AAardActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -63,7 +67,9 @@ void AAardActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (CurrentScale.Z > GrowthPerSecond / 2)
+	FVector CurrentScale = GetActorScale3D();
+	float CurrentCollisionSphereSize = SphereComponent->GetScaledSphereRadius();
+	if (CurrentCollisionSphereSize > MaximumCollisionSphereSize)
 	{
 		Destroy();
 	}
@@ -71,6 +77,8 @@ void AAardActor::Tick(float DeltaTime)
 	{
 		CurrentScale.Z += GrowthPerSecond * DeltaTime;
 		CurrentScale.Y += GrowthPerSecond * DeltaTime;
+		CurrentScale.X += GrowthPerSecond * DeltaTime;
+
 		SetActorScale3D(CurrentScale);
 	}
 

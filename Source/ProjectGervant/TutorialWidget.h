@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/Image.h"
 #include "Blueprint/UserWidget.h"
 #include "TutorialWidget.generated.h"
 
+class UImage;
 /**
  * 
  */

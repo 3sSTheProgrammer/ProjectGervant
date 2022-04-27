@@ -1,5 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+#include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
+#include "Sound/SoundCue.h"
+#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "PlayerActor.h"
@@ -156,4 +160,24 @@ void APlayerActor::UseAard()
 void APlayerActor::InvokeGameEnd()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game over"));
+}
+
+float APlayerActor::GetIgniCooldown()
+{
+	return IgniCooldown;
+}
+
+float APlayerActor::GetAardCooldown()
+{
+	return AardCooldown;
+}
+
+float APlayerActor::GetAksiiCooldown()
+{
+	return AksiiCooldown;
+}
+
+float APlayerActor::GetKvenCooldown()
+{
+	return KvenCooldown;
 }

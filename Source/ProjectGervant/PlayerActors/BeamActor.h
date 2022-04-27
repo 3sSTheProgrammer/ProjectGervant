@@ -2,10 +2,13 @@
 // TODO make the beam damage only one enemy at a time
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 
+
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BeamActor.generated.h"
+
+class AEnemyActorParent;
 
 UCLASS()
 class PROJECTGERVANT_API ABeamActor : public AActor

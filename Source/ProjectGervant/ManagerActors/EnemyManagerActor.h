@@ -2,10 +2,12 @@
 
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+
 
 #include "GameFramework/Actor.h"
 #include "EnemyManagerActor.generated.h"
+
+class AEnemyActorParent;
 
 UCLASS()
 class PROJECTGERVANT_API AEnemyManagerActor : public AActor

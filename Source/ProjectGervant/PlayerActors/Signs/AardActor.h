@@ -2,10 +2,12 @@
 
 #pragma once
 
-#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
-//#include "CoreMinimal.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "AardActor.generated.h"
+
+class AEnemyActorParent;
+class USphereComponent;
 
 UCLASS()
 class PROJECTGERVANT_API AAardActor : public AActor
@@ -13,14 +15,23 @@ class PROJECTGERVANT_API AAardActor : public AActor
 	GENERATED_BODY()
 	
 protected:
-	UStaticMeshComponent* StaticMeshComponent;
+	//UStaticMeshComponent* StaticMeshComponent;
+	USphereComponent* SphereComponent;
+	//float GrowthPerSecond{ 20.f };
 
-	float GrowthPerSecond{ 20.f };
-
-	FVector CurrentScale;
+	//FVector CurrentScale;
 
 	//FTimerHandle AardTimer;
 public:	
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float GrowthPerSecond;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float StartCollisionSphereSize;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float MaximumCollisionSphereSize;
+	
 	// Sets default values for this actor's properties
 	AAardActor();
 

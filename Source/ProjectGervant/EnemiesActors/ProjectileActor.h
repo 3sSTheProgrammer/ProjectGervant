@@ -3,7 +3,7 @@
 #pragma once
 
 //TODO: PODUMAT KAK SDELAT TAK, CHTOBY LUCH NE OSTANAVLIVALSYA PRI KONTAKTE SO STRELOY
-//#include "CoreMinimal.h"
+#include "CoreMinimal.h"
 #include "EnemyActorParent.h"
 #include "ProjectileActor.generated.h"
 

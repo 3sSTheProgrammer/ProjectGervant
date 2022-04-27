@@ -2,16 +2,15 @@
 
 #pragma once
 
-//#include "CoreMinimal.h"
-#include "ProjectGervant/PlayerActors/PlayerActor.h"
-#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
-#include "ProjectGervant/PlayerActors/Signs/AardActor.h"
-#include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
-#include "Kismet/GameplayStatics.h"
+#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "UW_WitcherSignsInterface.generated.h"
 
+class UProgressBar;
+class UTextBlock;
+class AAardActor;
+class AIgniActor;
+class APlayerActor;
 
 UCLASS()
 class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
@@ -25,24 +24,23 @@ protected:
 	int HumanKillCount;
 
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
-	//TODO: get cooldowns from PlayerActor
 	FTimerHandle IgniTimer;
-	float IgniCooldown{ 5.f };
+	float IgniCooldown;
 	bool IsIgniAvailable{ true };
 	float IgniRemainingTime{ 0.f };
 
 	FTimerHandle AksiiTimer;
-	float AksiiCooldown{ 3.f };
+	float AksiiCooldown;
 	bool IsAksiiAvailable{ true };
 	float AksiiRemainingTime{ 0.f };
 
 	FTimerHandle KvenTimer;
-	float KvenCooldown{ 5.f };
+	float KvenCooldown;
 	bool IsKvenAvailable{ true };
 	float KvenRemainingTime{ 0.f };
 
 	FTimerHandle AardTimer;
-	float AardCooldown{ 1.f };
+	float AardCooldown;
 	bool IsAardAvailable{ true };
 	float AardRemainingTime{ 0.f };
 
@@ -85,7 +83,7 @@ protected:
 
 	void Aard();
 
-	void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
+	//void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
 
 	void UpdateLabel(FString EnemyClass);
 

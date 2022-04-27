@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
+#include "ProjectGervant/PlayerActors/BeamActor.h"
 #include "InputManagerController.h"
-//#include "BeamActor.h"
 #include "Kismet/GameplayStatics.h"
 
 AInputManagerController::AInputManagerController()

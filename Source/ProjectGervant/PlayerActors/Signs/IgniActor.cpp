@@ -17,7 +17,7 @@ void AIgniActor::BeginPlay()
 	Super::BeginPlay();
 	
 	//StartCollisionSphereSize = SCollisionSphereSize;
-	CurrentScale = GetActorScale3D();
+	//CurrentScale = GetActorScale3D();
 
 	SphereComponent = FindComponentByClass<USphereComponent>();
 

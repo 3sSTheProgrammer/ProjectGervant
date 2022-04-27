@@ -3,13 +3,14 @@
 #pragma once
 
 //#include "ProjectGervant/PlayerActors/PlayerActor.h"
-#include "ProjectGervant/UW_WitcherSignsInterface.h"
-#include "ProjectGervant/PlayerActors/BeamActor.h"
 
+
+#include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputManagerController.generated.h"
 
-
+class ABeamActor;
+class UUW_WitcherSignsInterface;
 
 /**
  * 

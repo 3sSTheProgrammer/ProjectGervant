@@ -2,14 +2,13 @@
 
 #pragma once
 
-#include "ProjectGervant/PlayerActors/Signs/KvenActor.h"
-#include "Sound/SoundCue.h"
-//#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlayerActor.generated.h"
 
-//TODO: Hz pochemu eto rabotaet
 class AEnemyActorParent;
+class USoundCue;
+class AKvenActor;
 
 UCLASS()
 class PROJECTGERVANT_API APlayerActor : public AActor
@@ -79,6 +78,21 @@ public:
 		Category = Actors)
 		TSubclassOf<AActor> AardActorClass;
 	
+	UPROPERTY(EditAnywhere,
+		Category = Parameters)
+		float IgniCooldown;
+
+	UPROPERTY(EditAnywhere,
+		Category = Parameters)
+		float AardCooldown;
+
+	UPROPERTY(EditAnywhere,
+		Category = Parameters)
+		float KvenCooldown;
+
+	UPROPERTY(EditAnywhere,
+		Category = Parameters)
+		float AksiiCooldown;
 
 protected:
 	// Called when the game starts or when spawned
@@ -101,6 +115,15 @@ public:
 	void UseAksii();
 
 	void UseAard();
+
+	float GetIgniCooldown();
+
+	float GetAardCooldown();
+
+	float GetAksiiCooldown();
+
+	float GetKvenCooldown();
+
 	
 	
 };
