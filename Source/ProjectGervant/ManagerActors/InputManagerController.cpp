@@ -7,7 +7,7 @@
 
 AInputManagerController::AInputManagerController()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/GameInterface"));
 
 	if (GameInterfaceUIBPClass.Class != nullptr)
 	{

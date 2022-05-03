@@ -80,11 +80,13 @@ void AEnemyActorParent::SetBeamInteractionStatus(FString Interaction, bool Statu
 
 	if (IsAttacked && IsHealed)
 	{
+		PlayHitSound();
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
 		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("InteractionMaskColor")), FLinearColor(1.f, 0.39, 0.0f, 0.f));
 	}
 	else if (IsAttacked)
 	{
+		PlayHitSound();
 		EnemyDinamicMaterial->SetTextureParameterValue(FName(TEXT("InteractionMask")), UInteractionTexture);
 		EnemyDinamicMaterial->SetVectorParameterValue(FName(TEXT("InteractionMaskColor")), FLinearColor(0.5, 0.f, 0.f, 1.f));
 		
@@ -203,10 +205,9 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 		}
 		
 		FVector SpawnLocation{ GetActorLocation() };
-		//TODO: if damage was low then slash sound, else roar mb
+
 		if (KilledByIgni == true)
 		{
-			//TODO: Spawn ashes actor
 			UGameplayStatics::PlaySound2D(this, KilledByIgniSound);
 			
 			GetWorld()->SpawnActor<AActor>(
@@ -215,7 +216,6 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 		}
 		else
 		{
-			//TODO: Spawn remains actor
 			UGameplayStatics::PlaySound2D(this, DieSound);
 
 			GetWorld()->SpawnActor<AActor>(
@@ -294,7 +294,7 @@ void AEnemyActorParent::MovementManager(float Time)
 			+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));*/
 
 	// if enemy reached player it destroys itself, otherwise continue moving
-	if (DistanceFromCenter < 100)
+	if (DistanceFromCenter < DistanceFromCenterDeath)
 	{
 		Destroy();
 		PlayerActor->ReceiveDamage(Damage);
@@ -327,4 +327,21 @@ float AEnemyActorParent::GetDistanceToPoint(FVector Point)
 	float DistanceFromPoint = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y - Point.Y, 2)
 		+ FGenericPlatformMath::Pow(CurrentLocation.Z - Point.Z, 2));
 	return DistanceFromPoint;
+}
+
+void AEnemyActorParent::PlayHitSound()
+{
+	if (IsAttacked && !GetWorldTimerManager().IsTimerActive(AttackedSoundTimer))
+	{
+		//TODO: make standalone function to reset timer (.clear) and call this function again
+		UGameplayStatics::PlaySound2D(this, IsAttackedSound);
+		GetWorldTimerManager().SetTimer(AttackedSoundTimer, this,
+		&AEnemyActorParent::ResetHitSoundTimer, 1.f);
+	}
+}
+
+void AEnemyActorParent::ResetHitSoundTimer()
+{
+	GetWorldTimerManager().ClearTimer(AttackedSoundTimer);
+	PlayHitSound();
 }

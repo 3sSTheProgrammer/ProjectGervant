@@ -58,6 +58,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* HumanKillCounter;
 
+	UPROPERTY(meta = (BindWidget))
+		class UProgressBar* HPProgressBar;
 
 	UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf<AIgniActor> IgniActor;
@@ -68,6 +70,10 @@ protected:
 	/*UPROPERTY(EditAnywhere, Category = "Actors")
 		TSubclassOf <APlayerActor> PlayerActor;*/
 	APlayerActor* PlayerActor;
+
+	FLinearColor HighHPColor;
+	FLinearColor MediumHPColor;
+	FLinearColor LowHPColor;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
@@ -84,6 +90,8 @@ protected:
 	void Aard();
 
 	//void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
+
+	void InitPlayerActor();
 
 	void UpdateLabel(FString EnemyClass);
 
@@ -108,5 +116,6 @@ public:
 
 	void AddKill(FString EnemyClass);
 
+	void SetHP(float HealthAmount);
 	
 };

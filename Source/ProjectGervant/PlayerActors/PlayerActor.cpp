@@ -7,7 +7,9 @@
 #include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
 #include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "ProjectGervant/UW_WitcherSignsInterface.h" 
+#include "GameFramework/GameModeBase.h"
 // Sets default values
 APlayerActor::APlayerActor()
 {
@@ -17,13 +19,12 @@ APlayerActor::APlayerActor()
 	Health = 100.f;
 	IsKvenActive = false;
 
-	//static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/GameInterface"));
 
-	//if (GameInterfaceUIBPClass.Class != nullptr)
-	//{
-	//	//UE_LOG(LogTemp, Warning, TEXT("widget class found"));
-	//	GameInterfaceClass = GameInterfaceUIBPClass.Class;
-	//}
+	if (GameInterfaceUIBPClass.Class != nullptr)
+	{
+		GameInterfaceClass = GameInterfaceUIBPClass.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -39,29 +40,57 @@ void APlayerActor::BeginPlay()
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
 		StaticMeshComponent = StaticMeshComponents[0];
-		
-		//StaticMeshComponent->SetRenderCustomDepth(true);
-		//StaticMeshComponent->SetCustomDepthStencilValue(155); //STENCIL_DAMAGING_OUTLINE
-	//	// set up delegate for collisions with something else
-	//	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapBegin);
-	//	StaticMeshComponent->OnComponentEndOverlap.AddDynamic(this, &AEnemyActorParent::OnOverlapEnd);
 	}
 
-	//if (GameInterfaceClass != nullptr)
+	//TArray<UUserWidget*> Widgets;
+	//UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
+	//UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
+	//if (Widgets.Num() > 0)
 	//{
-	//	GameInterface = CreateWidget<UUW_WitcherSignsInterface>(GetWorld(), GameInterfaceClass);
+	//	UUserWidget* Interface = Widgets[0];
+	//	GameInterface = Cast<UUW_WitcherSignsInterface>(Interface);
 	//	if (GameInterface != nullptr)
 	//	{
-	//		GameInterface->AddToViewport();
-	//		GameInterface->SetVisibility(ESlateVisibility::Hidden);
-	//		//GameInterface->SetOwningPlayer(this);
+	//		UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
 	//	}
+	//	else
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("NE NASHEL WIDGET"));
+	//	}
+	//	//GameInterface = Cast<UUW_WitcherSignsInterface>(GameInterfaceTemp);
+	//	//UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
 	//}
+}
+
+void APlayerActor::InitHUDWidget()
+{
+	TArray<UUserWidget*> Widgets;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
+	//UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
+	if (Widgets.Num() > 0)
+	{
+		UUserWidget* Interface = Widgets[0];
+		GameInterface = Cast<UUW_WitcherSignsInterface>(Interface);
+		/*if (GameInterface != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NE NASHEL WIDGET"));
+		}*/
+		//GameInterface = Cast<UUW_WitcherSignsInterface>(GameInterfaceTemp);
+		//UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
+	}
 }
 
 void APlayerActor::ReceiveDamage(float DamageAmount)
 {
-	
+	if (GameInterface == nullptr)
+	{
+		InitHUDWidget();
+	}
+
 	if (IsKvenActive)
 	{
 		IsKvenActive = false;
@@ -77,6 +106,7 @@ void APlayerActor::ReceiveDamage(float DamageAmount)
 	else
 	{
 		Health -= DamageAmount;
+		if (GameInterface != nullptr) GameInterface->SetHP(Health);
 		UGameplayStatics::PlaySound2D(this, ReceivedDamageSound);
 		if (Health <= 0)
 		{
@@ -153,10 +183,45 @@ void APlayerActor::UseAard()
 		FRotator::ZeroRotator);
 }
 
-//TODO: implement functionality
+//TODO: create game over widget
+
+//.h
+//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
+//	TSubclassOf<UUserWidget> PauseMenuWidgetClass;
+//.cpp
+//if (PauseMenuWidgetClass != nullptr)
+//{
+//	UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), PauseMenuWidgetClass);
+//	if (CurrentWidget != nullptr)
+//	{
+//		CurrentWidget->AddToViewport();
+//		SetInputMode(FInputModeUIOnly());
+//		bShowMouseCursor = true;
+//		SetPause(true);
+//	}
+//}
+
 void APlayerActor::InvokeGameEnd()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game over"));
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController != nullptr) 
+	{
+		//PlayerController->SetPause(true);
+		if (GameOverWidgetClass != nullptr)
+		{
+			UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
+			if (CurrentWidget != nullptr)
+			{
+				CurrentWidget->AddToViewport();
+				PlayerController->SetInputMode(FInputModeUIOnly());
+				PlayerController->bShowMouseCursor = true;
+				PlayerController->SetPause(true);
+			}
+		}
+	}
+	
+	//GetPlayerController
 }
 
 float APlayerActor::GetIgniCooldown()

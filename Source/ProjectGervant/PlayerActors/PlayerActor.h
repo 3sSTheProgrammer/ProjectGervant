@@ -9,6 +9,7 @@
 class AEnemyActorParent;
 class USoundCue;
 class AKvenActor;
+class UUW_WitcherSignsInterface;
 
 UCLASS()
 class PROJECTGERVANT_API APlayerActor : public AActor
@@ -20,6 +21,10 @@ protected:
 	float Health;
 
 	bool IsKvenActive;
+
+	UUW_WitcherSignsInterface* GameInterface;
+
+	TSubclassOf<class UUserWidget> GameInterfaceClass;
 
 public:
 
@@ -94,6 +99,8 @@ public:
 		Category = Parameters)
 		float AksiiCooldown;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
+		TSubclassOf<UUserWidget> GameOverWidgetClass;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -102,6 +109,7 @@ protected:
 
 	void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
 
+	void InitHUDWidget();
 public:
 	// Sets default values for this actor's properties
 	APlayerActor();

@@ -19,6 +19,17 @@ class PROJECTGERVANT_API AStoryTellerActor : public AActor
 	
 public:
 
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float SpawnEnemiesNumberTest;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float ScreenSideTest;
+	
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float MinZSpawnCoordinate{ 100.f };
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float MaxZSpawnCoordinate{ 1000.f };
 	//UTutorialWidget* TutorialWidget;
 
 	UPROPERTY(EditAnywhere,
@@ -95,6 +106,12 @@ private:
 
 	TMap<FString, int> LevelNameMap;
 
+	SIZE_T MaxEnemiesOnOneSide{ 3 };
+
+	int SpawnPointY = 1200;
+
+	TArray<SIZE_T> SpawnPointZs;
+
 public:	
 	// Sets default values for this actor's properties
 	AStoryTellerActor();
@@ -108,7 +125,25 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	
 	void FirstLevelScript();
 
 	void SecondLevelScript();
+
+	/**
+	 * @brief Spawns a single enemy of EnemyType in specified coordinates
+	 * @param EnemyType Type of spawning enemy
+	 * @param SpawnPoint FVector with spawn coordinates
+	*/
+	void SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType, FVector SpawnPoint);
+
+	/**
+	 * @brief Spawns a group of enemies
+	 * @param EnemyType Type of spawning enemy
+	 * @param NumberOfEnemies Number of spawning enemies 
+	 * @param SpawnSide -1 - left, 1 - right, 0 - both
+	*/
+	void SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType, SIZE_T NumberOfEnemies, SIZE_T SpawnSide);
+
+	TArray<FVector> GenerateSpawnPoints(SIZE_T NumberOfPoints, SIZE_T ScreenSide);
 };

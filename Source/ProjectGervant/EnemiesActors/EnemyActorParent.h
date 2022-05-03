@@ -2,11 +2,6 @@
 
 #pragma once
 
-//#include "ProjectGervant/ProjectGervant.h"
-//#include "ProjectGervant/UW_WitcherSignsInterface.h"
-//#include "Containers/UnrealString.h"
-//#include "ProjectGervant/PlayerActors/PlayerActor.h"
-//#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "EnemyActorParent.generated.h"
@@ -26,7 +21,7 @@ protected:
 
 	//An enemy current health. Default value is 100
 	// Should be defined in constructor
-	float Health{ 100 };
+	//float Health{ 100 };
 	
 	// Maximum health that enemy can have
 	// Should be defined in constructor
@@ -34,7 +29,7 @@ protected:
 
 	// Amount of damage which the enemy inflicts to player
 	// Should be defined in constructor
-	float Damage;
+	//float Damage;
 
 	//Shows if the enemy is currently interacts with damaging beam
 	bool IsAttacked{ false };
@@ -66,7 +61,18 @@ protected:
 	TSubclassOf<class UUserWidget> GameInterfaceClass;
 
 	UUserWidget* GameInterface;
+
+	FTimerHandle AttackedSoundTimer;
 public:
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float DistanceFromCenterDeath{ 150.f };
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float Damage;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float Health;
 
 	UPROPERTY(EditAnywhere, Category = Materials)
 		TSubclassOf<AActor> RemainsActor;
@@ -92,6 +98,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
 		USoundCue* SpawnSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* IsAttackedSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
@@ -147,4 +157,8 @@ protected:
 	void MoveBack(float Time);
 
 	float GetDistanceToPoint(FVector Point);
+
+	void PlayHitSound();
+
+	void ResetHitSoundTimer();
 };

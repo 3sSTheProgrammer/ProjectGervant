@@ -17,18 +17,14 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 {
 	UUserWidget::NativeConstruct();
 
-	TArray<AActor*> PlayerActors;
-	UGameplayStatics::GetAllActorsWithTag(
-		GetWorld(), "Player", PlayerActors);
-	if (PlayerActors.Num() > 0) PlayerActor = (APlayerActor*)PlayerActors[0];
-
+	InitPlayerActor();
+	
 	MonsterKillCount = 0;
 	HumanKillCount = 0;
 
-	IgniCooldown = PlayerActor->GetIgniCooldown();
-	AardCooldown = PlayerActor->GetAardCooldown();
-	AksiiCooldown = PlayerActor->GetAksiiCooldown();
-	KvenCooldown = PlayerActor->GetKvenCooldown();
+	HighHPColor = FLinearColor(0.03, 0.54, 0.06, 1.0); //Green
+	MediumHPColor = FLinearColor(0.96, 0.4, 0.0, 1.0); //Orange
+	LowHPColor = FLinearColor(0.45, 0.0, 0.01, 1.0); //Red
 	/*UWorld* World = GetWorld();
 	WorldTimerManager = World->GetTimerManager();
 	WorldTimerManager = GetWorld()->GetTimerManager();*/
@@ -36,9 +32,8 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 
 void UUW_WitcherSignsInterface::NativeTick(const FGeometry& MyGeometry, float DeltaTime)
 {
-	//here should be Super::, but it somehow thinks that Super is UWidget((
 	UUserWidget::NativeTick(MyGeometry, DeltaTime);
-	
+
 	bool IsIgniTimerActive = GetWorld()->GetTimerManager().IsTimerActive(IgniTimer);
 
 	if (IsIgniTimerActive)
@@ -171,7 +166,7 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 {
 	
 	bool* IsSignAvailable{ nullptr };
-	//TFunction<void()> SignFunction{ nullptr };
+	
 	if (SignName == "Igni")
 	{
 		IsSignAvailable = &IsIgniAvailable;
@@ -199,7 +194,7 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 		else if (SignName == "Kven") Kven();
 		else if (SignName == "Aard") Aard();
 
-		UE_LOG(LogTemp, Warning, TEXT("You used %s"), *SignName);
+		//UE_LOG(LogTemp, Warning, TEXT("You used %s"), *SignName);
 		
 		SetSignCooldownTimer(SignName);
 	}
@@ -338,5 +333,38 @@ void UUW_WitcherSignsInterface::UpdateLabel(FString EnemyClass)
 		{
 			HumanKillCounter->SetText(FText::AsNumber(HumanKillCount));
 		}
+	}
+}
+
+void UUW_WitcherSignsInterface::SetHP(float HealthAmount)
+{
+	HPProgressBar->SetPercent(HealthAmount / 100.f);
+	if (HealthAmount < 25)
+	{
+		HPProgressBar->SetFillColorAndOpacity(LowHPColor);
+	}
+	else if (HealthAmount < 75)
+	{
+		HPProgressBar->SetFillColorAndOpacity(MediumHPColor);
+	}
+	else
+	{
+		HPProgressBar->SetFillColorAndOpacity(HighHPColor);
+	}
+	
+}
+
+void UUW_WitcherSignsInterface::InitPlayerActor()
+{
+	TArray<AActor*> PlayerActors;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "Player", PlayerActors);
+	if (PlayerActors.Num() > 0)
+	{
+		PlayerActor = (APlayerActor*)PlayerActors[0];
+		IgniCooldown = PlayerActor->GetIgniCooldown();
+		AardCooldown = PlayerActor->GetAardCooldown();
+		AksiiCooldown = PlayerActor->GetAksiiCooldown();
+		KvenCooldown = PlayerActor->GetKvenCooldown();
 	}
 }
