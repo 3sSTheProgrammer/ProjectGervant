@@ -28,7 +28,7 @@ AInputManagerController::AInputManagerController()
 void AInputManagerController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	UE_LOG(LogTemp, Warning, TEXT("AZAZA"));
 	HumanBeamActor = (ABeamActor*)GetBeamActor(0);
 	MonsterBeamActor = (ABeamActor*)GetBeamActor(1);
 

@@ -14,7 +14,7 @@ AEnemyActorParent::AEnemyActorParent()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Find game interface widget
-	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/Widgets/GameInterface"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameInterfaceUIBPClass(TEXT("/Game/ProjectGervant/Menus/GameInterface"));
 
 	if (GameInterfaceUIBPClass.Class != nullptr)
 	{
@@ -298,6 +298,11 @@ void AEnemyActorParent::MovementManager(float Time)
 	{
 		Destroy();
 		PlayerActor->ReceiveDamage(Damage);
+		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
+		if (Interface != nullptr)
+		{
+			Interface->AddNotKilledEnemy(EnemyClass);
+		}
 	}
 	else
 	{

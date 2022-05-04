@@ -183,8 +183,6 @@ void APlayerActor::UseAard()
 		FRotator::ZeroRotator);
 }
 
-//TODO: create game over widget
-
 //.h
 //UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
 //	TSubclassOf<UUserWidget> PauseMenuWidgetClass;
@@ -201,6 +199,8 @@ void APlayerActor::UseAard()
 //	}
 //}
 
+//TODO: Move to story teller mb
+//TODO: Save player controller as a field
 void APlayerActor::InvokeGameEnd()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game over"));
@@ -222,6 +222,26 @@ void APlayerActor::InvokeGameEnd()
 	}
 	
 	//GetPlayerController
+}
+
+void APlayerActor::InvokeLevelCompleted()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Level Completed"));
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PlayerController != nullptr)
+	{
+		if (LevelCompletedWidgetClass != nullptr)
+		{
+			UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), LevelCompletedWidgetClass);
+			if (CurrentWidget != nullptr)
+			{
+				CurrentWidget->AddToViewport();
+				PlayerController->SetInputMode(FInputModeUIOnly());
+				PlayerController->bShowMouseCursor = true;
+				PlayerController->SetPause(true);
+			}
+		}
+	}
 }
 
 float APlayerActor::GetIgniCooldown()

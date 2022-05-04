@@ -13,8 +13,7 @@ AStoryTellerActor::AStoryTellerActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	//TODO: Low priority: make another dependency of i
-	//TODO: should keep in interval [100, 1000] if max enemies is increased
+
 	for (SIZE_T i = 0; i < MaxEnemiesOnOneSide; ++i)
 	{
 		float ZCoord = MinZSpawnCoordinate + (MaxZSpawnCoordinate - MinZSpawnCoordinate) / (MaxEnemiesOnOneSide - 1) * i;
@@ -35,17 +34,22 @@ void AStoryTellerActor::BeginPlay()
 	return;*/	
 
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
+	LevelNameMap.Add(TEXT("UEDPIE_0_Level2"), 2);
 
 	UWorld* TheWorld = GetWorld();
 	FString CurrentLevel = TheWorld->GetMapName();
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
-
 
 	switch (LevelNameMap[CurrentLevel])
 	{
 	case 1:
 		FirstLevelScript();
 		break;
+
+	case 2:
+		SecondLevelScript();
+		break;
+
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("unknown level"));
 		break;
@@ -56,7 +60,7 @@ void AStoryTellerActor::BeginPlay()
 void AStoryTellerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//in perspective this should be a reaction on an event, not an every tick check
+
 	//TODO: refactor this functionality to be a reaction on an event
 
 	/*if (HUD != nullptr && HUD->GetKillsAmount() > 5)
@@ -138,6 +142,8 @@ void AStoryTellerActor::FirstLevelScript()
 void AStoryTellerActor::SecondLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("2 level"));
+	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
+	SpawnEnemyGroup(SpawnEnemyType, SpawnEnemiesNumberTest, ScreenSideTest);
 }
 
 void AStoryTellerActor::SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType, 
@@ -194,7 +200,7 @@ void AStoryTellerActor::SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType
 			FTimerHandle TimerHandle;
 			FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this,
 				&AStoryTellerActor::SpawnEnemyGroup, EnemyType, RemainEnemies, SpawnSide);
-			GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, 3.f, false);
+			GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, 4.f, false);
 		}
 		
 	}

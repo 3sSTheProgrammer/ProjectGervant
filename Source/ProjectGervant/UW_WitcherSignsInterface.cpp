@@ -316,6 +316,15 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 		AddHumanKill();
 		UpdateLabel(EnemyClass);
 	}
+	TotalDeadEnemies += 1;
+	
+	//TODO: Change that system
+	int32 MaxKills{ 20 };
+
+	if (TotalDeadEnemies >= MaxKills)
+	{
+		PlayerActor->InvokeLevelCompleted();
+	}
 }
 
 void UUW_WitcherSignsInterface::UpdateLabel(FString EnemyClass)
@@ -352,6 +361,19 @@ void UUW_WitcherSignsInterface::SetHP(float HealthAmount)
 		HPProgressBar->SetFillColorAndOpacity(HighHPColor);
 	}
 	
+}
+
+void UUW_WitcherSignsInterface::AddNotKilledEnemy(FString EnemyClass)
+{
+	/*if (EnemyClass == "Monster")
+	{
+		MonsterNotKillCount += 1;
+	}
+	else if (EnemyClass == "Human")
+	{
+		HumanNotKillCount += 1;
+	}*/
+	TotalDeadEnemies += 1;
 }
 
 void UUW_WitcherSignsInterface::InitPlayerActor()

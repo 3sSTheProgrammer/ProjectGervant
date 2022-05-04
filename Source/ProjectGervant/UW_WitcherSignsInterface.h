@@ -22,6 +22,9 @@ protected:
 	
 	int MonsterKillCount;
 	int HumanKillCount;
+	//int MonsterNotKillCount;
+	//int HumanNotKillCount;
+	int TotalDeadEnemies;
 
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
 	FTimerHandle IgniTimer;
@@ -115,6 +118,8 @@ public:
 	void AddMonsterKill();
 
 	void AddKill(FString EnemyClass);
+
+	void AddNotKilledEnemy(FString EnemyClass);
 
 	void SetHP(float HealthAmount);
 	

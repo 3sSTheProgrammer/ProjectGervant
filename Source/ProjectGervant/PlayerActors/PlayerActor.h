@@ -101,6 +101,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> GameOverWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
+		TSubclassOf<UUserWidget> LevelCompletedWidgetClass;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -132,6 +136,6 @@ public:
 
 	float GetKvenCooldown();
 
-	
-	
+	void InvokeLevelCompleted();
+		
 };
