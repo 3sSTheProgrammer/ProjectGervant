@@ -7,6 +7,7 @@
 #include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "ProjectGervant/ManagerActors/StoryTellerActor.h"
 
 //UUW_WitcherSignsInterface::UUW_WitcherSignsInterface()
 //{
@@ -18,7 +19,8 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 	UUserWidget::NativeConstruct();
 
 	InitPlayerActor();
-	
+	InitStoryTeller();
+
 	MonsterKillCount = 0;
 	HumanKillCount = 0;
 
@@ -319,10 +321,25 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 	TotalDeadEnemies += 1;
 	
 	//TODO: Change that system
-	int32 MaxKills{ 20 };
 
+	if (StoryTeller == nullptr)
+	{
+		InitStoryTeller();
+	}
+	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
+	/*if (StoryTeller != nullptr)
+	{
+		
+	}
+	else
+	{
+		MaxKills = 10;
+		UE_LOG(LogTemp, Warning, TEXT("StoryTeller is null"));
+	}*/
+	//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
 	if (TotalDeadEnemies >= MaxKills)
 	{
+		//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
 		PlayerActor->InvokeLevelCompleted();
 	}
 }
@@ -388,5 +405,16 @@ void UUW_WitcherSignsInterface::InitPlayerActor()
 		AardCooldown = PlayerActor->GetAardCooldown();
 		AksiiCooldown = PlayerActor->GetAksiiCooldown();
 		KvenCooldown = PlayerActor->GetKvenCooldown();
+	}
+}
+
+void UUW_WitcherSignsInterface::InitStoryTeller()
+{
+	TArray<AActor*> StoryTellers;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "StoryTeller", StoryTellers);
+	if (StoryTellers.Num() > 0)
+	{
+		StoryTeller = (AStoryTellerActor*)StoryTellers[0];
 	}
 }

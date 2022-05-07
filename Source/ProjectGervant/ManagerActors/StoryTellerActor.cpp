@@ -5,6 +5,9 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectGervant/TutorialWidget.h"
+//#include "ProjectGervant/PlayerActors/PlayerActor.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 //#include "Kismet/KismetArrayLibrary.h"
 
 // Sets default values
@@ -21,6 +24,11 @@ AStoryTellerActor::AStoryTellerActor()
 		//SpawnPointZs.Add(100 + i * 300);
 		SpawnPointZs.Add(ZCoord);
 	}
+}
+
+int AStoryTellerActor::GetAmountOfKillsNeeded()
+{
+	return EnemiesAmountOnLevel;
 }
 
 // Called when the game starts or when spawned
@@ -56,92 +64,35 @@ void AStoryTellerActor::BeginPlay()
 	}
 }
 
-// Called every frame
-void AStoryTellerActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	//TODO: refactor this functionality to be a reaction on an event
-
-	/*if (HUD != nullptr && HUD->GetKillsAmount() > 5)
-	{
-		UWorld* TheWorld = GetWorld();
-		FString CurrentLevel = TheWorld->GetMapName();
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
-		if (CurrentLevel == "UEDPIE_0_Map0")
-		{
-			UGameplayStatics::OpenLevel(GetWorld(), "Map1");
-		}
-		else
-		{
-			UGameplayStatics::OpenLevel(GetWorld(), "Map0");
-		}
-		
-		
-	}*/
-
-}
 
 //TODO: guess this should be overriden in child classes
 void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
-	
-	/*TutorialWidget = CreateWidget<UTutorialWidget>(GetWorld(), UTutorialWidget::StaticClass());
-	if (TutorialWidget == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("widget is null"));
-	}
-	TutorialWidget->AddToViewport();*/
-	//TutorialWidget->ShowHint("gfg");
-	//TArray<UUserWidget*> Widgets;
-	//if (->GetClass() != nullptr)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Class is not null"));
-	//	//UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, TutorialWidget->GetClass());
-	//}
-	
-	/*if (Widgets.Num() > 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Found %d Tutorial widgets"), Widgets.Num());
-	}*/
-
-	FVector SpawnLocation{ 0 };
-	SpawnLocation.Z = 400;
-
-	SpawnLocation.Y = 1200;
-	
-	//TSubclassOf<AEnemyActorParent> SpawnEnemy = UMonsterDrowner;
-	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
-	SpawnEnemyGroup(SpawnEnemyType, SpawnEnemiesNumberTest, ScreenSideTest);
-	
-		//UE_LOG(LogTemp, Warning, TEXT("Spawning enemy at %f %f %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
-		//return;
-	//GetWorld()->SpawnActor<AEnemyActorParent>(SpawnEnemy, SpawnLocation, FRotator::ZeroRotator);
-		/*GetWorld()->SpawnActor<AEnemyActorParent>(
-			SpawnEnemy, SpawnLocation,
-			FRotator::ZeroRotator);*/
-	
-	//SpawnEnemy(SpawnEnemyType, SpawnLocation);
-
-	//SpawnLocation.Y = -1200;
-
-	//SpawnEnemy(SpawnEnemyType, SpawnLocation);
-	/*GetWorld()->SpawnActor<AEnemyActorParent>(
-		SpawnEnemy, SpawnLocation,
-		FRotator::ZeroRotator);*/
-	
 
 
-	//FTimerHandle Timer;
-	/*GetWorldTimerManager().SetTimer(Timer, this,
-		&AEnemyManagerActor::SpawnEnemy, 1.5f);*/
-	
+	EnemiesAmountOnLevel = 25;
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
+	//PlayerActor->SetBackgroundSound(BackgroundSound);
+
+	float WaveDelay = 1.f;
+	SetSpawnTimer(UHumanEnemyBrigand1, 1, -1, WaveDelay);
+	WaveDelay += 8;
+	SetSpawnTimer(UHumanEnemyBrigand1, 4, 0, WaveDelay);
+	WaveDelay += 8;
+	SetSpawnTimer(UHumanEnemyBrigand1, 14, 0, WaveDelay);
+	WaveDelay += 10;
+	SetSpawnTimer(UMonsterEnemyGhoul, 6, 0, WaveDelay);
+
 }
 
 void AStoryTellerActor::SecondLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("2 level"));
+
+	EnemiesAmountOnLevel = 25;
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
+
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
 	SpawnEnemyGroup(SpawnEnemyType, SpawnEnemiesNumberTest, ScreenSideTest);
 }
@@ -167,7 +118,7 @@ void AStoryTellerActor::SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType,
 	}
 }
 
-void AStoryTellerActor::SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType, SIZE_T NumberOfEnemies, SIZE_T SpawnSide)
+void AStoryTellerActor::SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType, int NumberOfEnemies, int SpawnSide)
 {
 	if (NumberOfEnemies < 0) return;
 	if (EnemyType == nullptr) return;
@@ -181,7 +132,7 @@ void AStoryTellerActor::SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType
 	}
 	if (NumberOfEnemies > MaxEnemiesOnOneSide)
 	{
-		SIZE_T RemainEnemies = NumberOfEnemies;
+		int RemainEnemies = NumberOfEnemies;
 		//while (RemainEnemies > MaxEnemiesOnOneSide)
 		//{
 		//	//TODO: implement timer here
@@ -244,3 +195,16 @@ TArray<FVector> AStoryTellerActor::GenerateSpawnPoints(SIZE_T NumberOfPoints, SI
 	return Points;
 }
 
+void AStoryTellerActor::SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType,
+	int NumberOfEnemies, int SpawnSide, float Delay)
+{
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this,
+		&AStoryTellerActor::SpawnEnemyGroup, EnemyType, NumberOfEnemies, SpawnSide);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, Delay, false);
+}
+
+void AStoryTellerActor::StopBackgroundSound()
+{
+	CurrentLevelBackgroundSound->SetActive(false);
+}

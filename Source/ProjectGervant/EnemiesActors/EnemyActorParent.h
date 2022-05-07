@@ -25,7 +25,7 @@ protected:
 	
 	// Maximum health that enemy can have
 	// Should be defined in constructor
-	float MaxHealth;
+	float MaxHealth{ 100 };
 
 	// Amount of damage which the enemy inflicts to player
 	// Should be defined in constructor
@@ -50,7 +50,7 @@ protected:
 	
 	// Enemy movement speed. Default value is 100 units per second
 	// Should be defined in constructor
-	float MovementSpeed{ 100 };
+	//float MovementSpeed{ 100 };
 
 	// A player actor reference saved for efficiency 
 	APlayerActor* PlayerActor;
@@ -73,6 +73,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Parameters)
 		float Health;
+
+	UPROPERTY(EditAnywhere, Category = Parameters)
+		float MovementSpeed{ 100 };
 
 	UPROPERTY(EditAnywhere, Category = Materials)
 		TSubclassOf<AActor> RemainsActor;

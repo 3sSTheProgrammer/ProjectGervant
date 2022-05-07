@@ -2,7 +2,7 @@
 
 #pragma once
 
-//#include "CoreMinimal.h"
+#include "CoreMinimal.h"
 #include "HumanEnemyActor.h"
 #include "HumanEnemyBrigand.generated.h"
 

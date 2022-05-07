@@ -9,7 +9,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "ProjectGervant/UW_WitcherSignsInterface.h" 
-#include "GameFramework/GameModeBase.h"
+#include "ProjectGervant/ManagerActors/StoryTellerActor.h"
+//#include "GameFramework/GameModeBase.h"
+
 // Sets default values
 APlayerActor::APlayerActor()
 {
@@ -42,24 +44,7 @@ void APlayerActor::BeginPlay()
 		StaticMeshComponent = StaticMeshComponents[0];
 	}
 
-	//TArray<UUserWidget*> Widgets;
-	//UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
-	//UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
-	//if (Widgets.Num() > 0)
-	//{
-	//	UUserWidget* Interface = Widgets[0];
-	//	GameInterface = Cast<UUW_WitcherSignsInterface>(Interface);
-	//	if (GameInterface != nullptr)
-	//	{
-	//		UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
-	//	}
-	//	else
-	//	{
-	//		UE_LOG(LogTemp, Warning, TEXT("NE NASHEL WIDGET"));
-	//	}
-	//	//GameInterface = Cast<UUW_WitcherSignsInterface>(GameInterfaceTemp);
-	//	//UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
-	//}
+	InitStoryTeller();
 }
 
 void APlayerActor::InitHUDWidget()
@@ -71,16 +56,7 @@ void APlayerActor::InitHUDWidget()
 	{
 		UUserWidget* Interface = Widgets[0];
 		GameInterface = Cast<UUW_WitcherSignsInterface>(Interface);
-		/*if (GameInterface != nullptr)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("NE NASHEL WIDGET"));
-		}*/
-		//GameInterface = Cast<UUW_WitcherSignsInterface>(GameInterfaceTemp);
-		//UE_LOG(LogTemp, Warning, TEXT("NASHEL WIDGET"));
+		
 	}
 }
 
@@ -160,7 +136,7 @@ void APlayerActor::UseAksii()
 		AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
 		if (Enemy != nullptr)
 		{
-			if (Enemy->GetEnemyClass() == "Monster")
+			if (Enemy->GetEnemyClass() == "Human")
 			{
 				Enemy->SetIsStopped(true);
 				StoppedEnemies.Add(Enemy);
@@ -201,8 +177,10 @@ void APlayerActor::UseAard()
 
 //TODO: Move to story teller mb
 //TODO: Save player controller as a field
+//TODO: Make a single function
 void APlayerActor::InvokeGameEnd()
 {
+
 	UE_LOG(LogTemp, Warning, TEXT("Game over"));
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController != nullptr) 
@@ -213,10 +191,16 @@ void APlayerActor::InvokeGameEnd()
 			UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
 			if (CurrentWidget != nullptr)
 			{
+				if (StoryTeller == nullptr)
+				{
+					InitStoryTeller();
+				}
 				CurrentWidget->AddToViewport();
 				PlayerController->SetInputMode(FInputModeUIOnly());
 				PlayerController->bShowMouseCursor = true;
 				PlayerController->SetPause(true);
+				StoryTeller->StopBackgroundSound();
+				UGameplayStatics::PlaySound2D(this, LoseSound);
 			}
 		}
 	}
@@ -239,10 +223,14 @@ void APlayerActor::InvokeLevelCompleted()
 				PlayerController->SetInputMode(FInputModeUIOnly());
 				PlayerController->bShowMouseCursor = true;
 				PlayerController->SetPause(true);
+				StoryTeller->StopBackgroundSound();
+				UGameplayStatics::PlaySound2D(this, WinSound);
 			}
 		}
 	}
 }
+
+
 
 float APlayerActor::GetIgniCooldown()
 {
@@ -262,4 +250,15 @@ float APlayerActor::GetAksiiCooldown()
 float APlayerActor::GetKvenCooldown()
 {
 	return KvenCooldown;
+}
+
+void APlayerActor::InitStoryTeller()
+{
+	TArray<AActor*> StoryTellers;
+	UGameplayStatics::GetAllActorsWithTag(
+		GetWorld(), "StoryTeller", StoryTellers);
+	if (StoryTellers.Num() > 0)
+	{
+		StoryTeller = (AStoryTellerActor*)StoryTellers[0];
+	}
 }

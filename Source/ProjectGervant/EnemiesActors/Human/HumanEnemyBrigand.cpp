@@ -7,6 +7,6 @@ AHumanEnemyBrigand::AHumanEnemyBrigand()
 {
 	MaxHealth = 100;
 	Health = MaxHealth;
-	MovementSpeed = 150;
+	MovementSpeed = 100;
 	Damage = 15;
 }

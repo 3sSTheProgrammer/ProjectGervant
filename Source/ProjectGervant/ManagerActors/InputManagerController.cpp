@@ -28,7 +28,7 @@ AInputManagerController::AInputManagerController()
 void AInputManagerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("AZAZA"));
+	//UE_LOG(LogTemp, Warning, TEXT("AZAZA"));
 	HumanBeamActor = (ABeamActor*)GetBeamActor(0);
 	MonsterBeamActor = (ABeamActor*)GetBeamActor(1);
 
@@ -153,7 +153,6 @@ void AInputManagerController::SetPause()
 {
 	//this->SetPause();
 	//UGameplayStatics::SetGamePaused(GetWorld(), true);
-	//TODO: do according to course method
 	if (PauseMenuWidgetClass != nullptr)
 	{
 		UUserWidget* PauseMenu = CreateWidget<UUserWidget>(GetWorld(), PauseMenuWidgetClass);

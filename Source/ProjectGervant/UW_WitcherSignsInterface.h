@@ -11,6 +11,7 @@ class UTextBlock;
 class AAardActor;
 class AIgniActor;
 class APlayerActor;
+class AStoryTellerActor;
 
 UCLASS()
 class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
@@ -25,6 +26,8 @@ protected:
 	//int MonsterNotKillCount;
 	//int HumanNotKillCount;
 	int TotalDeadEnemies;
+
+	AStoryTellerActor* StoryTeller;
 
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
 	FTimerHandle IgniTimer;
@@ -95,6 +98,8 @@ protected:
 	//void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
 
 	void InitPlayerActor();
+
+	void InitStoryTeller();
 
 	void UpdateLabel(FString EnemyClass);
 

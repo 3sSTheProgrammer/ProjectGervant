@@ -11,6 +11,8 @@
 #include "StoryTellerActor.generated.h"
 
 class AEnemyActorParent;
+class USoundCue;
+class UAudioComponent;
 
 UCLASS()
 class PROJECTGERVANT_API AStoryTellerActor : public AActor
@@ -31,6 +33,18 @@ public:
 	UPROPERTY(EditAnywhere, Category = Parameters)
 		float MaxZSpawnCoordinate{ 1000.f };
 	//UTutorialWidget* TutorialWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* Level1BackgroundSound;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* Level2BackgroundSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+		USoundCue* Level3BackgroundSound;
 
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "HumanEnemy"),
@@ -112,20 +126,23 @@ private:
 
 	TArray<SIZE_T> SpawnPointZs;
 
+	int EnemiesAmountOnLevel{ 0 };
+
+	UAudioComponent* CurrentLevelBackgroundSound;
 public:	
 	// Sets default values for this actor's properties
 	AStoryTellerActor();
+
+	int GetAmountOfKillsNeeded();
+
+	void StopBackgroundSound();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 private:
-	
+
 	void FirstLevelScript();
 
 	void SecondLevelScript();
@@ -143,7 +160,9 @@ private:
 	 * @param NumberOfEnemies Number of spawning enemies 
 	 * @param SpawnSide -1 - left, 1 - right, 0 - both
 	*/
-	void SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType, SIZE_T NumberOfEnemies, SIZE_T SpawnSide);
+	void SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType, int NumberOfEnemies, int SpawnSide);
 
 	TArray<FVector> GenerateSpawnPoints(SIZE_T NumberOfPoints, SIZE_T ScreenSide);
+
+	void SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType, int NumberOfEnemies, int SpawnSide, float Delay);
 };

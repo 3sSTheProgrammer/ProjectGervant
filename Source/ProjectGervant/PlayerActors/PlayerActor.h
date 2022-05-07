@@ -10,6 +10,7 @@ class AEnemyActorParent;
 class USoundCue;
 class AKvenActor;
 class UUW_WitcherSignsInterface;
+class AStoryTellerActor;
 
 UCLASS()
 class PROJECTGERVANT_API APlayerActor : public AActor
@@ -25,6 +26,8 @@ protected:
 	UUW_WitcherSignsInterface* GameInterface;
 
 	TSubclassOf<class UUserWidget> GameInterfaceClass;
+
+	AStoryTellerActor* StoryTeller;
 
 public:
 
@@ -138,4 +141,5 @@ public:
 
 	void InvokeLevelCompleted();
 		
+	void InitStoryTeller();
 };
