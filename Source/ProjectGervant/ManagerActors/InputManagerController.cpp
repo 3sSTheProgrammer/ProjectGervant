@@ -11,26 +11,16 @@ AInputManagerController::AInputManagerController()
 
 	if (GameInterfaceUIBPClass.Class != nullptr)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("widget class found"));
 		GameInterfaceClass = GameInterfaceUIBPClass.Class;
 	}
-
-	//static ConstructorHelpers::FClassFinder<UUserWidget> PauseMenuUIBPClass(TEXT("/Game/ProjectGervant/Menus/PauseMenu/PauseMenuWidget"));
-
-	//if (PauseMenuUIBPClass.Class != nullptr)
-	//{
-	//	//UE_LOG(LogTemp, Warning, TEXT("pause widget class found"));
-	//	PauseMenuClass = GameInterfaceUIBPClass.Class;
-	//}
 }
 
 
 void AInputManagerController::BeginPlay()
 {
 	Super::BeginPlay();
-	//UE_LOG(LogTemp, Warning, TEXT("AZAZA"));
-	HumanBeamActor = (ABeamActor*)GetBeamActor(0);
-	MonsterBeamActor = (ABeamActor*)GetBeamActor(1);
+	HumanBeamActor = static_cast<ABeamActor*>(GetBeamActor(0));
+	MonsterBeamActor = static_cast<ABeamActor*>(GetBeamActor(1));
 
 	if (GameInterfaceClass != nullptr)
 	{
@@ -40,7 +30,6 @@ void AInputManagerController::BeginPlay()
 			GameInterface->AddToViewport();
 			GameInterface->SetVisibility(ESlateVisibility::Hidden);
 			GameInterface->SetIsEnabled(true);
-			//GameInterface->SetOwningPlayer(this);
 		}
 	}
 }
@@ -68,7 +57,9 @@ void AInputManagerController::SetupInputComponent()
 		this, &AInputManagerController::SetPause);
 }
 
-
+/**
+ * @brief Reaction to Rotate Human Beam input
+*/
 void AInputManagerController::RotateHumanBeam(float input)
 {
 	if (input != 0)
@@ -77,6 +68,9 @@ void AInputManagerController::RotateHumanBeam(float input)
 	}
 }
 
+/**
+ * @brief Reaction to Rotate Monster Beam input
+*/
 void AInputManagerController::RotateMonsterBeam(float input)
 {
 	if (input != 0)
@@ -85,9 +79,14 @@ void AInputManagerController::RotateMonsterBeam(float input)
 	}
 }
 
+ 
+/**
+ * Gets a pointer to a beam actor object
+ * @param marker - defines if human(0) or monster(1) beam should be found
+ * @return human/monster actor pointer
+*/
 AActor* AInputManagerController::GetBeamActor(int marker)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("getbeamactor started"));
 	FName Tag;
 	FString ActorName;
 	if (marker == 0)
@@ -114,12 +113,9 @@ AActor* AInputManagerController::GetBeamActor(int marker)
 	{		
 		for (int i = 0; i < AnotherActors.Num(); ++i)
 		{
-			ABeamActor* Actor = (ABeamActor*)AnotherActors[i];
-			//UE_LOG(LogTemp, Warning, TEXT("actor real name %s"), *Actor->GetName());
-			//UE_LOG(LogTemp, Warning, TEXT("actor supposed name %s"), *ActorName);
+			ABeamActor* Actor = static_cast<ABeamActor*>(AnotherActors[i]);
 			if (*Actor->GetName() == ActorName)
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("VIZHU DRUGOI ACTOR %s"), *Actor->GetName());
 				AnotherActor = Actor;
 			}
 		}
@@ -128,10 +124,12 @@ AActor* AInputManagerController::GetBeamActor(int marker)
 	return AnotherActor;
 }
 
+/**
+ * @brief Reactions to Use sign input
+ */
 void AInputManagerController::UseIgni()
 {
 	GameInterface->UseSign("Igni");
-	//PlayerActor->UseIgni();
 }
 
 void AInputManagerController::UseAksii()
@@ -149,10 +147,11 @@ void AInputManagerController::UseAard()
 	GameInterface->UseSign("Aard");
 }
 
+/**
+ * @brief  Reaction to pause input
+ */
 void AInputManagerController::SetPause()
 {
-	//this->SetPause();
-	//UGameplayStatics::SetGamePaused(GetWorld(), true);
 	if (PauseMenuWidgetClass != nullptr)
 	{
 		UUserWidget* PauseMenu = CreateWidget<UUserWidget>(GetWorld(), PauseMenuWidgetClass);

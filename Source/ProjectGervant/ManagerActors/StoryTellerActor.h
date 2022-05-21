@@ -87,7 +87,7 @@ public:
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
 		//TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
-		TSubclassOf<AActor> UMonsterEnemyDrowner;
+		TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
@@ -133,7 +133,7 @@ public:
 	// Sets default values for this actor's properties
 	AStoryTellerActor();
 
-	int GetAmountOfKillsNeeded();
+	int GetAmountOfKillsNeeded() const;
 
 	void StopBackgroundSound();
 

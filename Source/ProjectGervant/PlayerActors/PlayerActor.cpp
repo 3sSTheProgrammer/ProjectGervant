@@ -219,6 +219,10 @@ void APlayerActor::InvokeLevelCompleted()
 			UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), LevelCompletedWidgetClass);
 			if (CurrentWidget != nullptr)
 			{
+				if (StoryTeller == nullptr)
+				{
+					InitStoryTeller();
+				}
 				CurrentWidget->AddToViewport();
 				PlayerController->SetInputMode(FInputModeUIOnly());
 				PlayerController->bShowMouseCursor = true;

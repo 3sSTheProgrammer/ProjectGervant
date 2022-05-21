@@ -203,6 +203,10 @@ void AEnemyActorParent::ReceiveDamage(float DamageAmount)
 		{
 			Interface->AddKill(EnemyClass);
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Interface is null"));
+		}
 		
 		FVector SpawnLocation{ GetActorLocation() };
 

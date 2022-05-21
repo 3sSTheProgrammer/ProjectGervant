@@ -8,7 +8,7 @@
 //#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
-//#include "Kismet/KismetArrayLibrary.h"
+
 
 // Sets default values
 AStoryTellerActor::AStoryTellerActor()
@@ -20,13 +20,11 @@ AStoryTellerActor::AStoryTellerActor()
 	for (SIZE_T i = 0; i < MaxEnemiesOnOneSide; ++i)
 	{
 		float ZCoord = MinZSpawnCoordinate + (MaxZSpawnCoordinate - MinZSpawnCoordinate) / (MaxEnemiesOnOneSide - 1) * i;
-		//UE_LOG
-		//SpawnPointZs.Add(100 + i * 300);
 		SpawnPointZs.Add(ZCoord);
 	}
 }
 
-int AStoryTellerActor::GetAmountOfKillsNeeded()
+int AStoryTellerActor::GetAmountOfKillsNeeded() const
 {
 	return EnemiesAmountOnLevel;
 }
@@ -44,8 +42,8 @@ void AStoryTellerActor::BeginPlay()
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level2"), 2);
 
-	UWorld* TheWorld = GetWorld();
-	FString CurrentLevel = TheWorld->GetMapName();
+	const UWorld* TheWorld = GetWorld();
+	const FString CurrentLevel = TheWorld->GetMapName();
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
 
 	switch (LevelNameMap[CurrentLevel])
@@ -90,11 +88,19 @@ void AStoryTellerActor::SecondLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("2 level"));
 
-	EnemiesAmountOnLevel = 25;
+	EnemiesAmountOnLevel = 30;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
-	SpawnEnemyGroup(SpawnEnemyType, SpawnEnemiesNumberTest, ScreenSideTest);
+	//SpawnEnemyGroup(SpawnEnemyType, EnemiesAmountOnLevel, ScreenSideTest);
+	float WaveDelay = 1.f;
+	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
+	WaveDelay += 8;
+	SetSpawnTimer(UHumanEnemyBrigand1, 4, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 4, 1, WaveDelay);
+	WaveDelay += 4;
+	SetSpawnTimer(UHumanEnemyBrigand1, 4, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 4, -1, WaveDelay);
 }
 
 void AStoryTellerActor::SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType, 
@@ -206,5 +212,9 @@ void AStoryTellerActor::SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType,
 
 void AStoryTellerActor::StopBackgroundSound()
 {
-	CurrentLevelBackgroundSound->SetActive(false);
+	if (CurrentLevelBackgroundSound != nullptr)
+	{
+		CurrentLevelBackgroundSound->SetActive(false);
+	}
+	
 }

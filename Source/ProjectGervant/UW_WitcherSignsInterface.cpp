@@ -3,17 +3,14 @@
 #include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
-#include "ProjectGervant/PlayerActors/Signs/IgniActor.h"
-#include "ProjectGervant/PlayerActors/Signs/AardActor.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "ProjectGervant/ManagerActors/StoryTellerActor.h"
 
-//UUW_WitcherSignsInterface::UUW_WitcherSignsInterface()
-//{
-//	PrimaryActorTick.bCanEverTick = true;
-//}
 
+/**
+ @brief Constructor. Sets default values for fields 
+ */
 void UUW_WitcherSignsInterface::NativeConstruct()
 {
 	UUserWidget::NativeConstruct();
@@ -32,6 +29,9 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 	WorldTimerManager = GetWorld()->GetTimerManager();*/
 }
 
+/**
+ @brief Native tick of widget. Checks if signs cooldowns are active and updates its progress
+*/
 void UUW_WitcherSignsInterface::NativeTick(const FGeometry& MyGeometry, float DeltaTime)
 {
 	UUserWidget::NativeTick(MyGeometry, DeltaTime);
@@ -79,14 +79,17 @@ void UUW_WitcherSignsInterface::NativeTick(const FGeometry& MyGeometry, float De
 			AardProgressBar->SetPercent(AardRemainingTime / AardCooldown);
 		}
 	}
-	
 }
 
-void UUW_WitcherSignsInterface::SetSignCooldownTimer(FString SignName)
+/**
+ @brief Starts cooldown of chosen sign
+ @param SignName name of sign
+*/
+void UUW_WitcherSignsInterface::SetSignCooldownTimer(const FString SignName)
 {
-	bool* IsSignAvailable{ nullptr };
-	FTimerHandle* SignTimer{ nullptr };
-	float* SignCooldown{ nullptr };
+	bool* IsSignAvailable; //{ nullptr }
+	FTimerHandle* SignTimer; //{ nullptr }
+	float* SignCooldown; //{ nullptr }
 	FTimerDelegate SignDelegate;
 
 	if (SignName == "Igni")
@@ -129,10 +132,14 @@ void UUW_WitcherSignsInterface::SetSignCooldownTimer(FString SignName)
 	}
 }
 
-void UUW_WitcherSignsInterface::RefreshSign(FString SignName)
+/**
+ @brief Updates progress bar for chosen sign
+ @param SignName updates sign name
+*/
+void UUW_WitcherSignsInterface::RefreshSign(const FString SignName)
 {
-	UProgressBar* SignProgressBar{ nullptr };
-	bool* IsSignAvailable{ nullptr };
+	UProgressBar* SignProgressBar; //{ nullptr }
+	bool* IsSignAvailable; //{ nullptr }
 	
 	if (SignName == "Igni")
 	{
@@ -163,11 +170,13 @@ void UUW_WitcherSignsInterface::RefreshSign(FString SignName)
 	SignProgressBar->SetPercent(0.f);
 }
 
-//TODO: move usage stuff to another actor mb
-void UUW_WitcherSignsInterface::UseSign(FString SignName)
+/**
+ @brief Checks if sign is available and uses it
+ @param SignName Name of used sign
+*/
+void UUW_WitcherSignsInterface::UseSign(const FString SignName)
 {
-	
-	bool* IsSignAvailable{ nullptr };
+	bool* IsSignAvailable; //{ nullptr }
 	
 	if (SignName == "Igni")
 	{
@@ -195,117 +204,80 @@ void UUW_WitcherSignsInterface::UseSign(FString SignName)
 		else if (SignName == "Aksii") Aksii();
 		else if (SignName == "Kven") Kven();
 		else if (SignName == "Aard") Aard();
-
-		//UE_LOG(LogTemp, Warning, TEXT("You used %s"), *SignName);
 		
 		SetSignCooldownTimer(SignName);
 	}
-
 }
 
-
-
-void UUW_WitcherSignsInterface::Igni()
+/**
+	@brief Make player use Igni
+*/
+void UUW_WitcherSignsInterface::Igni() const
 {
-	//Spawn an Igni actor
-	//It increases scale until it occupies half of the screen
-	//OnOverlapBegin damages all enemies and kills them (?)
 	if (PlayerActor != nullptr) PlayerActor->UseIgni();
 }
 
-void UUW_WitcherSignsInterface::Aksii()
+/**
+	@brief Make player use Aksii
+*/
+void UUW_WitcherSignsInterface::Aksii() const
 {
-	//Stops all human enemies
-	//Get all enemies by tag (add tag to EnemyParentActor with this->Tags.Add())
-	//Add IsStopped bool var to EnemyParentActor
-	//Set IsStopped = true to all human enemies for 3 seconds
-	//Add some animations to them
 	if (PlayerActor != nullptr) PlayerActor->UseAksii();
-	//return;
-
-	//TArray<AActor*> EnemyActors;
-	//UGameplayStatics::GetAllActorsWithTag(
-	//	GetWorld(), "Enemy", EnemyActors);
-
-	////UE_LOG(LogTemp, Warning, TEXT("Found %d enemies"), EnemyActors.Num());
-
-	//TArray<AEnemyActorParent*> StoppedEnemies;
-	//for (AActor* Actor : EnemyActors)
-	//{
-	//	AEnemyActorParent* Enemy = Cast<AEnemyActorParent>(Actor);
-	//	if (Enemy != nullptr)
-	//	{
-	//		if (Enemy->GetEnemyClass() == "Human")
-	//		{
-	//			//UE_LOG(LogTemp, Warning, TEXT("Stopping an enemy"));
-	//			Enemy->SetIsStopped(true);
-	//			StoppedEnemies.Add(Enemy);
-	//		}
-	//	}
-	//}
-
-	//FTimerHandle Timer;
-	//FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, 
-	//	&UUW_WitcherSignsInterface::UnstopEnemies, StoppedEnemies);
-	//GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 3.f, false);
-
-	
 }
 
-//void UUW_WitcherSignsInterface::UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies)
-//{
-//	for (AEnemyActorParent* Enemy : StoppedEnemies)
-//	{
-//		Enemy->SetIsStopped(false);
-//	}
-//}
-
-
-
-//TODO: check if Kven is already used
-void UUW_WitcherSignsInterface::Kven()
+/**
+ @brief Make player use Kven
+*/
+void UUW_WitcherSignsInterface::Kven() const
 {
-	//Spawn a KvenShieldActor
-	//Set player actor's IsKvenActive to true
-	//p.s get player actor in begin play or smthg
-	
 	if (PlayerActor != nullptr) PlayerActor->UseKven();
 }
 
-void UUW_WitcherSignsInterface::Aard()
+/**
+ @brief Make player use Aard
+*/
+void UUW_WitcherSignsInterface::Aard() const
 {
-	//Stop all enemies
-	//Make them move back with 300-500 ms for a second
-	//Unstop stopped enemies
-	//Add function to move back to EnemyParentActor
-
 	if (PlayerActor != nullptr) PlayerActor->UseAard();
-	
-	/*GetWorld()->SpawnActor<AAardActor>(
-		AardActor, FVector::ZeroVector,
-		FRotator::ZeroRotator);*/
 }
 
-int UUW_WitcherSignsInterface::GetMonsterKillCount()
-{
-	return MonsterKillCount;
-}
+/**
+ @return Current monster kill counter value 
+*/
+// int UUW_WitcherSignsInterface::GetMonsterKillCount() const
+// {
+// 	return MonsterKillCount;
+// }
 
-int UUW_WitcherSignsInterface::GetHumanKillCount()
-{
-	return HumanKillCount;
-}
+/**
+ @return Current human kill counter value 
+*/
+// int UUW_WitcherSignsInterface::GetHumanKillCount() const
+// {
+// 	return HumanKillCount;
+// }
 
+/**
+ @brief Increase human kill counter 
+*/
 void UUW_WitcherSignsInterface::AddHumanKill()
 {
 	HumanKillCount += 1;
 }
 
+/**
+ @brief Increase monster kill counter 
+*/
 void UUW_WitcherSignsInterface::AddMonsterKill()
 {
 	MonsterKillCount += 1;
 }
 
+/**
+	@param EnemyClass "Human"/"Monster"
+	@brief Increases counter of killed enemies. If counter is more than
+	number of enemies on this level than end level  
+*/
 void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 {
 	if (EnemyClass == "Monster")
@@ -327,23 +299,19 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 		InitStoryTeller();
 	}
 	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
-	/*if (StoryTeller != nullptr)
-	{
-		
-	}
-	else
-	{
-		MaxKills = 10;
-		UE_LOG(LogTemp, Warning, TEXT("StoryTeller is null"));
-	}*/
-	//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
+	UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
+	UE_LOG(LogTemp, Warning, TEXT("Score %d"), TotalDeadEnemies);
 	if (TotalDeadEnemies >= MaxKills)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
+		
 		PlayerActor->InvokeLevelCompleted();
 	}
 }
 
+/**
+ @brief Updates label with kill counter
+ @param EnemyClass "Human"/"Monster"
+ */
 void UUW_WitcherSignsInterface::UpdateLabel(FString EnemyClass)
 {
 	if (EnemyClass == "Monster")
@@ -362,6 +330,10 @@ void UUW_WitcherSignsInterface::UpdateLabel(FString EnemyClass)
 	}
 }
 
+/**
+ @brief Updates HP bar to current player health
+ @param HealthAmount current player HP
+*/
 void UUW_WitcherSignsInterface::SetHP(float HealthAmount)
 {
 	HPProgressBar->SetPercent(HealthAmount / 100.f);
@@ -380,19 +352,33 @@ void UUW_WitcherSignsInterface::SetHP(float HealthAmount)
 	
 }
 
+/**
+    @param EnemyClass "Human"/"Monster"
+    @brief Adds an enemy which was not killed by player to
+    total dead enemy counter. If counter is more than
+    number of enemies on this level than end level  
+*/
 void UUW_WitcherSignsInterface::AddNotKilledEnemy(FString EnemyClass)
 {
-	/*if (EnemyClass == "Monster")
-	{
-		MonsterNotKillCount += 1;
-	}
-	else if (EnemyClass == "Human")
-	{
-		HumanNotKillCount += 1;
-	}*/
 	TotalDeadEnemies += 1;
+
+	if (StoryTeller == nullptr)
+	{
+		InitStoryTeller();
+	}
+	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
+	
+	if (TotalDeadEnemies >= MaxKills)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
+		PlayerActor->InvokeLevelCompleted();
+	}
 }
 
+/**
+ @brief Find player actor in the level and get needed info
+ from it (sign cooldowns)
+*/
 void UUW_WitcherSignsInterface::InitPlayerActor()
 {
 	TArray<AActor*> PlayerActors;
@@ -408,6 +394,9 @@ void UUW_WitcherSignsInterface::InitPlayerActor()
 	}
 }
 
+/**
+ @brief Find Story Teller in the level
+*/
 void UUW_WitcherSignsInterface::InitStoryTeller()
 {
 	TArray<AActor*> StoryTellers;
@@ -415,6 +404,6 @@ void UUW_WitcherSignsInterface::InitStoryTeller()
 		GetWorld(), "StoryTeller", StoryTellers);
 	if (StoryTellers.Num() > 0)
 	{
-		StoryTeller = (AStoryTellerActor*)StoryTellers[0];
+		StoryTeller = static_cast<AStoryTellerActor*>(StoryTellers[0]);
 	}
 }

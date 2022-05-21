@@ -2,9 +2,6 @@
 
 #pragma once
 
-//#include "ProjectGervant/PlayerActors/PlayerActor.h"
-
-
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputManagerController.generated.h"
@@ -21,35 +18,42 @@ class PROJECTGERVANT_API AInputManagerController : public APlayerController
 	GENERATED_BODY()
 
 private:
+	// References to human and monster beams
+	UPROPERTY()
 	ABeamActor* HumanBeamActor{ nullptr };
+	UPROPERTY()
 	ABeamActor* MonsterBeamActor{ nullptr };
 
 protected:
 	virtual void BeginPlay() override;
 
-	//APlayerActor* PlayerActor;
-
-	// Dynamic reference to the blueprint class
+	// Reference to game interface widget class
 	TSubclassOf<class UUserWidget> GameInterfaceClass;
 
+	// Reference to pause menu widget class
 	TSubclassOf<class UUserWidget> PauseMenuClass;
 
-	// Internal reference to the blueprint for gameplay logic
+	// Reference to game interface widget 
 	UPROPERTY(BlueprintReadWrite, Category = "UI")
 		class UUW_WitcherSignsInterface* GameInterface;
 
-	//UPROPERTY(BlueprintReadWrite, Category = "UI")
-	//	class UUserWidget* PauseMenu;
-
+	// Reference to pause menu widget
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> PauseMenuWidgetClass;
 public:
+	// Constructor
 	AInputManagerController();
-
+	
 	virtual void SetupInputComponent() override;
 
+	/**
+	 @brief Reaction to Rotate Human Beam input
+	*/
 	void RotateHumanBeam(float input);
 
+	/**
+	 @brief Reaction to Rotate Monster Beam input
+	*/
 	void RotateMonsterBeam(float input);
 
 	/**
@@ -60,13 +64,16 @@ public:
 	//TODO: change marker to be FString
 	AActor* GetBeamActor(int marker);
 
+	/**
+	* @brief Reactions to Use sign input
+	*/
 	void UseIgni();
-
 	void UseAksii();
-	
 	void UseKven();
-	
 	void UseAard();
 
+	/**
+	* @brief  Reaction to pause input
+	*/
 	void SetPause();
 };

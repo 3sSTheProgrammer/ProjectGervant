@@ -20,16 +20,22 @@ class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
 
 
 protected:
-	
+	// Amount of monster kills 
 	int MonsterKillCount;
+	
+	// Amount of human kills
 	int HumanKillCount;
-	//int MonsterNotKillCount;
-	//int HumanNotKillCount;
+	
+	// Total enemies that died on level
 	int TotalDeadEnemies;
 
+	// Reference to story teller
+	UPROPERTY()
 	AStoryTellerActor* StoryTeller;
 
 	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
+
+	// Sign cooldowns, availability and time remaining till availability
 	FTimerHandle IgniTimer;
 	float IgniCooldown;
 	bool IsIgniAvailable{ true };
@@ -50,6 +56,7 @@ protected:
 	bool IsAardAvailable{ true };
 	float AardRemainingTime{ 0.f };
 
+	// Widget components
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* IgniProgressBar;
 	UPROPERTY(meta = (BindWidget))
@@ -67,65 +74,123 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* HPProgressBar;
 
-	UPROPERTY(EditAnywhere, Category = "Actors")
-		TSubclassOf<AIgniActor> IgniActor;
-
-	UPROPERTY(EditAnywhere, Category = "Actors")
-		TSubclassOf<AAardActor> AardActor;
-
-	/*UPROPERTY(EditAnywhere, Category = "Actors")
-		TSubclassOf <APlayerActor> PlayerActor;*/
+	// Reference to player actor
+	UPROPERTY()
 	APlayerActor* PlayerActor;
 
+	// Colors for HP bar
 	FLinearColor HighHPColor;
 	FLinearColor MediumHPColor;
 	FLinearColor LowHPColor;
 
+	/**
+		@brief Native tick of widget. Checks if signs cooldowns are active and updates its progress
+	*/
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
-	//FTimerManager& WorldTimerManager = GetWorld()->GetTimerManager();
-
+	/**
+	 @brief Updates progress bar for chosen sign
+	 @param SignName updates sign name
+	*/
 	void RefreshSign(FString SignName);
 
-	void Igni();
+	/**
+		@brief Make player use Igni
+	*/
+	void Igni() const;
 
-	void Aksii();
+	/**
+		@brief Make player use Aksii
+	*/
+	void Aksii() const;
 
-	void Kven();
+	/**
+	 @brief Make player use Kven
+	*/
+	void Kven() const;
 
-	void Aard();
+	/**
+	 @brief Make player use Aard
+	*/
+	void Aard() const;
 
-	//void UnstopEnemies(TArray<AEnemyActorParent*> StoppedEnemies);
-
+	/**
+	 @brief Find player actor in the level and get needed info
+	 from it (sign cooldowns)
+	*/
 	void InitPlayerActor();
 
+	/**
+	 @brief Find Story Teller in the level
+	*/
 	void InitStoryTeller();
 
+	/**
+	 @brief Updates label with kill counter
+	 @param EnemyClass "Human"/"Monster"
+	*/
 	void UpdateLabel(FString EnemyClass);
 
 public:
-
+	/**
+	 @brief Constructor. Sets default values for fields 
+	*/
 	virtual void NativeConstruct() override;
 
+	/**
+	 @brief Starts cooldown of chosen sign
+	 @param SignName name of sign
+	*/
 	void SetSignCooldownTimer(FString SignName);
 
+	/**
+	 @brief Checks if sign is available and uses it
+	 @param SignName Name of used sign
+	*/
 	void UseSign(FString SignName);
 	//UUW_WitcherSignsInterface();
 
-	UFUNCTION(BlueprintCallable)
-		int GetMonsterKillCount();
+	/**
+	 @return Current monster kill counter value 
+	*/
+	// UFUNCTION(BlueprintCallable)
+	// 	int GetMonsterKillCount() const;
 
-	UFUNCTION(BlueprintCallable)
-		int GetHumanKillCount();
+	/**
+	 @return Current human kill counter value 
+	*/
+	// UFUNCTION(BlueprintCallable)
+	// 	int GetHumanKillCount() const;
 
+	/**
+	 @brief Increase human kill counter 
+	*/
 	void AddHumanKill();
 
+	/**
+	 @brief Increase monster kill counter 
+	*/
 	void AddMonsterKill();
 
+	/**
+		@param EnemyClass "Human"/"Monster"
+		@brief Increases counter of killed enemies. If counter is more than
+		number of enemies on this level than end level  
+	*/
 	void AddKill(FString EnemyClass);
 
+	/**
+	 @param EnemyClass "Human"/"Monster"
+	 @brief Adds an enemy which was not killed by player to
+	 total dead enemy counter. If counter is more than
+	 number of enemies on this level than end level  
+	*/
 	void AddNotKilledEnemy(FString EnemyClass);
 
+	/**
+	 @brief Updates HP bar to current player health
+	 @param HealthAmount current player HP
+	*/
 	void SetHP(float HealthAmount);
 	
 };
