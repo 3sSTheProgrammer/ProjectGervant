@@ -305,6 +305,7 @@ void AEnemyActorParent::MovementManager(float Time)
 		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
 		if (Interface != nullptr)
 		{
+			//UE_LOG(LogTemp, Warning, TEXT("A chto takoe interface???"));
 			Interface->AddNotKilledEnemy(EnemyClass);
 		}
 	}

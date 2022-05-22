@@ -88,7 +88,7 @@ void AStoryTellerActor::SecondLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("2 level"));
 
-	EnemiesAmountOnLevel = 30;
+	EnemiesAmountOnLevel = 60;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
@@ -101,6 +101,16 @@ void AStoryTellerActor::SecondLevelScript()
 	WaveDelay += 4;
 	SetSpawnTimer(UHumanEnemyBrigand1, 4, 1, WaveDelay);
 	SetSpawnTimer(UMonsterEnemyDrowner, 4, -1, WaveDelay);
+	
+	WaveDelay += 16;
+	SetSpawnTimer(UHumanEnemyBrigand1, 4, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 4, -1, WaveDelay);
+	WaveDelay += 4;
+	SetSpawnTimer(UHumanEnemyBrigand1, 4, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 4, 1, WaveDelay);
+	WaveDelay += 8;
+	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
+	
 }
 
 void AStoryTellerActor::SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType, 

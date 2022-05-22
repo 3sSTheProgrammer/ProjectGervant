@@ -2,7 +2,7 @@
 
 #include "MonsterEnemyNekker.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
-
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
 
 AMonsterEnemyNekker::AMonsterEnemyNekker()
 {
@@ -39,8 +39,17 @@ void AMonsterEnemyNekker::MovementManager(float Time)
 	//UE_LOG(LogTemp, Warning, TEXT("0"));
 	if (GetDistanceToPoint(FVector::ZeroVector) < 100)
 	{
-		PlayerActor->ReceiveDamage(Damage);
+		// PlayerActor->ReceiveDamage(Damage);
+		// Destroy();
+
 		Destroy();
+		PlayerActor->ReceiveDamage(Damage);
+		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
+		if (Interface != nullptr)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("A chto takoe interface???"));
+			Interface->AddNotKilledEnemy(EnemyClass);
+		}
 	}
 
 	if (PassedThirdPoint)

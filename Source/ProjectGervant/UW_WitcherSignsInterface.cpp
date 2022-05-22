@@ -299,11 +299,10 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 		InitStoryTeller();
 	}
 	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
-	UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
+	//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
 	UE_LOG(LogTemp, Warning, TEXT("Score %d"), TotalDeadEnemies);
 	if (TotalDeadEnemies >= MaxKills)
 	{
-		
 		PlayerActor->InvokeLevelCompleted();
 	}
 }
@@ -367,7 +366,7 @@ void UUW_WitcherSignsInterface::AddNotKilledEnemy(FString EnemyClass)
 		InitStoryTeller();
 	}
 	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
-	
+	UE_LOG(LogTemp, Warning, TEXT("Score %d"), TotalDeadEnemies);
 	if (TotalDeadEnemies >= MaxKills)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);

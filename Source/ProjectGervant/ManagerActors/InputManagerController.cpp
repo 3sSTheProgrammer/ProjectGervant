@@ -129,6 +129,7 @@ AActor* AInputManagerController::GetBeamActor(int marker)
  */
 void AInputManagerController::UseIgni()
 {
+	//UE_LOG(LogTemp, Warning, TEXT("Controller uses igni"));
 	GameInterface->UseSign("Igni");
 }
 
