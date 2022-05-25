@@ -147,6 +147,7 @@ private:
 
 	void SecondLevelScript();
 
+	void ThirdLevelScript();
 	/**
 	 * @brief Spawns a single enemy of EnemyType in specified coordinates
 	 * @param EnemyType Type of spawning enemy

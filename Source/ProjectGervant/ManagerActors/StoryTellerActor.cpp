@@ -41,7 +41,8 @@ void AStoryTellerActor::BeginPlay()
 
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level2"), 2);
-
+	LevelNameMap.Add(TEXT("UEDPIE_0_Level3"), 3);
+	
 	const UWorld* TheWorld = GetWorld();
 	const FString CurrentLevel = TheWorld->GetMapName();
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
@@ -56,6 +57,10 @@ void AStoryTellerActor::BeginPlay()
 		SecondLevelScript();
 		break;
 
+	case 3:
+		ThirdLevelScript();
+		break;
+		
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("unknown level"));
 		break;
@@ -88,27 +93,55 @@ void AStoryTellerActor::SecondLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("2 level"));
 
-	EnemiesAmountOnLevel = 60;
-	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
+	EnemiesAmountOnLevel = 76;
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level2BackgroundSound);
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
 	//SpawnEnemyGroup(SpawnEnemyType, EnemiesAmountOnLevel, ScreenSideTest);
 	float WaveDelay = 1.f;
 	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
 	WaveDelay += 8;
-	SetSpawnTimer(UHumanEnemyBrigand1, 4, -1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 4, 1, WaveDelay);
-	WaveDelay += 4;
-	SetSpawnTimer(UHumanEnemyBrigand1, 4, 1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 4, -1, WaveDelay);
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
 	
-	WaveDelay += 16;
-	SetSpawnTimer(UHumanEnemyBrigand1, 4, 1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 4, -1, WaveDelay);
-	WaveDelay += 4;
-	SetSpawnTimer(UHumanEnemyBrigand1, 4, -1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 4, 1, WaveDelay);
+	WaveDelay += 12;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
+	
+}
+
+void AStoryTellerActor::ThirdLevelScript()
+{
+	UE_LOG(LogTemp, Warning, TEXT("3 level"));
+
+	EnemiesAmountOnLevel = 76;
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level3BackgroundSound);
+
+	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
+	float WaveDelay = 1.f;
+	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
 	WaveDelay += 8;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
+	
+	WaveDelay += 12;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
+	WaveDelay += 6;
 	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
 	
 }
