@@ -18,10 +18,13 @@ protected:
 
 	bool PassedTeleportationPoint{ false };
 
-	// 0 - moving to player after spawn
-	
-	//int Status;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+	Category = "Sound")
+	USoundCue* SmokeSound;
 
+	UPROPERTY(EditAnywhere, Category = Materials)
+	TSubclassOf<AActor> SmokeActor;
+	
 	FVector TeleportationPoint;
 public:
 	AMonsterEnemyWraith();

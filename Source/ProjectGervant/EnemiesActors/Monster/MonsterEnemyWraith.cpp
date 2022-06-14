@@ -1,7 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MonsterEnemyWraith.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "ProjectGervant/UW_WitcherSignsInterface.h"
 #include "ProjectGervant/PlayerActors/PlayerActor.h"
+#include "Sound/SoundCue.h"
 
 AMonsterEnemyWraith::AMonsterEnemyWraith()
 {
@@ -24,20 +28,29 @@ void AMonsterEnemyWraith::BeginPlay()
 
 void AMonsterEnemyWraith::MovementManager(float Time)
 {
-	if (GetDistanceToPoint(FVector::ZeroVector) < 100)
+	if (GetDistanceToPoint(FVector::ZeroVector) < DistanceFromCenterDeath)
 	{
-		PlayerActor->ReceiveDamage(Damage);
 		Destroy();
+		PlayerActor->ReceiveDamage(Damage);
+		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
+		if (Interface != nullptr)
+		{
+			Interface->AddNotKilledEnemy(EnemyClass);
+		}
 	}
 
 	if (!UsedHiding && Health <= MaxHealth / 2)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Teleporting"));
+		//UE_LOG(LogTemp, Warning, TEXT("Teleporting"));
 		UsedHiding = true;
 		SetActorEnableCollision(false);
 		SetActorHiddenInGame(true);
 		MovementSpeed = 0;
-
+		GetWorld()->SpawnActor<AActor>(
+				BurnedRemainsActor, GetActorLocation(),
+				FRotator::ZeroRotator);
+		UGameplayStatics::PlaySound2D(this, SmokeSound);
+		
 		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer, this, &AMonsterEnemyWraith::Teleport, 2.f);
 	}
@@ -46,28 +59,6 @@ void AMonsterEnemyWraith::MovementManager(float Time)
 		//UE_LOG(LogTemp, Warning, TEXT("Health %d"), MaxHealth);
 		Super::MovementManager(Time);
 	}
-		
-	//	if (!UsedHiding && Health <= MaxHealth / 2)
-	//{
-	//	UsedHiding = true;
-	//	FTimerHandle Timer;
-	//	GetWorldTimerManager().SetTimer(Timer, this, AMonsterEnemyWraith::Teleport, 2.f);
-	//	//MoveToPoint(GenerateTeleportationPoint(), Time);
-	//}
-	//else if (UsedHiding && !PassedTeleportationPoint)
-	//{
-	//	MoveToPoint(TeleportationPoint, Time);
-	//	if (GetDistanceToPoint(TeleportationPoint) < 20)
-	//	{
-	//		PassedTeleportationPoint = true;
-	//	}
-	//}
-	//else if (PassedTeleportationPoint)
-	//{
-	//	MoveToPoint(FVector::ZeroVector, Time);
-	//}
-		
-	
 }
 
 FVector AMonsterEnemyWraith::GenerateTeleportationPoint()

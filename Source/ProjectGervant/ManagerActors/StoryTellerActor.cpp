@@ -127,22 +127,7 @@ void AStoryTellerActor::ThirdLevelScript()
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
 	float WaveDelay = 1.f;
-	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
-	WaveDelay += 8;
-	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
-	WaveDelay += 6;
-	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
-	
-	WaveDelay += 12;
-	SetSpawnTimer(UHumanEnemyBrigand1, 6, 1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 6, -1, WaveDelay);
-	WaveDelay += 6;
-	SetSpawnTimer(UHumanEnemyBrigand1, 6, -1, WaveDelay);
-	SetSpawnTimer(UMonsterEnemyDrowner, 6, 1, WaveDelay);
-	WaveDelay += 6;
-	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNightwraith, 6, 0, WaveDelay);
 	
 }
 

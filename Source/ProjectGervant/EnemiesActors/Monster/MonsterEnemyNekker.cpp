@@ -37,7 +37,7 @@ void AMonsterEnemyNekker::BeginPlay()
 void AMonsterEnemyNekker::MovementManager(float Time)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("0"));
-	if (GetDistanceToPoint(FVector::ZeroVector) < 100)
+	if (GetDistanceToPoint(FVector::ZeroVector) < DistanceFromCenterDeath)
 	{
 		// PlayerActor->ReceiveDamage(Damage);
 		// Destroy();
