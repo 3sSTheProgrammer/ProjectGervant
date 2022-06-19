@@ -122,7 +122,7 @@ void AStoryTellerActor::ThirdLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("3 level"));
 
-	EnemiesAmountOnLevel = 76;
+	EnemiesAmountOnLevel = 6;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level3BackgroundSound);
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
