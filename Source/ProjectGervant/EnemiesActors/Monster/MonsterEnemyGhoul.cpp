@@ -7,6 +7,6 @@ AMonsterEnemyGhoul::AMonsterEnemyGhoul()
 {
 	MaxHealth = 100;
 	Health = MaxHealth;
-	MovementSpeed = 100; //200
+	MovementSpeed = 100;
 	Damage = 10;
 }

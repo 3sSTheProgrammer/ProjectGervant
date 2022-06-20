@@ -7,7 +7,6 @@
 #include "BeamActor.generated.h"
 
 class AEnemyActorParent;
-//class UCapsuleComponent;
 
 UCLASS()
 class PROJECTGERVANT_API ABeamActor : public AActor
@@ -18,8 +17,6 @@ private:
 	const float RotationVelocityPerSecond{ 90.f };
 	FRotator CurrentRotationVelocity{ 0 };
 	float DamagePerSecond{ 100 };
-
-	//UCapsuleComponent* CapsuleComponent;
 
 	FString BeamType;
 	

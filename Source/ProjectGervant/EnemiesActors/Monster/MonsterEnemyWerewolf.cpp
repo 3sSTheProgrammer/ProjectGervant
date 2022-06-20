@@ -7,7 +7,7 @@ AMonsterEnemyWerewolf::AMonsterEnemyWerewolf()
 {
 	MaxHealth = 200;
 	Health = MaxHealth;
-	MovementSpeed = 150; //200
+	MovementSpeed = 150;
 	Damage = 30;
 	RegenPerSecond = 25;
 	IsTransforming = false;

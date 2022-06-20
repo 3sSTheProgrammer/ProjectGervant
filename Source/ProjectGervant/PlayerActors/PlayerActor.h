@@ -29,10 +29,9 @@ protected:
 
 	AStoryTellerActor* StoryTeller;
 
+	APlayerController* PlayerController;
 public:
-
-
-	//TODO: Add another sounds
+	
 	// Sound when player is hit 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
@@ -77,7 +76,7 @@ public:
 		Category = Actors)
 		TSubclassOf<AKvenActor> KvenActorClass;
 
-	// TODO: hz pochemu ne rabotaet AIgniActor i AAardActor
+
 	UPROPERTY(EditAnywhere,
 		Category = Actors)
 		TSubclassOf<AActor> IgniActorClass;

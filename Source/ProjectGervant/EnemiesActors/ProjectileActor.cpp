@@ -11,8 +11,6 @@ AProjectileActor::AProjectileActor()
 
 void AProjectileActor::Tick(float DeltaTime)
 {
-	//TODO: Mb add mechanic to destroy the projectile
-	// 
 	if (IsAarded)
 	{
 		Destroy();
@@ -21,27 +19,4 @@ void AProjectileActor::Tick(float DeltaTime)
 	{
 		MovementManager(DeltaTime);
 	}
-	
-	//FVector CurrentLocation = GetActorLocation();
-
-	//// calculating moving coordinates
-	//float Angle = FGenericPlatformMath::Atan2(CurrentLocation.Y, CurrentLocation.Z);
-	//float MoveAmount = DeltaTime * MovementSpeed;
-
-	//CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
-	//CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
-
-	//// calculatig distance to destination point
-	//float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
-
-	//// if enemy reached player it destroys itself, otherwise continue moving
-	//if (DistanceFromCenter < 100)
-	//{
-	//	Destroy();
-	//	PlayerActor->ReceiveDamage(Damage);
-	//}
-	//else
-	//{
-	//	SetActorLocation(CurrentLocation);
-	//}
 }

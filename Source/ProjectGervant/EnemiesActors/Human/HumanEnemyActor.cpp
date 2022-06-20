@@ -9,11 +9,3 @@ AHumanEnemyActor::AHumanEnemyActor() :
 	EnemyClass = "Human";
 }
 
-void AHumanEnemyActor::BeginPlay()
-{
-	Super::BeginPlay();
-
-	//AEnemyActorParent::FindBeamActor("HumanBeam");
-
-	//AHumanEnemyActor::DamageFromBeam = AHumanEnemyActor::BeamActor->GetDamagePerSecond();
-}

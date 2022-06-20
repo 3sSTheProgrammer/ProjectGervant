@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "MonsterEnemyActor.h"
 #include "MonsterEnemyWerewolf.generated.h"
 
-//TODO: implement form change system
 /**
  * 
  */

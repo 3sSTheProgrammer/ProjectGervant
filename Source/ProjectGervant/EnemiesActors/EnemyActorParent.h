@@ -18,18 +18,10 @@ protected:
 
 	// Static mesh component saved for efficiency
 	UStaticMeshComponent* StaticMeshComponent;
-
-	//An enemy current health. Default value is 100
-	// Should be defined in constructor
-	//float Health{ 100 };
 	
 	// Maximum health that enemy can have
 	// Should be defined in constructor
 	float MaxHealth{ 100 };
-
-	// Amount of damage which the enemy inflicts to player
-	// Should be defined in constructor
-	//float Damage;
 
 	//Shows if the enemy is currently interacts with damaging beam
 	bool IsAttacked{ false };
@@ -45,12 +37,7 @@ protected:
 	bool KilledByIgni{ false };
 
 	// Defines if the enemy is Human or Monster
-	// TODO: LOW PRIORITY make an enum type EnemyClass
 	FString EnemyClass;
-	
-	// Enemy movement speed. Default value is 100 units per second
-	// Should be defined in constructor
-	//float MovementSpeed{ 100 };
 
 	// A player actor reference saved for efficiency 
 	APlayerActor* PlayerActor;
@@ -119,12 +106,6 @@ public:
 
 	// returns a class of enemy
 	FString GetEnemyClass();
-
-	//// Sets Attacked status
-	//void SetIsAttacked(bool Status);
-	//
-	//// Sets Healed status
-	//void SetIsHealed(bool Status);
 
 	// Sets IsAttacked or IsHealed status based on Interaction parameter
 	void SetBeamInteractionStatus(FString Interaction, bool Status);

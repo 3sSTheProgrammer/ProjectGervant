@@ -10,7 +10,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "ProjectGervant/UW_WitcherSignsInterface.h" 
 #include "ProjectGervant/ManagerActors/StoryTellerActor.h"
-//#include "GameFramework/GameModeBase.h"
+
 
 // Sets default values
 APlayerActor::APlayerActor()
@@ -40,18 +40,17 @@ void APlayerActor::BeginPlay()
 
 	if (StaticMeshComponents.Num() > 0)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("NUMOFCOMPONENTS: %d"), StaticMeshComponents.Num());
 		StaticMeshComponent = StaticMeshComponents[0];
 	}
 
 	InitStoryTeller();
+	PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 }
 
 void APlayerActor::InitHUDWidget()
 {
 	TArray<UUserWidget*> Widgets;
 	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), Widgets, GameInterfaceClass);
-	//UE_LOG(LogTemp, Warning, TEXT("WIDGETS: %d"), Widgets.Num());
 	if (Widgets.Num() > 0)
 	{
 		UUserWidget* Interface = Widgets[0];
@@ -107,7 +106,6 @@ void APlayerActor::UseKven()
 
 void APlayerActor::UseIgni()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Using Igni"));
 	UGameplayStatics::PlaySound2D(this, IgniSpawnSound);
 	GetWorld()->SpawnActor<AIgniActor>(
 		IgniActorClass, FVector::ZeroVector,
@@ -159,33 +157,12 @@ void APlayerActor::UseAard()
 		FRotator::ZeroRotator);
 }
 
-//.h
-//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
-//	TSubclassOf<UUserWidget> PauseMenuWidgetClass;
-//.cpp
-//if (PauseMenuWidgetClass != nullptr)
-//{
-//	UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), PauseMenuWidgetClass);
-//	if (CurrentWidget != nullptr)
-//	{
-//		CurrentWidget->AddToViewport();
-//		SetInputMode(FInputModeUIOnly());
-//		bShowMouseCursor = true;
-//		SetPause(true);
-//	}
-//}
 
-//TODO: Move to story teller mb
-//TODO: Save player controller as a field
-//TODO: Make a single function
 void APlayerActor::InvokeGameEnd()
 {
-
 	UE_LOG(LogTemp, Warning, TEXT("Game over"));
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController != nullptr) 
 	{
-		//PlayerController->SetPause(true);
 		if (GameOverWidgetClass != nullptr)
 		{
 			UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
@@ -204,14 +181,11 @@ void APlayerActor::InvokeGameEnd()
 			}
 		}
 	}
-	
-	//GetPlayerController
 }
 
 void APlayerActor::InvokeLevelCompleted()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Level Completed"));
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController != nullptr)
 	{
 		if (LevelCompletedWidgetClass != nullptr)

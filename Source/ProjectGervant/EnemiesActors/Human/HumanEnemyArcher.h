@@ -2,7 +2,7 @@
 
 #pragma once
 
-//#include "ProjectGervant/EnemiesActors/ProjectileActor.h"
+#include "CoreMinimal.h"
 #include "HumanEnemyActor.h"
 #include "HumanEnemyArcher.generated.h"
 

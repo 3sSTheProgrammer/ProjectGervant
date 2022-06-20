@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "MonsterEnemyActor.h"
 #include "MonsterEnemyWraith.generated.h"
 

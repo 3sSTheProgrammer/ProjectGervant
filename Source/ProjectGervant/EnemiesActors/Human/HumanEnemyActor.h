@@ -2,7 +2,7 @@
 
 #pragma once
 
-//#include "CoreMinimal.h"
+#include "CoreMinimal.h"
 #include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "HumanEnemyActor.generated.h"
 
@@ -16,10 +16,5 @@ class PROJECTGERVANT_API AHumanEnemyActor : public AEnemyActorParent
 
 public:
 	AHumanEnemyActor();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-
+	
 };

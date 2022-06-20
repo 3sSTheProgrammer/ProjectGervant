@@ -9,7 +9,7 @@ AHumanEnemyPeasant::AHumanEnemyPeasant()
 	SetActorEnableCollision(false);
 	MaxHealth = 100;
 	Health = MaxHealth;
-	MovementSpeed = 100; //200
+	MovementSpeed = 100;
 	Damage = 100;
 }
 
@@ -24,10 +24,8 @@ void AHumanEnemyPeasant::MovementManager(float Time)
 	CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
 	CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
 
-	// calculatig distance to destination point
+	// calculating distance to destination point
 	float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
-	/*float DistanceFromCenter = FGenericPlatformMath::Sqrt(FGenericPlatformMath::Pow(CurrentLocation.Y, 2)
-		+ FGenericPlatformMath::Pow(CurrentLocation.Z, 2));*/
 
 	// if enemy reached player it destroys itself, otherwise continue moving
 	if (DistanceFromCenter < 100)

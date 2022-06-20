@@ -26,11 +26,11 @@ void AHumanEnemyArcher::MovementManager(float Time)
 		CurrentLocation.Y -= MoveAmount * FGenericPlatformMath::Sin(Angle);
 		CurrentLocation.Z -= MoveAmount * FGenericPlatformMath::Cos(Angle);
 
-		// calculatig distance to destination point
+		// calculating distance to destination point
 		float DistanceFromCenter = GetDistanceToPoint(FVector::ZeroVector);
 
 		// if reached shooting point shoot repeatedly, otherwise continue moving
-		if (DistanceFromCenter < 500) // && !ReachedShootingPoint
+		if (DistanceFromCenter < 500) 
 		{
 			ReachedShootingPoint = true;
 			StartShootingTimer();

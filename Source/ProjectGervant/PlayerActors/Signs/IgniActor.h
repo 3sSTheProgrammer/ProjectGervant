@@ -15,12 +15,8 @@ class PROJECTGERVANT_API AIgniActor : public AActor
 	GENERATED_BODY()
 protected:
 	// Static mesh component saved for efficiency
-	//UStaticMeshComponent* StaticMesh;
 	USphereComponent* SphereComponent;
-	//float GrowthPerSecond{ 14.f };
 
-	//FVector CurrentScale;
-	//float StartCollisionSphereSize;
 public:	
 	// Sets default values for this actor's properties
 	AIgniActor();

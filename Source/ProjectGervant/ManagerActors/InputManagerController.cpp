@@ -54,7 +54,7 @@ void AInputManagerController::SetupInputComponent()
 		this, &AInputManagerController::UseAard);
 
 	InputComponent->BindAction("Pause", EInputEvent::IE_Pressed,
-		this, &AInputManagerController::SetPause);
+		this, &AInputManagerController::PauseGame);
 }
 
 /**
@@ -151,7 +151,7 @@ void AInputManagerController::UseAard()
 /**
  * @brief  Reaction to pause input
  */
-void AInputManagerController::SetPause()
+void AInputManagerController::PauseGame()
 {
 	if (PauseMenuWidgetClass != nullptr)
 	{

@@ -28,13 +28,6 @@ void ABeamActor::BeginPlay()
 		BeamType = "Monster";
 	}
 
-	/*CapsuleComponent = FindComponentByClass<UCapsuleComponent>();
-	if (CapsuleComponent != nullptr)
-	{
-		CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ABeamActor::OnOverlapBegin);
-		CapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &ABeamActor::OnOverlapEnd);
-	}*/
-
 	// find static mesh component
 	UStaticMeshComponent* StaticMeshComponent;
 	TArray<UStaticMeshComponent*> StaticMeshComponents;
@@ -61,7 +54,6 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 		{
 			FString Class;
 			Class = EnemyActor->GetEnemyClass();
-			//UE_LOG(LogTemp, Warning, TEXT("started overlap with %s"), *Class);
 			OverlapingEnemies.Add(EnemyActor);
 
 
@@ -70,12 +62,10 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					//InteractiveEnemy->SetIsAttacked(false);
 					InteractiveEnemy->SetBeamInteractionStatus("Attack", false);
 				}
 				else
 				{
-					//InteractiveEnemy->SetIsHealed(false);
 					InteractiveEnemy->SetBeamInteractionStatus("Heal", false);
 				}
 				
@@ -85,12 +75,10 @@ void ABeamActor::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					//InteractiveEnemy->SetIsAttacked(true);
 					InteractiveEnemy->SetBeamInteractionStatus("Attack", true);
 				}
 				else
 				{
-					//InteractiveEnemy->SetIsHealed(true);
 					InteractiveEnemy->SetBeamInteractionStatus("Heal", true);
 				}
 			}
@@ -108,22 +96,16 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 		AEnemyActorParent* EnemyActor = Cast<AEnemyActorParent>(OtherActor);
 		if (EnemyActor != nullptr)
 		{
-			FString Class;
-			Class = EnemyActor->GetEnemyClass();
-			//UE_LOG(LogTemp, Warning, TEXT("ended overlap with %s"), *Class);
 			OverlapingEnemies.Remove(EnemyActor);
 			
-			//TODO: Refactor as a function 
 			if (InteractiveEnemy != nullptr)
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					//InteractiveEnemy->SetIsAttacked(false);
 					InteractiveEnemy->SetBeamInteractionStatus("Attack", false);
 				}
 				else
 				{
-					//InteractiveEnemy->SetIsHealed(false);
 					InteractiveEnemy->SetBeamInteractionStatus("Heal", false);
 				}
 
@@ -133,12 +115,10 @@ void ABeamActor::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp,
 			{
 				if (BeamType == InteractiveEnemy->GetEnemyClass())
 				{
-					//InteractiveEnemy->SetIsAttacked(true);
 					InteractiveEnemy->SetBeamInteractionStatus("Attack", true);
 				}
 				else
 				{
-					//InteractiveEnemy->SetIsHealed(true);
 					InteractiveEnemy->SetBeamInteractionStatus("Heal", true);
 				}
 			}
@@ -157,7 +137,6 @@ void ABeamActor::Tick(float DeltaTime)
 	if (CurrentRotationVelocity.Roll != 0)
 	{
 		FRotator CurrentRotation = GetActorRotation();
-		//CurrentRotation.Roll += CurrentRotationVelocity.Roll * RotationVelocityPerSecond * DeltaTime;
 		CurrentRotation.Roll -= CurrentRotationVelocity.Roll * RotationVelocityPerSecond * DeltaTime;
 		CurrentRotation.Roll = FMath::Clamp(CurrentRotation.Roll, -85.f, 85.f);
 		SetActorRotation(CurrentRotation);
@@ -166,7 +145,6 @@ void ABeamActor::Tick(float DeltaTime)
 
 	if (InteractiveEnemy != nullptr)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("TICK:Interacting with %s"), *InteractiveEnemy->GetName());
 		if (InteractiveEnemy->GetEnemyClass() == BeamType)
 		{
 			InteractiveEnemy->ReceiveDamage(DamagePerSecond * DeltaTime);
@@ -180,7 +158,6 @@ void ABeamActor::Tick(float DeltaTime)
 
 void ABeamActor::Rotate(float moveScale)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s rotating"), *GetName());
 	CurrentRotationVelocity.Roll = moveScale;
 }
 
@@ -191,8 +168,7 @@ float ABeamActor::GetDamagePerSecond()
 
 AEnemyActorParent* ABeamActor::FindClosestEnemy()
 {
-	//nemnogo govnokod((
-	float MinDistance = 10000;
+	float MinDistance = MAX_FLT;
 	AEnemyActorParent* ClosestEnemy{ nullptr };
 	for (AEnemyActorParent* Enemy : OverlapingEnemies)
 	{
@@ -206,11 +182,6 @@ AEnemyActorParent* ABeamActor::FindClosestEnemy()
 			ClosestEnemy = Enemy;
 		}
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("FINDCLOSESTENEMY: %f"), DistanceToEnemy);
-	/*if (ClosestEnemy != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("FINDCLOSESTENEMY:closest enemy is %s"), *ClosestEnemy->GetName());
-	}*/
 
 	return ClosestEnemy;
 }

@@ -17,17 +17,6 @@ void AAardActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//CurrentScale = GetActorScale3D();
-
-	/*TArray<UStaticMeshComponent*> StaticMeshComponents;
-	GetComponents(StaticMeshComponents);
-
-	if (StaticMeshComponents.Num() > 0)
-	{
-		StaticMeshComponent = StaticMeshComponents[0];
-		StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AAardActor::OnOverlapBegin);
-	}*/
-
 	SphereComponent = FindComponentByClass<USphereComponent>();
 	if (SphereComponent != nullptr)
 	{
@@ -39,28 +28,17 @@ void AAardActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 {
 	if (OtherActor != nullptr)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("IGNI:Began overlap with %s"), *OtherActor->GetName());
 		AEnemyActorParent* EnemyActor = Cast<AEnemyActorParent>(OtherActor);
 		if (EnemyActor != nullptr)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("IGNI: Damaging an enemy"));
 			EnemyActor->SetIsAarded(true);
-			//ImpactEnemy(EnemyActor, true);
 			FTimerHandle Timer;
 			FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(EnemyActor,
 				&AEnemyActorParent::SetIsAarded, false);
 			GetWorld()->GetTimerManager().SetTimer(Timer, TimerDelegate, 1.f, false);
 		}
-		//GetWorld()->GetTimerManager().ListTimers();
 	}
 }
-
-//void AAardActor::ImpactEnemy(AEnemyActorParent* Enemy, bool ReverseStatus)
-//{
-//		UE_LOG(LogTemp, Warning, TEXT("Impact %d"), ReverseStatus);
-//		Enemy->SetIsStopped(ReverseStatus);
-//		Enemy->SetIsAarded(ReverseStatus);
-//}
 
 // Called every frame
 void AAardActor::Tick(float DeltaTime)

@@ -33,8 +33,6 @@ protected:
 	UPROPERTY()
 	AStoryTellerActor* StoryTeller;
 
-	//TODO: balance cooldowns. Some signs mb will be usable once per level. If so, change logic
-
 	// Sign cooldowns, availability and time remaining till availability
 	FTimerHandle IgniTimer;
 	float IgniCooldown;
@@ -148,19 +146,6 @@ public:
 	 @param SignName Name of used sign
 	*/
 	void UseSign(FString SignName);
-	//UUW_WitcherSignsInterface();
-
-	/**
-	 @return Current monster kill counter value 
-	*/
-	// UFUNCTION(BlueprintCallable)
-	// 	int GetMonsterKillCount() const;
-
-	/**
-	 @return Current human kill counter value 
-	*/
-	// UFUNCTION(BlueprintCallable)
-	// 	int GetHumanKillCount() const;
 
 	/**
 	 @brief Increase human kill counter 

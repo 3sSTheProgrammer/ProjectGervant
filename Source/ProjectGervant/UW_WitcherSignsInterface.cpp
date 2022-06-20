@@ -24,9 +24,6 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 	HighHPColor = FLinearColor(0.03, 0.54, 0.06, 1.0); //Green
 	MediumHPColor = FLinearColor(0.96, 0.4, 0.0, 1.0); //Orange
 	LowHPColor = FLinearColor(0.45, 0.0, 0.01, 1.0); //Red
-	/*UWorld* World = GetWorld();
-	WorldTimerManager = World->GetTimerManager();
-	WorldTimerManager = GetWorld()->GetTimerManager();*/
 }
 
 /**
@@ -138,8 +135,8 @@ void UUW_WitcherSignsInterface::SetSignCooldownTimer(const FString SignName)
 */
 void UUW_WitcherSignsInterface::RefreshSign(const FString SignName)
 {
-	UProgressBar* SignProgressBar; //{ nullptr }
-	bool* IsSignAvailable; //{ nullptr }
+	UProgressBar* SignProgressBar;
+	bool* IsSignAvailable; 
 	
 	if (SignName == "Igni")
 	{
@@ -176,7 +173,7 @@ void UUW_WitcherSignsInterface::RefreshSign(const FString SignName)
 */
 void UUW_WitcherSignsInterface::UseSign(const FString SignName)
 {
-	bool* IsSignAvailable; //{ nullptr }
+	bool* IsSignAvailable; 
 	
 	if (SignName == "Igni")
 	{
@@ -242,22 +239,6 @@ void UUW_WitcherSignsInterface::Aard() const
 }
 
 /**
- @return Current monster kill counter value 
-*/
-// int UUW_WitcherSignsInterface::GetMonsterKillCount() const
-// {
-// 	return MonsterKillCount;
-// }
-
-/**
- @return Current human kill counter value 
-*/
-// int UUW_WitcherSignsInterface::GetHumanKillCount() const
-// {
-// 	return HumanKillCount;
-// }
-
-/**
  @brief Increase human kill counter 
 */
 void UUW_WitcherSignsInterface::AddHumanKill()
@@ -299,7 +280,6 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 		InitStoryTeller();
 	}
 	int MaxKills = StoryTeller->GetAmountOfKillsNeeded();
-	//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
 	UE_LOG(LogTemp, Warning, TEXT("Score %d"), TotalDeadEnemies);
 	if (TotalDeadEnemies >= MaxKills)
 	{
@@ -369,7 +349,6 @@ void UUW_WitcherSignsInterface::AddNotKilledEnemy(FString EnemyClass)
 	UE_LOG(LogTemp, Warning, TEXT("Score %d"), TotalDeadEnemies);
 	if (TotalDeadEnemies >= MaxKills)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Max score %d"), MaxKills);
 		PlayerActor->InvokeLevelCompleted();
 	}
 }

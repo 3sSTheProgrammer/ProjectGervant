@@ -13,8 +13,6 @@ AMonsterEnemyWraith::AMonsterEnemyWraith()
 	Health = MaxHealth;
 	MovementSpeed = 100;
 	Damage = 20;
-
-	//Status = "Moving to player";
 }
 
 void AMonsterEnemyWraith::BeginPlay()
@@ -22,8 +20,6 @@ void AMonsterEnemyWraith::BeginPlay()
 	Super::BeginPlay();
 
 	UsedHiding = false;
-	//SetActorEnableCollision(false);
-	//SetActorHiddenInGame(true);
 }
 
 void AMonsterEnemyWraith::MovementManager(float Time)
@@ -41,7 +37,6 @@ void AMonsterEnemyWraith::MovementManager(float Time)
 
 	if (!UsedHiding && Health <= MaxHealth / 2)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Teleporting"));
 		UsedHiding = true;
 		SetActorEnableCollision(false);
 		SetActorHiddenInGame(true);
@@ -56,14 +51,12 @@ void AMonsterEnemyWraith::MovementManager(float Time)
 	}
 	else
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Health %d"), MaxHealth);
 		Super::MovementManager(Time);
 	}
 }
 
 FVector AMonsterEnemyWraith::GenerateTeleportationPoint()
 {
-	//TODO: implement
 	float DistanceToCenter = GetDistanceToPoint(FVector::ZeroVector);
 	float Angle = FMath::RandRange(-85.0f * (float)3.141592 / 180, 85.0f * (float)3.141592 / 180);
 	FVector GeneratedPoint = FVector::ZeroVector;

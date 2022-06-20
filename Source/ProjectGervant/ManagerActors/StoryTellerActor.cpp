@@ -4,8 +4,6 @@
 #include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "ProjectGervant/TutorialWidget.h"
-//#include "ProjectGervant/PlayerActors/PlayerActor.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 
@@ -34,14 +32,10 @@ void AStoryTellerActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//HUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD<AKillCountHUD>();
-	
-	/*FirstLevelScript();
-	return;*/	
-
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level2"), 2);
 	LevelNameMap.Add(TEXT("UEDPIE_0_Level3"), 3);
+	LevelNameMap.Add(TEXT("UEDPIE_0_InfiniteLevel"), 4);
 	
 	const UWorld* TheWorld = GetWorld();
 	const FString CurrentLevel = TheWorld->GetMapName();
@@ -60,6 +54,10 @@ void AStoryTellerActor::BeginPlay()
 	case 3:
 		ThirdLevelScript();
 		break;
+
+	case 4:
+		InfiniteLevelScript();
+		break;
 		
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("unknown level"));
@@ -68,7 +66,6 @@ void AStoryTellerActor::BeginPlay()
 }
 
 
-//TODO: guess this should be overriden in child classes
 void AStoryTellerActor::FirstLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("1 level"));
@@ -76,7 +73,6 @@ void AStoryTellerActor::FirstLevelScript()
 
 	EnemiesAmountOnLevel = 25;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
-	//PlayerActor->SetBackgroundSound(BackgroundSound);
 
 	float WaveDelay = 1.f;
 	SetSpawnTimer(UHumanEnemyBrigand1, 1, -1, WaveDelay);
@@ -97,7 +93,6 @@ void AStoryTellerActor::SecondLevelScript()
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level2BackgroundSound);
 
 	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
-	//SpawnEnemyGroup(SpawnEnemyType, EnemiesAmountOnLevel, ScreenSideTest);
 	float WaveDelay = 1.f;
 	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
 	WaveDelay += 8;
@@ -131,8 +126,20 @@ void AStoryTellerActor::ThirdLevelScript()
 	
 }
 
+void AStoryTellerActor::InfiniteLevelScript()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Infinite level"));
+	EnemiesAmountOnLevel = INT_MAX;
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level3BackgroundSound);
+	
+	float WaveDelay = 1.f;
+	FTimerHandle TimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(	TimerHandle, this, &AStoryTellerActor::GenerateInfiniteLevelWave, WaveDelay, false);
+}
+
 void AStoryTellerActor::SpawnEnemy(TSubclassOf<AEnemyActorParent> EnemyType, 
-	FVector SpawnPoint)
+                                   FVector SpawnPoint)
 {
 	if (EnemyType == nullptr)
 	{
@@ -167,16 +174,6 @@ void AStoryTellerActor::SpawnEnemyGroup(TSubclassOf<AEnemyActorParent> EnemyType
 	if (NumberOfEnemies > MaxEnemiesOnOneSide)
 	{
 		int RemainEnemies = NumberOfEnemies;
-		//while (RemainEnemies > MaxEnemiesOnOneSide)
-		//{
-		//	//TODO: implement timer here
-		//	SpawnEnemyGroup(EnemyType, MaxEnemiesOnOneSide, SpawnSide);
-		//	RemainEnemies -= MaxEnemiesOnOneSide;
-		//}
-		//if (RemainEnemies > 0)
-		//{
-		//	SpawnEnemyGroup(EnemyType, RemainEnemies, SpawnSide);
-		//}
 		if (RemainEnemies > 0)
 		{
 			SpawnEnemyGroup(EnemyType, MaxEnemiesOnOneSide, SpawnSide);
@@ -211,7 +208,6 @@ TArray<FVector> AStoryTellerActor::GenerateSpawnPoints(SIZE_T NumberOfPoints, SI
 	{
 		for (SIZE_T i = 0; i < MaxEnemiesOnOneSide - NumberOfPoints; ++i)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("i %d"), i);
 			SIZE_T RandomIndex = FMath::RandRange(0, Heights.Num() - 1);
 			Heights.RemoveAt(RandomIndex);
 		}
@@ -225,7 +221,7 @@ TArray<FVector> AStoryTellerActor::GenerateSpawnPoints(SIZE_T NumberOfPoints, SI
 		else if (ScreenSide == 1) Point.Y = SpawnPointY;
 		Points.Add(Point);
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("Points generated %d"), Points.Num());
+	
 	return Points;
 }
 
@@ -236,6 +232,66 @@ void AStoryTellerActor::SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType,
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this,
 		&AStoryTellerActor::SpawnEnemyGroup, EnemyType, NumberOfEnemies, SpawnSide);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, Delay, false);
+}
+
+void AStoryTellerActor::GenerateInfiniteLevelWave()
+{
+	TArray<TSubclassOf<AEnemyActorParent>> AvailableHumanEnemies;
+	TArray<TSubclassOf<AEnemyActorParent>> AvailableMonsterEnemies;
+	int WaveDelay;
+	int32 MinEnemyNumber;
+	int32 MaxEnemyNumber;
+	if (InfiniteLevelScore > 60)
+	{
+		WaveDelay = 12;
+		MinEnemyNumber = 6;
+		MaxEnemyNumber = 10;
+		AvailableHumanEnemies.Add(UHumanEnemyBrigand1);
+		AvailableHumanEnemies.Add(UHumanEnemyRedanianSoldier);
+		AvailableMonsterEnemies.Add(UMonsterEnemyDrowner);
+		AvailableMonsterEnemies.Add(UMonsterEnemyGhoul);
+		AvailableMonsterEnemies.Add(UMonsterEnemyNekker);
+		AvailableMonsterEnemies.Add(UMonsterEnemyNightwraith);
+		AvailableMonsterEnemies.Add(UMonsterEnemyNoonwraith);
+	}
+	else if (InfiniteLevelScore > 30)
+	{
+		WaveDelay = 10;
+		MinEnemyNumber = 4;
+		MaxEnemyNumber = 8;
+		AvailableHumanEnemies.Add(UHumanEnemyBrigand1);
+		AvailableHumanEnemies.Add(UHumanEnemyRedanianSoldier);
+		AvailableMonsterEnemies.Add(UMonsterEnemyDrowner);
+		AvailableMonsterEnemies.Add(UMonsterEnemyGhoul);
+		AvailableMonsterEnemies.Add(UMonsterEnemyNekker);
+	}
+	else
+	{
+		WaveDelay = 6;
+		MinEnemyNumber = 2;
+		MaxEnemyNumber = 4;
+		AvailableHumanEnemies.Add(UHumanEnemyBrigand1);
+		AvailableMonsterEnemies.Add(UMonsterEnemyDrowner);
+		AvailableMonsterEnemies.Add(UMonsterEnemyGhoul);
+	}
+	TSubclassOf<AEnemyActorParent> HumanSpawnEnemyType = AvailableHumanEnemies[FMath::RandRange(0, AvailableHumanEnemies.Num() - 1)];
+	TSubclassOf<AEnemyActorParent> MonsterSpawnEnemyType = AvailableMonsterEnemies[FMath::RandRange(0, AvailableMonsterEnemies.Num() - 1)];
+	int HumanEnemyNumber = FMath::RandRange(MinEnemyNumber, MaxEnemyNumber);
+	int MonsterEnemyNumber = FMath::RandRange(MinEnemyNumber, MaxEnemyNumber);
+	if (FMath::RandBool())
+	{
+		SpawnEnemyGroup(HumanSpawnEnemyType, HumanEnemyNumber, -1);
+		SpawnEnemyGroup(MonsterSpawnEnemyType, MonsterEnemyNumber, 1);
+	}
+	else
+	{
+		SpawnEnemyGroup(HumanSpawnEnemyType, HumanEnemyNumber, 1);
+		SpawnEnemyGroup(MonsterSpawnEnemyType, MonsterEnemyNumber, -1);
+	}
+	InfiniteLevelScore += HumanEnemyNumber + MonsterEnemyNumber;
+	
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AStoryTellerActor::GenerateInfiniteLevelWave, WaveDelay, false);
 }
 
 void AStoryTellerActor::StopBackgroundSound()

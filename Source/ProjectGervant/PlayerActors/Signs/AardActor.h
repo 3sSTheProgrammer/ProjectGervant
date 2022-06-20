@@ -15,13 +15,8 @@ class PROJECTGERVANT_API AAardActor : public AActor
 	GENERATED_BODY()
 	
 protected:
-	//UStaticMeshComponent* StaticMeshComponent;
+	
 	USphereComponent* SphereComponent;
-	//float GrowthPerSecond{ 20.f };
-
-	//FVector CurrentScale;
-
-	//FTimerHandle AardTimer;
 public:	
 	UPROPERTY(EditAnywhere, Category = Parameters)
 		float GrowthPerSecond;
@@ -45,7 +40,6 @@ protected:
 			class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	//void ImpactEnemy(AEnemyActorParent* Enemy, bool ReverseStatus);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

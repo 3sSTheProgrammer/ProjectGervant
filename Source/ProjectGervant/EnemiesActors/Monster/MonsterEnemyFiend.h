@@ -2,7 +2,7 @@
 
 #pragma once
 
-//#include "CoreMinimal.h"
+#include "CoreMinimal.h"
 #include "MonsterEnemyActor.h"
 #include "MonsterEnemyFiend.generated.h"
 
@@ -22,12 +22,8 @@ public:
 	AMonsterEnemyFiend();
 
 protected:
-	/*virtual void Tick(float DeltaTime) override;*/
-
 	virtual void BeginPlay() override;
 
 	virtual void MovementManager(float Time) override;
-//private:
-//	virtual void MoveToPoint(FVector Point, float MoveAmount) override;
 
 };

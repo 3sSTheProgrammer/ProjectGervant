@@ -2,10 +2,6 @@
 
 #pragma once
 
-//#include "ProjectGervant/UW_WitcherSignsInterface.h"
-//#include "ProjectGervant/EnemiesActors/EnemyActorParent.h"
-//#include "ProjectGervant/KillCountHUD.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "StoryTellerActor.generated.h"
@@ -32,7 +28,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Parameters)
 		float MaxZSpawnCoordinate{ 1000.f };
-	//UTutorialWidget* TutorialWidget;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		Category = "Sound")
@@ -86,7 +82,6 @@ public:
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "MonsterEnemy"),
 		Category = Enemies)
-		//TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
 		TSubclassOf<AEnemyActorParent> UMonsterEnemyDrowner;
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "MonsterEnemy"),
@@ -129,6 +124,8 @@ private:
 	int EnemiesAmountOnLevel{ 0 };
 
 	UAudioComponent* CurrentLevelBackgroundSound;
+
+	int InfiniteLevelScore{ 0 };
 public:	
 	// Sets default values for this actor's properties
 	AStoryTellerActor();
@@ -148,6 +145,9 @@ private:
 	void SecondLevelScript();
 
 	void ThirdLevelScript();
+
+	void InfiniteLevelScript();
+
 	/**
 	 * @brief Spawns a single enemy of EnemyType in specified coordinates
 	 * @param EnemyType Type of spawning enemy
@@ -166,4 +166,6 @@ private:
 	TArray<FVector> GenerateSpawnPoints(SIZE_T NumberOfPoints, SIZE_T ScreenSide);
 
 	void SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType, int NumberOfEnemies, int SpawnSide, float Delay);
+
+	void GenerateInfiniteLevelWave();
 };
