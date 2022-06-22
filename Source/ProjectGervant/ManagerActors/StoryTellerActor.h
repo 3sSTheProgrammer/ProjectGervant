@@ -42,6 +42,10 @@ public:
 		Category = "Sound")
 		USoundCue* Level3BackgroundSound;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+		Category = "Sound")
+	USoundCue* InfiniteLevelBackgroundSound;
+	
 	UPROPERTY(EditAnywhere,
 		meta = (MetaClass = "HumanEnemy"),
 		Category = Enemies)

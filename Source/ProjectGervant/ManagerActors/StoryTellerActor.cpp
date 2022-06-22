@@ -130,7 +130,7 @@ void AStoryTellerActor::InfiniteLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Infinite level"));
 	EnemiesAmountOnLevel = INT_MAX;
-	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level3BackgroundSound);
+	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, InfiniteLevelBackgroundSound);
 	
 	float WaveDelay = 1.f;
 	FTimerHandle TimerHandle;

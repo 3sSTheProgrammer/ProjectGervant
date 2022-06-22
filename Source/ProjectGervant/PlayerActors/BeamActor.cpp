@@ -138,7 +138,7 @@ void ABeamActor::Tick(float DeltaTime)
 	{
 		FRotator CurrentRotation = GetActorRotation();
 		CurrentRotation.Roll -= CurrentRotationVelocity.Roll * RotationVelocityPerSecond * DeltaTime;
-		CurrentRotation.Roll = FMath::Clamp(CurrentRotation.Roll, -85.f, 85.f);
+		CurrentRotation.Roll = FMath::Clamp(CurrentRotation.Roll, -105.f, 105.f);
 		SetActorRotation(CurrentRotation);
 		CurrentRotationVelocity = FRotator(0);
 	}
