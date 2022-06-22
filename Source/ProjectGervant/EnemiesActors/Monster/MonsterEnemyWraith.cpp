@@ -12,7 +12,7 @@ AMonsterEnemyWraith::AMonsterEnemyWraith()
 	MaxHealth = 200;
 	Health = MaxHealth;
 	MovementSpeed = 100;
-	Damage = 20;
+	Damage = 30;
 }
 
 void AMonsterEnemyWraith::BeginPlay()
@@ -24,16 +24,17 @@ void AMonsterEnemyWraith::BeginPlay()
 
 void AMonsterEnemyWraith::MovementManager(float Time)
 {
-	if (GetDistanceToPoint(FVector::ZeroVector) < DistanceFromCenterDeath)
-	{
-		Destroy();
-		PlayerActor->ReceiveDamage(Damage);
-		UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
-		if (Interface != nullptr)
-		{
-			Interface->AddNotKilledEnemy(EnemyClass);
-		}
-	}
+	// if (GetDistanceToPoint(FVector::ZeroVector) < DistanceFromCenterDeath)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("wraith died"));
+	// 	Destroy();
+	// 	PlayerActor->ReceiveDamage(Damage);
+	// 	UUW_WitcherSignsInterface* Interface = Cast<UUW_WitcherSignsInterface>(GameInterface);
+	// 	if (Interface != nullptr)
+	// 	{
+	// 		Interface->AddNotKilledEnemy(EnemyClass);
+	// 	}
+	// }
 
 	if (!UsedHiding && Health <= MaxHealth / 2)
 	{

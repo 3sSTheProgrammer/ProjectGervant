@@ -17,11 +17,11 @@ class PROJECTGERVANT_API AStoryTellerActor : public AActor
 	
 public:
 
-	UPROPERTY(EditAnywhere, Category = Parameters)
-		float SpawnEnemiesNumberTest;
+	// UPROPERTY(EditAnywhere, Category = Parameters)
+	// 	float SpawnEnemiesNumberTest;
 
-	UPROPERTY(EditAnywhere, Category = Parameters)
-		float ScreenSideTest;
+	// UPROPERTY(EditAnywhere, Category = Parameters)
+	// 	float ScreenSideTest;
 	
 	UPROPERTY(EditAnywhere, Category = Parameters)
 		float MinZSpawnCoordinate{ 100.f };
@@ -115,7 +115,6 @@ public:
 
 
 private:
-	//AKillCountHUD* HUD;
 
 	TMap<FString, int> LevelNameMap;
 

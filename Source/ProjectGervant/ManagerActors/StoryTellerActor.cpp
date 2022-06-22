@@ -91,8 +91,7 @@ void AStoryTellerActor::SecondLevelScript()
 
 	EnemiesAmountOnLevel = 76;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level2BackgroundSound);
-
-	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
+	
 	float WaveDelay = 1.f;
 	SetSpawnTimer(UMonsterEnemyNekker, 14, 0, WaveDelay);
 	WaveDelay += 8;
@@ -117,12 +116,36 @@ void AStoryTellerActor::ThirdLevelScript()
 {
 	UE_LOG(LogTemp, Warning, TEXT("3 level"));
 
-	EnemiesAmountOnLevel = 6;
+	EnemiesAmountOnLevel = 76;
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level3BackgroundSound);
-
-	TSubclassOf<AEnemyActorParent> SpawnEnemyType = UMonsterEnemyGhoul;
+	
 	float WaveDelay = 1.f;
-	SetSpawnTimer(UMonsterEnemyNightwraith, 6, 0, WaveDelay);
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 6, 0, WaveDelay);
+	WaveDelay += 10;
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 4, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyGhoul, 6, 1, WaveDelay);
+	WaveDelay += 10;
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 4, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyGhoul, 6, -1, WaveDelay);
+	
+	WaveDelay += 14;
+	SetSpawnTimer(UMonsterEnemyNightwraith, 2, 0, WaveDelay);
+	
+	WaveDelay += 6;
+	SetSpawnTimer(UMonsterEnemyNightwraith, 2, -1, WaveDelay);
+	WaveDelay += 6;
+	SetSpawnTimer(UMonsterEnemyNoonwraith, 2, 1, WaveDelay);
+	WaveDelay += 10;
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNightwraith, 3, 1, WaveDelay);
+	WaveDelay += 10;
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 6, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNoonwraith, 2, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNekker, 8, 0, WaveDelay);
+	WaveDelay += 16;
+	SetSpawnTimer(UHumanEnemyRedanianSoldier, 6, -1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNoonwraith, 3, 1, WaveDelay);
+	SetSpawnTimer(UMonsterEnemyNekker, 10, 0, WaveDelay);
 	
 }
 
@@ -225,6 +248,12 @@ TArray<FVector> AStoryTellerActor::GenerateSpawnPoints(SIZE_T NumberOfPoints, SI
 	return Points;
 }
 
+/**
+	 * @brief Spawns a group of enemies
+	 * @param EnemyType Type of spawning enemy
+	 * @param NumberOfEnemies Number of spawning enemies 
+	 * @param SpawnSide -1 - left, 1 - right, 0 - both
+*/
 void AStoryTellerActor::SetSpawnTimer(TSubclassOf<AEnemyActorParent> EnemyType,
 	int NumberOfEnemies, int SpawnSide, float Delay)
 {
