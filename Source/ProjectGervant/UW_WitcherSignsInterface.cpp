@@ -24,6 +24,15 @@ void UUW_WitcherSignsInterface::NativeConstruct()
 	HighHPColor = FLinearColor(0.03, 0.54, 0.06, 1.0); //Green
 	MediumHPColor = FLinearColor(0.96, 0.4, 0.0, 1.0); //Orange
 	LowHPColor = FLinearColor(0.45, 0.0, 0.01, 1.0); //Red
+
+	FString CurrentLevel = GetWorld()->GetMapName();
+	if (CurrentLevel == "InfiniteLevel")
+	{
+		MonsterKillCounterLabel->SetVisibility(ESlateVisibility::Visible);
+		MonsterKillCounter->SetVisibility(ESlateVisibility::Visible);
+		HumanKillCounter->SetVisibility(ESlateVisibility::Visible);
+		HumanKillCounterLabel->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 /**
@@ -239,22 +248,6 @@ void UUW_WitcherSignsInterface::Aard() const
 }
 
 /**
- @brief Increase human kill counter 
-*/
-void UUW_WitcherSignsInterface::AddHumanKill()
-{
-	HumanKillCount += 1;
-}
-
-/**
- @brief Increase monster kill counter 
-*/
-void UUW_WitcherSignsInterface::AddMonsterKill()
-{
-	MonsterKillCount += 1;
-}
-
-/**
 	@param EnemyClass "Human"/"Monster"
 	@brief Increases counter of killed enemies. If counter is more than
 	number of enemies on this level than end level  
@@ -263,17 +256,15 @@ void UUW_WitcherSignsInterface::AddKill(FString EnemyClass)
 {
 	if (EnemyClass == "Monster")
 	{
-		AddMonsterKill();
+		MonsterKillCount += 1;
 		UpdateLabel(EnemyClass);
 	}
 	else if (EnemyClass == "Human")
 	{
-		AddHumanKill();
+		HumanKillCount += 1;
 		UpdateLabel(EnemyClass);
 	}
 	TotalDeadEnemies += 1;
-	
-	//TODO: Change that system
 
 	if (StoryTeller == nullptr)
 	{

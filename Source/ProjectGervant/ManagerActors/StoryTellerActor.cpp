@@ -32,14 +32,14 @@ void AStoryTellerActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LevelNameMap.Add(TEXT("UEDPIE_0_Level1"), 1);
-	LevelNameMap.Add(TEXT("UEDPIE_0_Level2"), 2);
-	LevelNameMap.Add(TEXT("UEDPIE_0_Level3"), 3);
-	LevelNameMap.Add(TEXT("UEDPIE_0_InfiniteLevel"), 4);
+	LevelNameMap.Add(TEXT("Level1"), 1); //UEDPIE_0_
+	LevelNameMap.Add(TEXT("Level2"), 2); //UEDPIE_0_
+	LevelNameMap.Add(TEXT("Level3"), 3); //UEDPIE_0_
+	LevelNameMap.Add(TEXT("InfiniteLevel"), 4); //UEDPIE_0_
 	
 	const UWorld* TheWorld = GetWorld();
 	const FString CurrentLevel = TheWorld->GetMapName();
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentLevel);
 
 	switch (LevelNameMap[CurrentLevel])
 	{
@@ -75,7 +75,7 @@ void AStoryTellerActor::FirstLevelScript()
 	CurrentLevelBackgroundSound = UGameplayStatics::SpawnSound2D(this, Level1BackgroundSound);
 
 	float WaveDelay = 1.f;
-	SetSpawnTimer(UHumanEnemyBrigand1, 1, -1, WaveDelay);
+	SetSpawnTimer(UHumanEnemyBrigand1, 1, 1, WaveDelay);
 	WaveDelay += 8;
 	SetSpawnTimer(UHumanEnemyBrigand1, 4, 0, WaveDelay);
 	WaveDelay += 8;

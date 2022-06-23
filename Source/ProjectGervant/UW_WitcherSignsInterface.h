@@ -65,12 +65,19 @@ protected:
 		class UProgressBar* AardProgressBar;
 
 	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* MonsterKillCounterLabel;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* HumanKillCounterLabel;
+	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* MonsterKillCounter;
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* HumanKillCounter;
 
 	UPROPERTY(meta = (BindWidget))
 		class UProgressBar* HPProgressBar;
+
+
+
 
 	// Reference to player actor
 	UPROPERTY()
@@ -146,16 +153,6 @@ public:
 	 @param SignName Name of used sign
 	*/
 	void UseSign(FString SignName);
-
-	/**
-	 @brief Increase human kill counter 
-	*/
-	void AddHumanKill();
-
-	/**
-	 @brief Increase monster kill counter 
-	*/
-	void AddMonsterKill();
 
 	/**
 		@param EnemyClass "Human"/"Monster"
