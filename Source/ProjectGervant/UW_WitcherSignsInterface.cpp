@@ -322,6 +322,11 @@ void UUW_WitcherSignsInterface::SetHP(float HealthAmount)
 	
 }
 
+int UUW_WitcherSignsInterface::GetTotalScore()
+{
+	return HumanKillCount + MonsterKillCount;
+}
+
 /**
     @param EnemyClass "Human"/"Monster"
     @brief Adds an enemy which was not killed by player to

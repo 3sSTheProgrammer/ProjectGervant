@@ -12,6 +12,7 @@ class AAardActor;
 class AIgniActor;
 class APlayerActor;
 class AStoryTellerActor;
+class UProjectGervantSaveGame;
 
 UCLASS()
 class PROJECTGERVANT_API UUW_WitcherSignsInterface : public UUserWidget
@@ -29,6 +30,7 @@ protected:
 	// Total enemies that died on level
 	int TotalDeadEnemies;
 
+	UProjectGervantSaveGame* SaveGameInstance;
 	// Reference to story teller
 	UPROPERTY()
 	AStoryTellerActor* StoryTeller;
@@ -174,5 +176,8 @@ public:
 	 @param HealthAmount current player HP
 	*/
 	void SetHP(float HealthAmount);
+
+	UFUNCTION(BlueprintCallable)
+		int GetTotalScore();
 	
 };
